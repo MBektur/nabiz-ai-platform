@@ -103,7 +103,7 @@ interface Campaign {
   impressions: number;
 }
 
-// 3 Dimension Matrix Presets
+// 3 Dimension Matrix Presets matching Chapter 1.1 & 3.1 of Technical Report
 const getCityTopicMatrix = (): Matrix => ({
   "İstanbul": {
     "#Ulaşım": { volume: 135, mean: 120, std: 10, zScore: 1.5, sentiment: -0.1, isAnomaly: false, isOpportunity: false },
@@ -204,7 +204,7 @@ export default function Home() {
   // Jury Auto-Tour State
   const [isJuryTourRunning, setIsJuryTourRunning] = useState(false);
 
-  // Live Multi-Layer Pastel Wave Points
+  // Real-time Solid Wave Points
   const [wavePoints1, setWavePoints1] = useState<number[]>([15, 20, 12, 28, 35, 18, 25, 42, 30, 20, 18, 38, 48, 22, 28, 20, 15, 35, 42, 18, 25]);
   const [wavePoints2, setWavePoints2] = useState<number[]>([25, 18, 30, 20, 25, 35, 40, 18, 12, 38, 22, 28, 32, 15, 20, 42, 25, 18, 32, 22, 15]);
   const [wavePoints3, setWavePoints3] = useState<number[]>([8, 12, 18, 10, 14, 22, 18, 10, 8, 20, 14, 18, 16, 10, 12, 25, 16, 12, 20, 14, 10]);
@@ -276,7 +276,7 @@ export default function Home() {
     setTimeout(() => setToast(null), 3500);
   };
 
-  // Real-time animation loop for glowing pastel waves
+  // Real-time animation loop
   useEffect(() => {
     const waveInterval = setInterval(() => {
       const isCrisis = alerts.some(a => a.status === "UNRESOLVED" && a.type === "CRISIS");
@@ -339,7 +339,7 @@ export default function Home() {
     setAnomalyCount("428.10K");
     setSentimentIndex(-0.85);
     
-    showToast("🚨 İZMİR KRİZİ TETİKLENDİ! (Z = +5.12 Anomali Radarı Patladı)", "alert");
+    showToast("İzmir Ulaşım Kriz Senaryosu Tetiklendi! (Z = +5.12, 3σ Eşiği Aşıldı)", "alert");
   };
 
   const triggerKadikoyOpportunity = () => {
@@ -361,7 +361,7 @@ export default function Home() {
     
     setPromptInput("Kadıköy'deki butik kahvecimiz için Reels reklamı yap");
     setCurrentPanel("ads");
-    showToast("🎯 KADIKÖY VIRAL TRENDİ AKTİF! (+%45 ROAS Fırsatı)", "success");
+    showToast("Kadıköy Trend & Fırsat Senaryosu Aktif! (ROAS +%34)", "success");
   };
 
   const triggerBursaBotAttack = () => {
@@ -380,7 +380,7 @@ export default function Home() {
     setSelectedCell({ row: "Bursa", col: "#Ekonomi" });
     setBotBlockedCount(prev => prev + 280);
     
-    showToast("🛡️ BURSA BOT SALDIRISI DBSCAN İLE ENGELLENDİ!", "info");
+    showToast("Bursa Bot Saldırısı DBSCAN Algoritması ile İzolasyona Alındı.", "info");
   };
 
   const resetAll = () => {
@@ -412,40 +412,35 @@ export default function Home() {
     setAnomalyCount("312.47K");
     setSentimentIndex(0.42);
     setOptimizedRoas("3.85x");
-    showToast("🔄 Sistem Norm Değerlerine Sıfırlandı.", "info");
+    showToast("Sistem Norm Referans Değerlerine Sıfırlandı.", "info");
   };
 
   // Automated Jury Tour Sequence
   const runJuryAutoTour = () => {
     setIsJuryTourRunning(true);
-    showToast("🎬 Jüri Canlı Demo Turu Başlatıldı! (12 Saniyelik Otomatik Sunum)", "info");
+    showToast("Jüri Canlı Sunum Demosu Başlatıldı (12 Saniyelik Otomasyon)", "info");
     
-    // Step 1: Trigger Izmir crisis
     setTimeout(() => {
       triggerIzmirCrisis();
     }, 1500);
 
-    // Step 2: Jump to Sense tab
     setTimeout(() => {
       setCurrentPanel("sense");
-      showToast("🛡️ Kanat 1: NABIZ-Sense Siber Kalkanı İnceleniyor...", "info");
+      showToast("Kanat 1: NABIZ-Sense Siber Kalkanı ve LLM Kök Neden Analizi Açıldı.", "info");
     }, 4000);
 
-    // Step 3: Resolve crisis
     setTimeout(() => {
       handleAction("a1", "Topluluk Bildirilendirme Duyurusu Yayınla");
     }, 7000);
 
-    // Step 4: Trigger Kadikoy Opportunity & Jump to Ads
     setTimeout(() => {
       triggerKadikoyOpportunity();
-      showToast("🚀 Kanat 2: NABIZ-Ads Doğal Dil Reklam Motoru Devrede!", "success");
+      showToast("Kanat 2: NABIZ-Ads Doğal Dil Kampanya Motoru Devreye Alındı.", "success");
     }, 9500);
 
-    // Step 5: Complete
     setTimeout(() => {
       setIsJuryTourRunning(false);
-      showToast("🏆 Jüri Canlı Turu Başarıyla Tamamlandı!", "success");
+      showToast("Jüri Canlı Sunum Demosu Başarıyla Tamamlandı.", "success");
     }, 13000);
   };
 
@@ -453,7 +448,7 @@ export default function Home() {
     setAlerts(prev =>
       prev.map(a => (a.id === alertId ? { ...a, status: "RESOLVED" } : a))
     );
-    showToast(`✅ "${action}" aksiyonu 32 saniyede devreye alındı!`, "success");
+    showToast(`"${action}" aksiyonu 32 saniyede devreye alındı.`, "success");
   };
 
   const generateAdCampaign = () => {
@@ -490,7 +485,7 @@ export default function Home() {
       targetMatches: ["Kahve Severler", "Kadıköy Lokasyonu", "Genç Kitle"],
     });
 
-    showToast("✨ AI Reklam Taslağı ve Hedef Kitle Eşlendi!", "success");
+    showToast("AI Reklam Parametreleri ve Hedef Kitle Eşlendi.", "success");
   };
 
   const launchCampaign = () => {
@@ -523,7 +518,7 @@ export default function Home() {
 
     setPromptInput("");
     setAiSuggestions(null);
-    showToast("🚀 Kampanya 12 Saniyede Canlıya Alındı! (ROAS 3.86x)", "success");
+    showToast("Kampanya 12 Saniyede Canlıya Alındı! (ROAS 3.86x)", "success");
   };
 
   const handleQuickPrompt = (txt: string) => {
@@ -556,41 +551,41 @@ export default function Home() {
   const radarPolygon = `${pIst} ${pAnk} ${pIzm} ${pBur} ${pAnt}`;
 
   return (
-    <div className={`h-screen flex flex-col lg:flex-row font-sans selection:bg-orange-500 selection:text-white overflow-hidden ${
+    <div className={`h-screen flex flex-col lg:flex-row font-sans selection:bg-orange-600 selection:text-white overflow-hidden ${
       theme === "light" ? "bg-[#f8fafc] text-slate-900" : "bg-[#071317] text-slate-100"
     }`}>
       
       {/* TOAST NOTIFICATION OVERLAY */}
       {toast && (
-        <div className={`fixed top-5 right-5 z-50 px-5 py-3.5 rounded-2xl shadow-2xl border flex items-center gap-3 animate-bounce transition-all ${
+        <div className={`fixed top-5 right-5 z-50 px-5 py-3.5 rounded-2xl shadow-xl border flex items-center gap-3 transition-all ${
           toast.type === "alert"
-            ? "bg-rose-600 text-white border-rose-400 shadow-rose-600/30"
+            ? "bg-rose-700 text-white border-rose-600 shadow-rose-900/20"
             : toast.type === "info"
-            ? "bg-teal-600 text-white border-teal-400 shadow-teal-600/30"
-            : "bg-[#0a1e22] text-teal-300 border-teal-500 shadow-emerald-500/20"
+            ? "bg-teal-700 text-white border-teal-600 shadow-teal-900/20"
+            : "bg-[#0a1e22] text-teal-300 border-teal-600 shadow-slate-900/20"
         }`}>
-          {toast.type === "alert" ? <AlertTriangle className="h-5 w-5 shrink-0 animate-pulse" /> : <Sparkles className="h-5 w-5 shrink-0 text-amber-400" />}
-          <span className="text-xs font-black">{toast.message}</span>
+          {toast.type === "alert" ? <AlertTriangle className="h-5 w-5 shrink-0" /> : <CheckCircle className="h-5 w-5 shrink-0 text-teal-400" />}
+          <span className="text-xs font-bold">{toast.message}</span>
           <button onClick={() => setToast(null)} className="p-1 hover:opacity-80 cursor-pointer">
             <X className="h-4 w-4" />
           </button>
         </div>
       )}
 
-      {/* ADNEX-STYLE ULTRA-PREMIUM SIDEBAR (Pinned h-screen) */}
+      {/* ADNEX-STYLE ULTRA-PREMIUM SOLID SIDEBAR (Pinned h-screen) */}
       <aside className="w-full lg:w-68 lg:h-screen bg-[#0a1e22] text-slate-300 flex flex-col p-5 shrink-0 justify-between border-r border-[#133e42]/50 overflow-y-auto">
         <div>
           {/* Brand Header */}
           <div className="flex items-center gap-3 mb-8 px-1">
-            <div className="h-11 w-11 rounded-2xl bg-gradient-to-tr from-orange-500 via-amber-500 to-rose-500 flex items-center justify-center shadow-xl shadow-orange-500/30">
-              <Activity className="h-6 w-6 text-white stroke-[2.5]" />
+            <div className="h-10 w-10 rounded-xl bg-orange-600 flex items-center justify-center shadow-md">
+              <Activity className="h-5 w-5 text-white stroke-[2.5]" />
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-xl font-extrabold tracking-tight text-white">NABIZ</h1>
-                <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-gradient-to-r from-orange-500 to-rose-500 text-white uppercase tracking-wider shadow-sm">AI</span>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-orange-600 text-white uppercase tracking-wider">AI</span>
               </div>
-              <span className="text-[10px] text-teal-400/90 font-bold block uppercase tracking-wider">
+              <span className="text-[10px] text-teal-400 font-bold block uppercase tracking-wider">
                 Karar & AdTech Motoru
               </span>
             </div>
@@ -600,9 +595,9 @@ export default function Home() {
           <nav className="flex flex-col gap-1.5">
             <button
               onClick={() => { setCurrentPanel("dashboard"); setActiveWing("all"); }}
-              className={`w-full py-3 px-3.5 rounded-2xl text-xs font-bold flex items-center gap-3.5 transition-all cursor-pointer ${
+              className={`w-full py-3 px-3.5 rounded-xl text-xs font-bold flex items-center gap-3.5 transition-all cursor-pointer ${
                 currentPanel === "dashboard"
-                  ? "bg-[#16383e] text-teal-300 shadow-inner border border-teal-500/30"
+                  ? "bg-[#16383e] text-teal-300 border border-teal-600/30"
                   : "text-slate-400 hover:bg-[#102d33] hover:text-slate-200"
               }`}
             >
@@ -612,33 +607,33 @@ export default function Home() {
 
             <button
               onClick={() => { setCurrentPanel("ads"); setActiveWing("ads"); }}
-              className={`w-full py-3 px-3.5 rounded-2xl text-xs font-bold flex items-center gap-3.5 transition-all cursor-pointer ${
+              className={`w-full py-3 px-3.5 rounded-xl text-xs font-bold flex items-center gap-3.5 transition-all cursor-pointer ${
                 currentPanel === "ads"
-                  ? "bg-[#16383e] text-teal-300 shadow-inner border border-teal-500/30"
+                  ? "bg-[#16383e] text-teal-300 border border-teal-600/30"
                   : "text-slate-400 hover:bg-[#102d33] hover:text-slate-200"
               }`}
             >
-              <Rocket className={`h-4.5 w-4.5 ${currentPanel === "ads" ? "text-orange-400" : "text-slate-400"}`} />
+              <Rocket className={`h-4.5 w-4.5 ${currentPanel === "ads" ? "text-orange-500" : "text-slate-400"}`} />
               NABIZ-Ads Kampanyalar
             </button>
 
             <button
               onClick={() => { setCurrentPanel("sense"); setActiveWing("sense"); }}
-              className={`w-full py-3 px-3.5 rounded-2xl text-xs font-bold flex items-center gap-3.5 transition-all cursor-pointer ${
+              className={`w-full py-3 px-3.5 rounded-xl text-xs font-bold flex items-center gap-3.5 transition-all cursor-pointer ${
                 currentPanel === "sense"
-                  ? "bg-[#16383e] text-teal-300 shadow-inner border border-teal-500/30"
+                  ? "bg-[#16383e] text-teal-300 border border-teal-600/30"
                   : "text-slate-400 hover:bg-[#102d33] hover:text-slate-200"
               }`}
             >
-              <Shield className={`h-4.5 w-4.5 ${currentPanel === "sense" ? "text-rose-400" : "text-slate-400"}`} />
+              <Shield className={`h-4.5 w-4.5 ${currentPanel === "sense" ? "text-rose-500" : "text-slate-400"}`} />
               NABIZ-Sense Kalkanı
             </button>
 
             <button
               onClick={() => { setCurrentPanel("analytics"); }}
-              className={`w-full py-3 px-3.5 rounded-2xl text-xs font-bold flex items-center gap-3.5 transition-all cursor-pointer ${
+              className={`w-full py-3 px-3.5 rounded-xl text-xs font-bold flex items-center gap-3.5 transition-all cursor-pointer ${
                 currentPanel === "analytics"
-                  ? "bg-[#16383e] text-teal-300 shadow-inner border border-teal-500/30"
+                  ? "bg-[#16383e] text-teal-300 border border-teal-600/30"
                   : "text-slate-400 hover:bg-[#102d33] hover:text-slate-200"
               }`}
             >
@@ -648,9 +643,9 @@ export default function Home() {
 
             <button
               onClick={() => { setCurrentPanel("privacy"); }}
-              className={`w-full py-3 px-3.5 rounded-2xl text-xs font-bold flex items-center gap-3.5 transition-all cursor-pointer ${
+              className={`w-full py-3 px-3.5 rounded-xl text-xs font-bold flex items-center gap-3.5 transition-all cursor-pointer ${
                 currentPanel === "privacy"
-                  ? "bg-[#16383e] text-teal-300 shadow-inner border border-teal-500/30"
+                  ? "bg-[#16383e] text-teal-300 border border-teal-600/30"
                   : "text-slate-400 hover:bg-[#102d33] hover:text-slate-200"
               }`}
             >
@@ -660,9 +655,9 @@ export default function Home() {
 
             <button
               onClick={() => { setCurrentPanel("report"); }}
-              className={`w-full py-3 px-3.5 rounded-2xl text-xs font-bold flex items-center gap-3.5 transition-all cursor-pointer ${
+              className={`w-full py-3 px-3.5 rounded-xl text-xs font-bold flex items-center gap-3.5 transition-all cursor-pointer ${
                 currentPanel === "report"
-                  ? "bg-[#16383e] text-teal-300 shadow-inner border border-teal-500/30"
+                  ? "bg-[#16383e] text-teal-300 border border-teal-600/30"
                   : "text-slate-400 hover:bg-[#102d33] hover:text-slate-200"
               }`}
             >
@@ -675,14 +670,14 @@ export default function Home() {
         {/* Bottom Promo & Profile Cards */}
         <div className="flex flex-col gap-4 mt-8">
           {/* Promo Card */}
-          <div className="bg-[#102d33] border border-[#1b4d57]/60 rounded-3xl p-4 flex flex-col gap-3 relative overflow-hidden shadow-lg">
+          <div className="bg-[#102d33] border border-[#1b4d57] rounded-2xl p-4 flex flex-col gap-3 relative">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-2xl bg-orange-500/20 border border-orange-500/30 flex items-center justify-center">
-                <Sparkles className="h-5 w-5 text-orange-400 animate-spin" style={{ animationDuration: "6s" }} />
+              <div className="h-9 w-9 rounded-xl bg-orange-600/20 border border-orange-600/30 flex items-center justify-center">
+                <Sparkles className="h-4 w-4 text-orange-400" />
               </div>
               <div>
-                <h4 className="text-xs font-black text-white leading-tight">Milli Çift Kanatlı AdTech</h4>
-                <span className="text-[10px] text-teal-300/80 font-bold">TEKNOFEST 2026</span>
+                <h4 className="text-xs font-bold text-white leading-tight">Milli Çift Kanatlı AdTech</h4>
+                <span className="text-[10px] text-teal-300 font-medium">TEKNOFEST 2026</span>
               </div>
             </div>
             <p className="text-[10px] text-slate-400 leading-relaxed">
@@ -691,16 +686,16 @@ export default function Home() {
             <button
               onClick={runJuryAutoTour}
               disabled={isJuryTourRunning}
-              className="w-full py-2.5 px-3 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white text-[11px] font-black transition-all shadow-lg shadow-orange-500/20 flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+              className="w-full py-2 px-3 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-[11px] font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-98"
             >
-              <Play className="h-3.5 w-3.5 fill-current" /> {isJuryTourRunning ? "Demo Çalışıyor..." : "🎬 Jüri Canlı Demosu"}
+              <Play className="h-3 w-3 fill-current" /> {isJuryTourRunning ? "Demo Çalışıyor..." : "Jüri Canlı Demosu"}
             </button>
           </div>
 
           {/* User Profile Pill */}
-          <div className="flex items-center justify-between p-2.5 rounded-2xl bg-[#0e272c] border border-[#16383e]">
+          <div className="flex items-center justify-between p-2.5 rounded-xl bg-[#0e272c] border border-[#16383e]">
             <div className="flex items-center gap-2.5">
-              <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-teal-600 to-emerald-500 flex items-center justify-center font-black text-xs text-white shadow-md">
+              <div className="h-8 w-8 rounded-full bg-teal-700 flex items-center justify-center font-bold text-xs text-white">
                 SP
               </div>
               <div className="text-left">
@@ -717,17 +712,14 @@ export default function Home() {
       <main className="flex-1 flex flex-col min-w-0 h-full overflow-y-auto">
         
         {/* TOP HEADER */}
-        <header className={`px-8 py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b shrink-0 ${
-          theme === "light" ? "bg-white/90 backdrop-blur-md border-slate-200/80" : "bg-[#0b1d22]/90 backdrop-blur-md border-slate-800"
+        <header className={`px-8 py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b shrink-0 ${
+          theme === "light" ? "bg-white border-slate-200" : "bg-[#0b1d22] border-slate-800"
         }`}>
           <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-2xl font-black tracking-tight bg-gradient-to-r from-slate-900 via-teal-900 to-orange-600 dark:from-white dark:via-teal-200 dark:to-amber-400 bg-clip-text text-transparent">
-                NABIZ AI Karar Destek Platformu
-              </h2>
-              <span className="text-xl">✨</span>
-            </div>
-            <p className={`text-xs font-medium mt-1 ${theme === "light" ? "text-slate-500" : "text-slate-400"}`}>
+            <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
+              NABIZ AI Karar Destek Platformu
+            </h2>
+            <p className={`text-xs font-medium mt-0.5 ${theme === "light" ? "text-slate-500" : "text-slate-400"}`}>
               TEKNOFEST 2026 N-Sosyal İnovasyon • Çok Eksenli Tensör & Anomali Karar Destek Merkezi
             </p>
           </div>
@@ -737,17 +729,17 @@ export default function Home() {
             <button
               onClick={runJuryAutoTour}
               disabled={isJuryTourRunning}
-              className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-gradient-to-r from-orange-500 via-amber-500 to-emerald-500 hover:opacity-90 text-white text-xs font-black shadow-lg shadow-orange-500/20 transition-all cursor-pointer active:scale-95"
+              className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#0a1e22] hover:bg-[#133e42] text-white text-xs font-bold border border-teal-600/40 transition-all cursor-pointer active:scale-98"
             >
-              <Play className="h-3.5 w-3.5 fill-current animate-pulse" />
-              <span>{isJuryTourRunning ? "Demo Turu Aktif..." : "▶ Jüri Otomatik Demosu"}</span>
+              <Play className="h-3 w-3 fill-current text-orange-400" />
+              <span>{isJuryTourRunning ? "Demo Turu Aktif..." : "Jüri Otomatik Demosu"}</span>
             </button>
 
             {/* Double-Wing Architecture Quick Switcher */}
-            <div className="flex items-center bg-slate-100 dark:bg-[#102d33] p-1 rounded-2xl border border-slate-200 dark:border-slate-700 text-xs font-bold shadow-inner">
+            <div className="flex items-center bg-slate-100 dark:bg-[#102d33] p-1 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-bold">
               <button
                 onClick={() => { setActiveWing("all"); setCurrentPanel("dashboard"); }}
-                className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
                   activeWing === "all" ? "bg-[#0a1e22] text-white shadow-sm" : "text-slate-500 hover:text-slate-800"
                 }`}
               >
@@ -755,7 +747,7 @@ export default function Home() {
               </button>
               <button
                 onClick={() => { setActiveWing("sense"); setCurrentPanel("sense"); }}
-                className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
                   activeWing === "sense" ? "bg-rose-600 text-white shadow-sm" : "text-slate-500 hover:text-slate-800"
                 }`}
               >
@@ -763,8 +755,8 @@ export default function Home() {
               </button>
               <button
                 onClick={() => { setActiveWing("ads"); setCurrentPanel("ads"); }}
-                className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
-                  activeWing === "ads" ? "bg-orange-500 text-white shadow-sm" : "text-slate-500 hover:text-slate-800"
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
+                  activeWing === "ads" ? "bg-orange-600 text-white shadow-sm" : "text-slate-500 hover:text-slate-800"
                 }`}
               >
                 <Rocket className="h-3 w-3" /> Kanat 2: Ads
@@ -774,8 +766,8 @@ export default function Home() {
             {/* Dark/Light Toggle */}
             <button
               onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-              className={`p-2.5 rounded-2xl border transition-all cursor-pointer ${
-                theme === "light" ? "bg-white border-slate-200 text-slate-700 hover:bg-slate-50 shadow-sm" : "bg-[#0f282e] border-slate-700 text-amber-400 hover:bg-[#15343c]"
+              className={`p-2 rounded-xl border transition-all cursor-pointer ${
+                theme === "light" ? "bg-white border-slate-200 text-slate-700 hover:bg-slate-50" : "bg-[#0f282e] border-slate-700 text-amber-400 hover:bg-[#15343c]"
               }`}
               title={theme === "light" ? "Karanlık Moda Geç" : "Aydınlık Moda Geç"}
             >
@@ -785,93 +777,90 @@ export default function Home() {
         </header>
 
         {/* SYSTEM USABILITY & OPERATIONAL BENCHMARK BANNER */}
-        <div className={`px-8 py-3.5 border-b flex flex-wrap items-center justify-between gap-4 text-xs shrink-0 ${
-          theme === "light" ? "bg-gradient-to-r from-teal-50/50 via-slate-50 to-orange-50/50 border-slate-200" : "bg-[#0d2227] border-slate-800"
+        <div className={`px-8 py-3 border-b flex flex-wrap items-center justify-between gap-4 text-xs shrink-0 ${
+          theme === "light" ? "bg-slate-50 border-slate-200" : "bg-[#0d2227] border-slate-800"
         }`}>
           <div className="flex items-center gap-2 font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[10px]">
-            <Award className="h-4 w-4 text-orange-500" />
+            <Award className="h-4 w-4 text-orange-600" />
             Doğrulanmış Rapor Başarım Metrikleri:
           </div>
           <div className="flex flex-wrap items-center gap-6">
             <div className="flex items-center gap-2">
               <span className="text-slate-400">Sense Moderasyon SUS:</span>
-              <strong className="text-teal-700 dark:text-teal-300 font-black bg-teal-500/10 border border-teal-500/20 px-2.5 py-0.5 rounded-full font-mono">86.4 / 100 (A+)</strong>
+              <strong className="text-teal-700 dark:text-teal-300 font-bold bg-teal-500/10 border border-teal-500/20 px-2 py-0.5 rounded-md font-mono">86.4 / 100 (A+)</strong>
               <span className="text-[11px] text-slate-500">(4.2 saat → 32 sn)</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-slate-400">Ads Reklamveren SUS:</span>
-              <strong className="text-orange-700 dark:text-orange-300 font-black bg-orange-500/10 border border-orange-500/20 px-2.5 py-0.5 rounded-full font-mono">91.2 / 100 (A+)</strong>
+              <strong className="text-orange-700 dark:text-orange-300 font-bold bg-orange-500/10 border border-orange-500/20 px-2 py-0.5 rounded-md font-mono">91.2 / 100 (A+)</strong>
               <span className="text-[11px] text-slate-500">(35 dk → 12 sn)</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-slate-400">ROAS Verim Artışı:</span>
-              <strong className="text-emerald-700 dark:text-emerald-300 font-black bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full font-mono">+%34 (1:3.75x)</strong>
+              <strong className="text-emerald-700 dark:text-emerald-300 font-bold bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md font-mono">+%34 (1:3.75x)</strong>
             </div>
           </div>
         </div>
 
         {/* MAIN BODY CONTENT */}
-        <div className="p-8 flex flex-col gap-8 max-w-7xl w-full mx-auto">
+        <div className="p-8 flex flex-col gap-6 max-w-7xl w-full mx-auto">
           
           {/* 4 TOP KPI SUMMARY CARDS */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             
             {/* KPI 1 */}
-            <div className={`p-5 rounded-3xl border flex flex-col justify-between transition-all relative overflow-hidden ${
-              theme === "light" ? "bg-white border-slate-200/80 shadow-md" : "bg-[#0d2227] border-slate-800"
+            <div className={`p-5 rounded-2xl border flex flex-col justify-between transition-all ${
+              theme === "light" ? "bg-white border-slate-200 shadow-sm" : "bg-[#0d2227] border-slate-800"
             }`}>
-              <div className="absolute top-0 right-0 h-24 w-24 bg-teal-500/5 rounded-full blur-xl pointer-events-none"></div>
               <div className="flex items-center justify-between mb-3">
-                <div className="h-11 w-11 rounded-2xl bg-[#0a1e22] text-teal-400 flex items-center justify-center shadow-md">
+                <div className="h-10 w-10 rounded-xl bg-[#0a1e22] text-teal-400 flex items-center justify-center">
                   <Eye className="h-5 w-5 stroke-[2.2]" />
                 </div>
-                <span className="text-[11px] font-black text-emerald-700 dark:text-emerald-300 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full flex items-center gap-0.5 font-mono">
+                <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md font-mono">
                   ↑ 18.6%
                 </span>
               </div>
               <div>
                 <span className="text-xs font-bold text-slate-400 block mb-1">Toplam Sinyal Hacmi</span>
-                <span className="text-2xl font-black tracking-tight font-mono">{totalSignalCount}</span>
+                <span className="text-2xl font-bold tracking-tight font-mono">{totalSignalCount}</span>
                 <span className="text-[10px] text-slate-400 block mt-1 font-medium">↑ 18.6% vs son 15 dk</span>
               </div>
             </div>
 
             {/* KPI 2 */}
-            <div className={`p-5 rounded-3xl border flex flex-col justify-between transition-all relative overflow-hidden ${
-              theme === "light" ? "bg-white border-slate-200/80 shadow-md" : "bg-[#0d2227] border-slate-800"
+            <div className={`p-5 rounded-2xl border flex flex-col justify-between transition-all ${
+              theme === "light" ? "bg-white border-slate-200 shadow-sm" : "bg-[#0d2227] border-slate-800"
             }`}>
-              <div className="absolute top-0 right-0 h-24 w-24 bg-orange-500/5 rounded-full blur-xl pointer-events-none"></div>
               <div className="flex items-center justify-between mb-3">
-                <div className="h-11 w-11 rounded-2xl bg-gradient-to-tr from-orange-500 to-amber-500 text-white flex items-center justify-center shadow-lg shadow-orange-500/20">
+                <div className="h-10 w-10 rounded-xl bg-orange-600 text-white flex items-center justify-center">
                   <MousePointer className="h-5 w-5 stroke-[2.2]" />
                 </div>
-                <span className="text-[11px] font-black text-emerald-700 dark:text-emerald-300 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full flex items-center gap-0.5 font-mono">
+                <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md font-mono">
                   ↑ 22.4%
                 </span>
               </div>
               <div>
                 <span className="text-xs font-bold text-slate-400 block mb-1">Saptanan Anomali & Kriz</span>
-                <span className="text-2xl font-black tracking-tight font-mono">{anomalyCount}</span>
+                <span className="text-2xl font-bold tracking-tight font-mono">{anomalyCount}</span>
                 <span className="text-[10px] text-slate-400 block mt-1 font-medium">↑ 22.4% vs baz çizgi</span>
               </div>
             </div>
 
             {/* KPI 3 */}
-            <div className={`p-5 rounded-3xl border flex flex-col justify-between transition-all relative overflow-hidden ${
-              theme === "light" ? "bg-white border-slate-200/80 shadow-md" : "bg-[#0d2227] border-slate-800"
+            <div className={`p-5 rounded-2xl border flex flex-col justify-between transition-all ${
+              theme === "light" ? "bg-white border-slate-200 shadow-sm" : "bg-[#0d2227] border-slate-800"
             }`}>
-              <div className="absolute top-0 right-0 h-24 w-24 bg-emerald-500/5 rounded-full blur-xl pointer-events-none"></div>
               <div className="flex items-center justify-between mb-3">
-                <div className="h-11 w-11 rounded-2xl bg-[#0f2b2f] text-emerald-400 flex items-center justify-center shadow-md">
+                <div className="h-10 w-10 rounded-xl bg-[#0f2b2f] text-emerald-400 flex items-center justify-center">
                   <Activity className="h-5 w-5 stroke-[2.2]" />
                 </div>
-                <span className="text-[11px] font-black text-emerald-700 dark:text-emerald-300 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full flex items-center gap-0.5 font-mono">
+                <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md font-mono">
                   ↑ 6.3%
                 </span>
               </div>
               <div>
                 <span className="text-xs font-bold text-slate-400 block mb-1">Ortalama Semantik Duygu</span>
-                <span className={`text-2xl font-black tracking-tight font-mono ${sentimentIndex < 0 ? "text-rose-500" : "text-emerald-600"}`}>
+                <span className={`text-2xl font-bold tracking-tight font-mono ${sentimentIndex < 0 ? "text-rose-600" : "text-emerald-600"}`}>
                   {sentimentIndex >= 0 ? "+" : ""}{sentimentIndex.toFixed(2)}
                 </span>
                 <span className="text-[10px] text-slate-400 block mt-1 font-medium">↑ 6.3% vs son 1 saat</span>
@@ -879,119 +868,118 @@ export default function Home() {
             </div>
 
             {/* KPI 4 */}
-            <div className={`p-5 rounded-3xl border flex flex-col justify-between transition-all relative overflow-hidden ${
-              theme === "light" ? "bg-white border-slate-200/80 shadow-md" : "bg-[#0d2227] border-slate-800"
+            <div className={`p-5 rounded-2xl border flex flex-col justify-between transition-all ${
+              theme === "light" ? "bg-white border-slate-200 shadow-sm" : "bg-[#0d2227] border-slate-800"
             }`}>
-              <div className="absolute top-0 right-0 h-24 w-24 bg-amber-500/5 rounded-full blur-xl pointer-events-none"></div>
               <div className="flex items-center justify-between mb-3">
-                <div className="h-11 w-11 rounded-2xl bg-gradient-to-tr from-rose-600 to-orange-500 text-white flex items-center justify-center shadow-lg shadow-orange-600/20">
+                <div className="h-10 w-10 rounded-xl bg-rose-600 text-white flex items-center justify-center">
                   <Award className="h-5 w-5 stroke-[2.2]" />
                 </div>
-                <span className="text-[11px] font-black text-emerald-700 dark:text-emerald-300 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full flex items-center gap-0.5 font-mono">
+                <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md font-mono">
                   +34%
                 </span>
               </div>
               <div>
                 <span className="text-xs font-bold text-slate-400 block mb-1">Optimize Edilmiş ROAS</span>
-                <span className="text-2xl font-black tracking-tight text-orange-600 font-mono">{optimizedRoas}</span>
+                <span className="text-2xl font-bold tracking-tight text-orange-600 font-mono">{optimizedRoas}</span>
                 <span className="text-[10px] text-slate-400 block mt-1 font-medium">↓ 4.8% Reklam İsraf Azalımı</span>
               </div>
             </div>
 
           </div>
 
-          {/* 4 GIANT TACTILE 3D ACTION CARDS (Büyük Çarpıcı Butonlar) */}
+          {/* 4 SOLID COLOR INTERACTIVE TEST BUTTONS */}
           <div>
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-orange-500" />
-                İnteraktif Olay ve Simülasyon Kumanda Merkezi
+              <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-orange-600" />
+                İnteraktif Olay ve Senaryo Test Merkezi
               </h3>
-              <span className="text-[10px] text-slate-400 font-bold">Jüri Test Senaryoları</span>
+              <span className="text-[10px] text-slate-400 font-medium">Rapor Bölüm 3 Senaryo Doğrulama</span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               
-              {/* Giant Button 1: İzmir Krizi */}
+              {/* Button 1: İzmir Krizi */}
               <button
                 onClick={triggerIzmirCrisis}
-                className="p-5 rounded-3xl border border-rose-500/40 bg-gradient-to-br from-rose-500/10 via-rose-500/5 to-transparent hover:from-rose-500/20 hover:border-rose-500 text-left transition-all duration-200 shadow-lg hover:shadow-rose-500/20 cursor-pointer active:scale-95 group relative overflow-hidden"
+                className="p-5 rounded-2xl border border-rose-300 dark:border-rose-900/60 bg-rose-50/70 dark:bg-rose-950/20 hover:bg-rose-100 dark:hover:bg-rose-950/40 text-left transition-all shadow-sm cursor-pointer active:scale-98"
               >
                 <div className="flex items-center justify-between mb-3">
-                  <div className="h-11 w-11 rounded-2xl bg-rose-500 text-white flex items-center justify-center shadow-lg shadow-rose-500/40 group-hover:scale-110 transition-transform">
-                    <AlertTriangle className="h-6 w-6 stroke-[2.5]" />
+                  <div className="h-10 w-10 rounded-xl bg-rose-600 text-white flex items-center justify-center shadow-sm">
+                    <AlertTriangle className="h-5 w-5 stroke-[2.5]" />
                   </div>
-                  <span className="text-[10px] font-black px-2.5 py-1 rounded-full bg-rose-600 text-white animate-pulse">
-                    Z: +5.12 (3σ Kuralı)
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-rose-600 text-white font-mono">
+                    Z: +5.12 (3σ)
                   </span>
                 </div>
-                <h4 className="font-black text-sm text-rose-700 dark:text-rose-300 block mb-1">
+                <h4 className="font-bold text-sm text-rose-800 dark:text-rose-300 block mb-1">
                   1. İzmir Ulaşım Kriz Senaryosu
                 </h4>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+                <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
                   3σ anomali eşiği aşılır, BERTurk negatif polarite (Φ = -0.92) ile alarm üretir.
                 </p>
               </button>
 
-              {/* Giant Button 2: Kadıköy Trendi */}
+              {/* Button 2: Kadıköy Trendi */}
               <button
                 onClick={triggerKadikoyOpportunity}
-                className="p-5 rounded-3xl border border-amber-500/40 bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-transparent hover:from-amber-500/20 hover:border-amber-500 text-left transition-all duration-200 shadow-lg hover:shadow-amber-500/20 cursor-pointer active:scale-95 group relative overflow-hidden"
+                className="p-5 rounded-2xl border border-amber-300 dark:border-amber-900/60 bg-amber-50/70 dark:bg-amber-950/20 hover:bg-amber-100 dark:hover:bg-amber-950/40 text-left transition-all shadow-sm cursor-pointer active:scale-98"
               >
                 <div className="flex items-center justify-between mb-3">
-                  <div className="h-11 w-11 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 text-white flex items-center justify-center shadow-lg shadow-amber-500/40 group-hover:scale-110 transition-transform">
-                    <Flame className="h-6 w-6 stroke-[2.5]" />
+                  <div className="h-10 w-10 rounded-xl bg-orange-600 text-white flex items-center justify-center shadow-sm">
+                    <Flame className="h-5 w-5 stroke-[2.5]" />
                   </div>
-                  <span className="text-[10px] font-black px-2.5 py-1 rounded-full bg-orange-500 text-white">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-orange-600 text-white font-mono">
                     ROAS +%34
                   </span>
                 </div>
-                <h4 className="font-black text-sm text-amber-700 dark:text-amber-300 block mb-1">
+                <h4 className="font-bold text-sm text-amber-900 dark:text-amber-300 block mb-1">
                   2. Kadıköy Trend & Fırsat Senaryosu
                 </h4>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+                <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
                   AdTech tensör hücre eşlemesi ile KOBİ'ler için anlık reklam fırsatı oluşturulur.
                 </p>
               </button>
 
-              {/* Giant Button 3: Bursa Bot Saldırısı */}
+              {/* Button 3: Bursa Bot Saldırısı */}
               <button
                 onClick={triggerBursaBotAttack}
-                className="p-5 rounded-3xl border border-teal-500/40 bg-gradient-to-br from-teal-500/10 via-teal-500/5 to-transparent hover:from-teal-500/20 hover:border-teal-500 text-left transition-all duration-200 shadow-lg hover:shadow-teal-500/20 cursor-pointer active:scale-95 group relative overflow-hidden"
+                className="p-5 rounded-2xl border border-teal-300 dark:border-teal-900/60 bg-teal-50/70 dark:bg-teal-950/20 hover:bg-teal-100 dark:hover:bg-teal-950/40 text-left transition-all shadow-sm cursor-pointer active:scale-98"
               >
                 <div className="flex items-center justify-between mb-3">
-                  <div className="h-11 w-11 rounded-2xl bg-[#0a1e22] text-teal-400 border border-teal-500/40 flex items-center justify-center shadow-lg shadow-teal-500/20 group-hover:scale-110 transition-transform">
-                    <ShieldAlert className="h-6 w-6 stroke-[2.5]" />
+                  <div className="h-10 w-10 rounded-xl bg-teal-700 text-white flex items-center justify-center shadow-sm">
+                    <ShieldAlert className="h-5 w-5 stroke-[2.5]" />
                   </div>
-                  <span className="text-[10px] font-black px-2.5 py-1 rounded-full bg-teal-600 text-white">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-teal-700 text-white font-mono">
                     w_k &lt; 0.1 (Bot)
                   </span>
                 </div>
-                <h4 className="font-black text-sm text-teal-700 dark:text-teal-300 block mb-1">
-                  3. Bursa Bot Saldırısı & İzolasyon Testi
+                <h4 className="font-bold text-sm text-teal-900 dark:text-teal-300 block mb-1">
+                  3. Bursa Bot Saldırısı & İzolasyon
                 </h4>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+                <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
                   DBSCAN yoğunluk algoritması ile 280 sahte hesap organik akıştan temizlenir.
                 </p>
               </button>
 
-              {/* Giant Button 4: Sıfırla */}
+              {/* Button 4: Sıfırla */}
               <button
                 onClick={resetAll}
-                className="p-5 rounded-3xl border border-slate-200 dark:border-slate-800 bg-gradient-to-br from-slate-100/50 dark:from-[#102d33] to-transparent hover:bg-slate-100 dark:hover:bg-[#153840] text-left transition-all duration-200 shadow-md cursor-pointer active:scale-95 group relative overflow-hidden"
+                className="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#102d33] hover:bg-slate-100 dark:hover:bg-[#153840] text-left transition-all shadow-sm cursor-pointer active:scale-98"
               >
                 <div className="flex items-center justify-between mb-3">
-                  <div className="h-11 w-11 rounded-2xl bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center group-hover:rotate-180 transition-transform duration-500">
-                    <RefreshCw className="h-6 w-6 stroke-[2.5]" />
+                  <div className="h-10 w-10 rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center">
+                    <RefreshCw className="h-5 w-5 stroke-[2.5]" />
                   </div>
-                  <span className="text-[10px] font-black px-2.5 py-1 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-mono">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-mono">
                     SIFIRLA
                   </span>
                 </div>
-                <h4 className="font-black text-sm text-slate-700 dark:text-slate-200 block mb-1">
+                <h4 className="font-bold text-sm text-slate-800 dark:text-slate-200 block mb-1">
                   4. Fabrika Normlarına Döndür
                 </h4>
-                <p className="text-[11px] text-slate-400 leading-relaxed">
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
                   Tensör matrisi ve anomali radarını başlangıç referans durumuna sıfırlar.
                 </p>
               </button>
@@ -999,25 +987,25 @@ export default function Home() {
             </div>
           </div>
 
-          {/* VIEW 1: OVERVIEW / DASHBOARD (With Radar Chart, Sentiment Gauge & Multi-Layer Wave) */}
+          {/* VIEW 1: OVERVIEW / DASHBOARD */}
           {currentPanel === "dashboard" && (
             <>
-              {/* 2 NEW JAW-DROPPING CHARTS: RADAR CHART + SENTIMENT GAUGE TACHOMETER */}
+              {/* RADAR CHART & SENTIMENT TACHOMETER */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 
                 {/* Chart A: 5-City Anomaly Radar (7/12) */}
-                <div className={`lg:col-span-7 p-6 rounded-3xl border transition-all ${
-                  theme === "light" ? "bg-white border-slate-200/80 shadow-md" : "bg-[#0d2227] border-slate-800"
+                <div className={`lg:col-span-7 p-6 rounded-2xl border transition-all ${
+                  theme === "light" ? "bg-white border-slate-200 shadow-sm" : "bg-[#0d2227] border-slate-800"
                 }`}>
                   <div className="flex items-center justify-between mb-4">
                     <div>
-                      <h4 className="font-black text-sm flex items-center gap-2">
+                      <h4 className="font-bold text-sm flex items-center gap-2">
                         <Compass className="h-4.5 w-4.5 text-teal-600" />
                         5 Şehir Anomali Radarı (Z-Score Polar Poligonu)
                       </h4>
                       <span className="text-[11px] text-slate-400">Şehir bazlı anomali sapmalarının polar koordinat ağı</span>
                     </div>
-                    <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-teal-500/10 text-teal-600 border border-teal-500/20">
+                    <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-md bg-teal-500/10 text-teal-700 dark:text-teal-300 border border-teal-500/20 font-mono">
                       CANLI POLAR AĞ
                     </span>
                   </div>
@@ -1038,51 +1026,42 @@ export default function Home() {
                         <line x1="100" y1="100" x2="53" y2="165" stroke="rgba(148, 163, 184, 0.25)" strokeWidth="1" />
                         <line x1="100" y1="100" x2="24" y2="75" stroke="rgba(148, 163, 184, 0.25)" strokeWidth="1" />
 
-                        {/* Dynamic Anomaly Polygon with Pastel Glow */}
+                        {/* Solid Anomaly Polygon */}
                         <polygon
                           points={radarPolygon}
-                          fill="url(#radar-glow)"
-                          stroke={radarData["İzmir"] >= 3.0 ? "#f43f5e" : "#0d9488"}
-                          strokeWidth="2.5"
-                          className="transition-all duration-700"
+                          fill={radarData["İzmir"] >= 3.0 ? "rgba(220, 38, 38, 0.2)" : "rgba(13, 148, 136, 0.2)"}
+                          stroke={radarData["İzmir"] >= 3.0 ? "#dc2626" : "#0d9488"}
+                          strokeWidth="2"
+                          className="transition-all duration-500"
                         />
 
                         {/* Radar Nodes */}
-                        <circle cx="100" cy={100 - rIst * 0.8} r="4" fill="#3b82f6" />
-                        <circle cx={100 + rAnk * 0.76} cy={100 - rAnk * 0.25} r="4" fill="#8b5cf6" />
-                        <circle cx={100 + rIzm * 0.47} cy={100 + rIzm * 0.65} r="6" fill="#f43f5e" className="animate-pulse" />
-                        <circle cx={100 - rBur * 0.47} cy={100 + rBur * 0.65} r="4" fill="#10b981" />
-                        <circle cx={100 - rAnt * 0.76} cy={100 - rAnt * 0.25} r="4" fill="#f59e0b" />
-
-                        <defs>
-                          <radialGradient id="radar-glow" cx="50%" cy="50%" r="50%">
-                            <stop offset="0%" stopColor={radarData["İzmir"] >= 3.0 ? "#f43f5e" : "#0d9488"} stopOpacity="0.4" />
-                            <stop offset="100%" stopColor={radarData["İzmir"] >= 3.0 ? "#f43f5e" : "#0d9488"} stopOpacity="0.05" />
-                          </radialGradient>
-                        </defs>
+                        <circle cx="100" cy={100 - rIst * 0.8} r="3.5" fill="#2563eb" />
+                        <circle cx={100 + rAnk * 0.76} cy={100 - rAnk * 0.25} r="3.5" fill="#7c3aed" />
+                        <circle cx={100 + rIzm * 0.47} cy={100 + rIzm * 0.65} r="5" fill="#dc2626" />
+                        <circle cx={100 - rBur * 0.47} cy={100 + rBur * 0.65} r="3.5" fill="#059669" />
+                        <circle cx={100 - rAnt * 0.76} cy={100 - rAnt * 0.25} r="3.5" fill="#d97706" />
                       </svg>
 
                       {/* City Axis Labels */}
-                      <span className="absolute -top-1 font-black text-[10px] text-blue-500">İstanbul</span>
-                      <span className="absolute top-12 -right-4 font-black text-[10px] text-purple-500">Ankara</span>
-                      <span className="absolute -bottom-2 right-4 font-black text-[10px] text-rose-500 animate-pulse">İzmir (3σ)</span>
-                      <span className="absolute -bottom-2 left-4 font-black text-[10px] text-emerald-500">Bursa</span>
-                      <span className="absolute top-12 -left-4 font-black text-[10px] text-amber-500">Antalya</span>
+                      <span className="absolute -top-1 font-bold text-[10px] text-blue-600">İstanbul</span>
+                      <span className="absolute top-12 -right-4 font-bold text-[10px] text-purple-600">Ankara</span>
+                      <span className="absolute -bottom-2 right-4 font-bold text-[10px] text-rose-600">İzmir (3σ)</span>
+                      <span className="absolute -bottom-2 left-4 font-bold text-[10px] text-emerald-600">Bursa</span>
+                      <span className="absolute top-12 -left-4 font-bold text-[10px] text-amber-600">Antalya</span>
                     </div>
 
                     {/* Radar Live Metrics List */}
                     <div className="flex-1 flex flex-col gap-2 text-xs font-mono">
-                      <div className="p-2.5 rounded-2xl bg-slate-50 dark:bg-[#102d33] border border-slate-200 dark:border-slate-700 flex justify-between items-center">
-                        <span className="font-sans font-bold flex items-center gap-1.5 text-rose-600">
-                          <span className="h-2 w-2 rounded-full bg-rose-500 animate-ping"></span> İzmir Z-Score:
-                        </span>
-                        <strong className="font-black text-rose-600">+{radarData["İzmir"].toFixed(2)} (Kritik)</strong>
+                      <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-[#102d33] border border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                        <span className="font-sans font-bold text-rose-600">İzmir Z-Score:</span>
+                        <strong className="font-bold text-rose-600">+{radarData["İzmir"].toFixed(2)} (Kritik)</strong>
                       </div>
-                      <div className="p-2.5 rounded-2xl bg-slate-50 dark:bg-[#102d33] border border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                      <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-[#102d33] border border-slate-200 dark:border-slate-700 flex justify-between items-center">
                         <span className="font-sans font-bold text-slate-600 dark:text-slate-300">İstanbul Z-Score:</span>
-                        <strong className="font-black text-orange-600">+{radarData["İstanbul"].toFixed(2)} (Fırsat)</strong>
+                        <strong className="font-bold text-orange-600">+{radarData["İstanbul"].toFixed(2)} (Fırsat)</strong>
                       </div>
-                      <div className="p-2.5 rounded-2xl bg-slate-50 dark:bg-[#102d33] border border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                      <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-[#102d33] border border-slate-200 dark:border-slate-700 flex justify-between items-center">
                         <span className="font-sans font-bold text-slate-600 dark:text-slate-300">Ankara Z-Score:</span>
                         <strong className="font-bold text-slate-700 dark:text-slate-300">+{radarData["Ankara"].toFixed(2)} (Norm)</strong>
                       </div>
@@ -1091,69 +1070,60 @@ export default function Home() {
                 </div>
 
                 {/* Chart B: Semantic Sentiment Tachometer Gauge (5/12) */}
-                <div className={`lg:col-span-5 p-6 rounded-3xl border flex flex-col justify-between transition-all ${
-                  theme === "light" ? "bg-white border-slate-200/80 shadow-md" : "bg-[#0d2227] border-slate-800"
+                <div className={`lg:col-span-5 p-6 rounded-2xl border flex flex-col justify-between transition-all ${
+                  theme === "light" ? "bg-white border-slate-200 shadow-sm" : "bg-[#0d2227] border-slate-800"
                 }`}>
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-black text-sm flex items-center gap-2">
-                        <Gauge className="h-4.5 w-4.5 text-orange-500" />
+                      <h4 className="font-bold text-sm flex items-center gap-2">
+                        <Gauge className="h-4.5 w-4.5 text-orange-600" />
                         Duygu Takometresi (BERTurk Φ)
                       </h4>
-                      <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-orange-500/10 text-orange-600 border border-orange-500/20">
+                      <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-md bg-orange-500/10 text-orange-700 dark:text-orange-300 border border-orange-500/20 font-mono">
                         SEMANTİK İBRE
                       </span>
                     </div>
                     <span className="text-[11px] text-slate-400 block mb-4">NLP modelinin ürettiği canlı polarite skalası (-1.0 ile +1.0)</span>
 
-                    {/* Semicircle Speedometer SVG */}
+                    {/* Semicircle Speedometer SVG with Solid Arcs */}
                     <div className="relative h-36 w-full flex items-center justify-center overflow-hidden">
                       <svg className="w-64 h-36" viewBox="0 0 200 110">
-                        {/* Gauge Arc Background */}
-                        <path
-                          d="M 20 100 A 80 80 0 0 1 180 100"
-                          fill="none"
-                          stroke="url(#gauge-pastel-gradient)"
-                          strokeWidth="16"
-                          strokeLinecap="round"
-                        />
+                        {/* Solid Color Arc Segments */}
+                        {/* Left Negative Arc (Rose) */}
+                        <path d="M 20 100 A 80 80 0 0 1 75 25" fill="none" stroke="#dc2626" strokeWidth="12" strokeLinecap="round" />
+                        {/* Middle Neutral Arc (Amber) */}
+                        <path d="M 78 23 A 80 80 0 0 1 122 23" fill="none" stroke="#d97706" strokeWidth="12" />
+                        {/* Right Positive Arc (Emerald) */}
+                        <path d="M 125 25 A 80 80 0 0 1 180 100" fill="none" stroke="#059669" strokeWidth="12" strokeLinecap="round" />
+
                         {/* Needle Pivot Center */}
-                        <circle cx="100" cy="100" r="10" fill="#0a1e22" stroke="#ffffff" strokeWidth="2" />
+                        <circle cx="100" cy="100" r="8" fill="#0a1e22" stroke="#ffffff" strokeWidth="2" />
                         
                         {/* Rotating Needle Pointer */}
                         <g
                           style={{
                             transformOrigin: "100px 100px",
                             transform: `rotate(${sentimentNeedleAngle}deg)`,
-                            transition: "transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)",
+                            transition: "transform 0.6s ease-out",
                           }}
                         >
-                          <line x1="100" y1="100" x2="100" y2="35" stroke="#0a1e22" strokeWidth="3.5" strokeLinecap="round" />
-                          <circle cx="100" cy="32" r="4" fill="#f97316" />
+                          <line x1="100" y1="100" x2="100" y2="35" stroke="#0a1e22" strokeWidth="3" strokeLinecap="round" />
+                          <circle cx="100" cy="32" r="3.5" fill="#ea580c" />
                         </g>
-
-                        <defs>
-                          <linearGradient id="gauge-pastel-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stopColor="#f43f5e" />
-                            <stop offset="35%" stopColor="#f59e0b" />
-                            <stop offset="70%" stopColor="#10b981" />
-                            <stop offset="100%" stopColor="#06b6d4" />
-                          </linearGradient>
-                        </defs>
                       </svg>
                     </div>
 
-                    <div className="flex justify-between text-[10px] font-bold text-slate-400 px-4 -mt-2">
-                      <span className="text-rose-500">-1.0 (Aşırı Negatif)</span>
+                    <div className="flex justify-between text-[10px] font-bold text-slate-400 px-4 -mt-2 font-mono">
+                      <span className="text-rose-600">-1.0 (Negatif)</span>
                       <span>0.0 (Nötr)</span>
-                      <span className="text-emerald-500">+1.0 (Viral Pozitif)</span>
+                      <span className="text-emerald-600">+1.0 (Pozitif)</span>
                     </div>
                   </div>
 
                   {/* Digital Readout */}
-                  <div className="mt-4 p-3 rounded-2xl bg-slate-50 dark:bg-[#102d33] border border-slate-200 dark:border-slate-700 flex justify-between items-center text-xs">
+                  <div className="mt-4 p-3 rounded-xl bg-slate-50 dark:bg-[#102d33] border border-slate-200 dark:border-slate-700 flex justify-between items-center text-xs">
                     <span className="font-bold text-slate-500">Hesaplanan Anlık Polarite:</span>
-                    <strong className={`font-mono text-base font-black ${sentimentIndex < 0 ? "text-rose-600" : "text-emerald-600"}`}>
+                    <strong className={`font-mono text-base font-bold ${sentimentIndex < 0 ? "text-rose-600" : "text-emerald-600"}`}>
                       {sentimentIndex >= 0 ? "+" : ""}{sentimentIndex.toFixed(2)} Φ(eₖ)
                     </strong>
                   </div>
@@ -1161,86 +1131,140 @@ export default function Home() {
 
               </div>
 
-              {/* MULTI-LAYER PASTEL GLOWING SPLINE WAVES (Holographic Waves) */}
-              <div className={`p-6 rounded-3xl border transition-all ${
-                theme === "light" ? "bg-white border-slate-200/80 shadow-md" : "bg-[#0d2227] border-slate-800"
+              {/* ULTRA-SMOOTH SPLINE WAVE CHART WITH VERTICAL FADE GRADIENT & THIN LINE */}
+              <div className={`p-6 rounded-2xl border transition-all ${
+                theme === "light" ? "bg-white border-slate-200 shadow-sm" : "bg-[#0d2227] border-slate-800"
               }`}>
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
                   <div>
-                    <h4 className="font-black text-sm flex items-center gap-2">
-                      <Radio className="h-4.5 w-4.5 text-emerald-500 animate-pulse" />
-                      Canlı Çok Katmanlı Tensör Sinyal Akış Dalgası (Pastel Hologram)
+                    <h4 className="font-bold text-sm flex items-center gap-2">
+                      <Radio className="h-4.5 w-4.5 text-teal-600" />
+                      Canlı Çok Eksenli Tensör Sinyal Akış Grafiği
                     </h4>
-                    <span className="text-[11px] text-slate-400">Gerçek zamanlı 3 katmanlı giriş sinyalleri akış simülasyonu</span>
+                    <span className="text-[11px] text-slate-400">15 dakikalık kayan pencerelerde sinyal dağılımı</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-ping"></span>
-                    <span className="text-xs font-black text-emerald-600 font-mono">400ms REALTIME INGEST</span>
+                    <span className="h-2 w-2 rounded-full bg-teal-500 animate-ping"></span>
+                    <span className="text-xs font-bold text-teal-700 dark:text-teal-300 font-mono">400ms CANLI AKIŞ</span>
                   </div>
                 </div>
 
-                {/* 3-Layer Overlapping Pastel Wave SVG */}
-                <div className="h-32 w-full">
+                {/* SVG Smooth Spline Chart */}
+                <div className="h-36 w-full relative">
                   <svg className="w-full h-full" viewBox="0 0 100 50" preserveAspectRatio="none">
-                    {/* Layer 3 (Lavender / Purple) */}
-                    <path
-                      d={`M 0 50 ${wavePoints3.map((p, i) => `L ${(i / (wavePoints3.length - 1)) * 100} ${50 - p}`).join(" ")} L 100 50 Z`}
-                      fill="url(#pastel-wave-purple)"
-                      stroke="#8b5cf6"
-                      strokeWidth="1.5"
-                      className="transition-all duration-300 opacity-60"
-                    />
-
-                    {/* Layer 2 (Sunset Orange / Coral) */}
-                    <path
-                      d={`M 0 50 ${wavePoints2.map((p, i) => `L ${(i / (wavePoints2.length - 1)) * 100} ${50 - p}`).join(" ")} L 100 50 Z`}
-                      fill="url(#pastel-wave-orange)"
-                      stroke="#f97316"
-                      strokeWidth="2"
-                      className="transition-all duration-300 opacity-75"
-                    />
-
-                    {/* Layer 1 (Mint Teal - Front) */}
-                    <path
-                      d={`M 0 50 ${wavePoints1.map((p, i) => `L ${(i / (wavePoints1.length - 1)) * 100} ${50 - p}`).join(" ")} L 100 50 Z`}
-                      fill="url(#pastel-wave-teal)"
-                      stroke={alerts.some(a => a.status === "UNRESOLVED" && a.type === "CRISIS") ? "#f43f5e" : "#10b981"}
-                      strokeWidth="2.5"
-                      className="transition-all duration-300"
-                    />
-
                     <defs>
-                      <linearGradient id="pastel-wave-teal" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#a7f3d0" stopOpacity="0.8" />
-                        <stop offset="100%" stopColor="#10b981" stopOpacity="0.05" />
+                      {/* Vertical Fade Gradient: Teal */}
+                      <linearGradient id="vert-fade-teal" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#0d9488" stopOpacity="0.30" />
+                        <stop offset="60%" stopColor="#0d9488" stopOpacity="0.08" />
+                        <stop offset="100%" stopColor="#0d9488" stopOpacity="0.00" />
                       </linearGradient>
-                      <linearGradient id="pastel-wave-orange" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#fed7aa" stopOpacity="0.7" />
-                        <stop offset="100%" stopColor="#f97316" stopOpacity="0.05" />
+
+                      {/* Vertical Fade Gradient: Orange */}
+                      <linearGradient id="vert-fade-orange" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#ea580c" stopOpacity="0.22" />
+                        <stop offset="60%" stopColor="#ea580c" stopOpacity="0.05" />
+                        <stop offset="100%" stopColor="#ea580c" stopOpacity="0.00" />
                       </linearGradient>
-                      <linearGradient id="pastel-wave-purple" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#ddd6fe" stopOpacity="0.6" />
-                        <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.05" />
+
+                      {/* Vertical Fade Gradient: Blue */}
+                      <linearGradient id="vert-fade-blue" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#2563eb" stopOpacity="0.18" />
+                        <stop offset="60%" stopColor="#2563eb" stopOpacity="0.04" />
+                        <stop offset="100%" stopColor="#2563eb" stopOpacity="0.00" />
+                      </linearGradient>
+
+                      {/* Vertical Fade Gradient: Crisis Red */}
+                      <linearGradient id="vert-fade-crisis" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#dc2626" stopOpacity="0.35" />
+                        <stop offset="60%" stopColor="#dc2626" stopOpacity="0.10" />
+                        <stop offset="100%" stopColor="#dc2626" stopOpacity="0.00" />
                       </linearGradient>
                     </defs>
+
+                    {/* Subtle Horizontal Gridlines */}
+                    <line x1="0" y1="12" x2="100" y2="12" stroke="rgba(148, 163, 184, 0.12)" strokeDasharray="2 2" strokeWidth="0.5" />
+                    <line x1="0" y1="25" x2="100" y2="25" stroke="rgba(148, 163, 184, 0.12)" strokeDasharray="2 2" strokeWidth="0.5" />
+                    <line x1="0" y1="38" x2="100" y2="38" stroke="rgba(148, 163, 184, 0.12)" strokeDasharray="2 2" strokeWidth="0.5" />
+
+                    {/* Layer 3: Blue #Teknoloji (Spline Curve + Vertical Fade Area) */}
+                    {(() => {
+                      const step = 100 / (wavePoints3.length - 1);
+                      const coords = wavePoints3.map((val, i) => ({ x: i * step, y: 50 - (val / 55) * 44 }));
+                      let d = `M ${coords[0].x} ${coords[0].y}`;
+                      for (let i = 0; i < coords.length - 1; i++) {
+                        const midX = (coords[i].x + coords[i + 1].x) / 2;
+                        d += ` Q ${coords[i].x} ${coords[i].y}, ${midX} ${(coords[i].y + coords[i + 1].y) / 2}`;
+                      }
+                      d += ` T ${coords[coords.length - 1].x} ${coords[coords.length - 1].y}`;
+                      return (
+                        <g>
+                          <path d={`${d} L 100 50 L 0 50 Z`} fill="url(#vert-fade-blue)" />
+                          <path d={d} fill="none" stroke="#2563eb" strokeWidth="1.25" />
+                        </g>
+                      );
+                    })()}
+
+                    {/* Layer 2: Orange #Kültür (Spline Curve + Vertical Fade Area) */}
+                    {(() => {
+                      const step = 100 / (wavePoints2.length - 1);
+                      const coords = wavePoints2.map((val, i) => ({ x: i * step, y: 50 - (val / 55) * 44 }));
+                      let d = `M ${coords[0].x} ${coords[0].y}`;
+                      for (let i = 0; i < coords.length - 1; i++) {
+                        const midX = (coords[i].x + coords[i + 1].x) / 2;
+                        d += ` Q ${coords[i].x} ${coords[i].y}, ${midX} ${(coords[i].y + coords[i + 1].y) / 2}`;
+                      }
+                      d += ` T ${coords[coords.length - 1].x} ${coords[coords.length - 1].y}`;
+                      return (
+                        <g>
+                          <path d={`${d} L 100 50 L 0 50 Z`} fill="url(#vert-fade-orange)" />
+                          <path d={d} fill="none" stroke="#ea580c" strokeWidth="1.25" />
+                        </g>
+                      );
+                    })()}
+
+                    {/* Layer 1: Teal/Crisis #Ulaşım (Spline Curve + Vertical Fade Area + Current Point) */}
+                    {(() => {
+                      const isCrisis = alerts.some(a => a.status === "UNRESOLVED" && a.type === "CRISIS");
+                      const step = 100 / (wavePoints1.length - 1);
+                      const coords = wavePoints1.map((val, i) => ({ x: i * step, y: 50 - (val / 55) * 44 }));
+                      let d = `M ${coords[0].x} ${coords[0].y}`;
+                      for (let i = 0; i < coords.length - 1; i++) {
+                        const midX = (coords[i].x + coords[i + 1].x) / 2;
+                        d += ` Q ${coords[i].x} ${coords[i].y}, ${midX} ${(coords[i].y + coords[i + 1].y) / 2}`;
+                      }
+                      const last = coords[coords.length - 1];
+                      d += ` T ${last.x} ${last.y}`;
+                      return (
+                        <g>
+                          <path d={`${d} L 100 50 L 0 50 Z`} fill={isCrisis ? "url(#vert-fade-crisis)" : "url(#vert-fade-teal)"} />
+                          <path d={d} fill="none" stroke={isCrisis ? "#dc2626" : "#0d9488"} strokeWidth="1.5" />
+                          <circle cx={last.x} cy={last.y} r="2" fill={isCrisis ? "#dc2626" : "#0d9488"} />
+                        </g>
+                      );
+                    })()}
                   </svg>
                 </div>
 
                 <div className="flex justify-between text-[10px] text-slate-400 font-mono mt-2 border-t border-slate-100 dark:border-slate-800 pt-2">
                   <span>-10 Saniye</span>
-                  <span className="text-teal-600 font-bold">● #Ulaşım (Ön Dalga)  ● #Kültür (Orta Dalga)  ● #Teknoloji (Alt Dalga)</span>
+                  <span className="text-slate-600 dark:text-slate-300 font-bold flex items-center gap-3">
+                    <span className="flex items-center gap-1"><span className="h-1.5 w-3 rounded-sm bg-[#0d9488] inline-block"></span> #Ulaşım Sinyalleri</span>
+                    <span className="flex items-center gap-1"><span className="h-1.5 w-3 rounded-sm bg-[#ea580c] inline-block"></span> #Kültür & Etkinlik</span>
+                    <span className="flex items-center gap-1"><span className="h-1.5 w-3 rounded-sm bg-[#2563eb] inline-block"></span> #Teknoloji</span>
+                  </span>
                   <span>Şimdi (T)</span>
                 </div>
               </div>
 
               {/* DYNAMIC MULTI-AXIS HEATMAP MATRIX */}
-              <div className={`p-6 rounded-3xl border transition-all ${
-                theme === "light" ? "bg-white border-slate-200/80 shadow-md" : "bg-[#0d2227] border-slate-800"
+              <div className={`p-6 rounded-2xl border transition-all ${
+                theme === "light" ? "bg-white border-slate-200 shadow-sm" : "bg-[#0d2227] border-slate-800"
               }`}>
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                   <div>
-                    <h3 className="font-black text-base flex items-center gap-2">
-                      <Zap className="h-5 w-5 text-orange-500" />
+                    <h3 className="font-bold text-base flex items-center gap-2">
+                      <Zap className="h-5 w-5 text-orange-600" />
                       Çok Eksenli Tensör İzdüşümü Matrisi
                     </h3>
                     <p className="text-xs text-slate-400 mt-0.5">
@@ -1250,19 +1274,19 @@ export default function Home() {
 
                   {/* Multi-Axis Dimension Selector Pills */}
                   <div className="flex flex-wrap items-center gap-3">
-                    <div className="flex items-center bg-slate-100 dark:bg-[#102d33] p-1 rounded-2xl border border-slate-200 dark:border-slate-700 text-xs font-bold">
+                    <div className="flex items-center bg-slate-100 dark:bg-[#102d33] p-1 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-bold">
                       <button
                         onClick={() => { setActiveAxisDimension("city_topic"); setSelectedCell({ row: "İzmir", col: "#Ulaşım" }); }}
-                        className={`px-3.5 py-1.5 rounded-xl transition-all cursor-pointer ${
-                          activeAxisDimension === "city_topic" ? "bg-teal-600 text-white shadow-sm" : "text-slate-500 hover:text-slate-800"
+                        className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${
+                          activeAxisDimension === "city_topic" ? "bg-teal-700 text-white shadow-sm" : "text-slate-500 hover:text-slate-800"
                         }`}
                       >
                         [Şehir × Konu]
                       </button>
                       <button
                         onClick={() => { setActiveAxisDimension("age_format"); setSelectedCell({ row: "18-24 Yaş", col: "Reels" }); }}
-                        className={`px-3.5 py-1.5 rounded-xl transition-all cursor-pointer ${
-                          activeAxisDimension === "age_format" ? "bg-teal-600 text-white shadow-sm" : "text-slate-500 hover:text-slate-800"
+                        className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${
+                          activeAxisDimension === "age_format" ? "bg-teal-700 text-white shadow-sm" : "text-slate-500 hover:text-slate-800"
                         }`}
                       >
                         [Yaş Grubu × Format]
@@ -1307,11 +1331,11 @@ export default function Home() {
                           let badge = null;
 
                           if (cell.isAnomaly) {
-                            cellStyle = "bg-rose-500/10 border-rose-500 text-rose-600 shadow-lg shadow-rose-500/20 animate-pulse";
-                            badge = <span className="absolute top-1 right-1 text-[8px] font-black bg-rose-600 text-white px-1.5 py-0.2 rounded-full font-mono">⚠ Z: {cell.zScore}</span>;
+                            cellStyle = "bg-rose-50 border-rose-400 text-rose-700 dark:bg-rose-950/30 dark:border-rose-700 dark:text-rose-300";
+                            badge = <span className="absolute top-1 right-1 text-[8px] font-bold bg-rose-600 text-white px-1.5 py-0.2 rounded font-mono">⚠ Z: {cell.zScore}</span>;
                           } else if (cell.isOpportunity) {
-                            cellStyle = "bg-orange-500/10 border-orange-500 text-orange-600 shadow-lg shadow-orange-500/20";
-                            badge = <span className="absolute top-1 right-1 text-[8px] font-black bg-orange-500 text-white px-1.5 py-0.2 rounded-full">🎯 FIRSAT</span>;
+                            cellStyle = "bg-orange-50 border-orange-400 text-orange-700 dark:bg-orange-950/30 dark:border-orange-700 dark:text-orange-300";
+                            badge = <span className="absolute top-1 right-1 text-[8px] font-bold bg-orange-600 text-white px-1.5 py-0.2 rounded">FIRSAT</span>;
                           }
 
                           const isSelected = selectedCell?.row === row && selectedCell?.col === col;
@@ -1320,12 +1344,12 @@ export default function Home() {
                             <button
                               key={col}
                               onClick={() => setSelectedCell({ row, col })}
-                              className={`h-16 rounded-2xl border flex flex-col justify-center items-center relative transition-all cursor-pointer ${cellStyle} ${
-                                isSelected ? "ring-2 ring-teal-500 scale-[1.03]" : ""
+                              className={`h-16 rounded-xl border flex flex-col justify-center items-center relative transition-all cursor-pointer ${cellStyle} ${
+                                isSelected ? "ring-2 ring-teal-600 scale-[1.02]" : ""
                               }`}
                             >
                               {badge}
-                              <span className="text-sm font-black font-mono">{cell.volume}</span>
+                              <span className="text-sm font-bold font-mono">{cell.volume}</span>
                               <span className="text-[10px] text-slate-400 font-mono">Norm: {cell.mean}</span>
                             </button>
                           );
@@ -1337,21 +1361,21 @@ export default function Home() {
 
                 {/* LIVE MATHEMATICAL FORMULA INSPECTION DRAWER */}
                 {selectedCell && activeCellData && (
-                  <div className={`mt-6 p-5 rounded-3xl border flex flex-col gap-4 ${
+                  <div className={`mt-6 p-5 rounded-2xl border flex flex-col gap-4 ${
                     theme === "light" ? "bg-slate-50 border-slate-200" : "bg-[#0b1d22] border-slate-800"
                   }`}>
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
                       <div className="flex items-center gap-2">
-                        <Calculator className="h-4.5 w-4.5 text-orange-500" />
-                        <span className="font-black text-xs uppercase tracking-wider">
+                        <Calculator className="h-4.5 w-4.5 text-orange-600" />
+                        <span className="font-bold text-xs uppercase tracking-wider">
                           Canlı Matematiksel Formül Çözümlemesi (Tensör Motoru Çıktısı)
                         </span>
                       </div>
                       <div className="flex items-center gap-2 text-xs">
-                        <span className="px-3 py-1 rounded-xl bg-teal-500/10 text-teal-600 font-bold border border-teal-500/20">
+                        <span className="px-3 py-0.5 rounded-md bg-teal-500/10 text-teal-700 dark:text-teal-300 font-bold border border-teal-500/20 font-mono">
                           {selectedCell.row}
                         </span>
-                        <span className="px-3 py-1 rounded-xl bg-orange-500/10 text-orange-600 font-bold border border-orange-500/20">
+                        <span className="px-3 py-0.5 rounded-md bg-orange-500/10 text-orange-700 dark:text-orange-300 font-bold border border-orange-500/20 font-mono">
                           {selectedCell.col}
                         </span>
                       </div>
@@ -1359,44 +1383,44 @@ export default function Home() {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
                       {/* Formula Step 1: Z-Score */}
-                      <div className={`p-4 rounded-2xl border ${theme === "light" ? "bg-white border-slate-200 shadow-sm" : "bg-[#102d33] border-slate-700"}`}>
+                      <div className={`p-4 rounded-xl border ${theme === "light" ? "bg-white border-slate-200 shadow-sm" : "bg-[#102d33] border-slate-700"}`}>
                         <span className="text-[10px] text-slate-400 font-bold block mb-1">Z-Score Sapma Denklemi</span>
-                        <div className="font-mono text-xs text-teal-600 font-bold mb-1">
+                        <div className="font-mono text-xs text-teal-700 dark:text-teal-300 font-bold mb-1">
                           Z = (X - μ) / (σ + ε)
                         </div>
                         <div className="text-slate-500 text-[11px] font-mono">
                           = ({activeCellData.volume} - {activeCellData.mean}) / ({activeCellData.std} + 10⁻⁵)
-                          <strong className="block text-sm font-black text-slate-800 dark:text-slate-100 mt-1 font-mono">
+                          <strong className="block text-sm font-bold text-slate-900 dark:text-slate-100 mt-1 font-mono">
                             = {activeCellData.zScore >= 0 ? "+" : ""}{activeCellData.zScore.toFixed(2)}
                           </strong>
                         </div>
                       </div>
 
                       {/* Formula Step 2: Anomaly Decision */}
-                      <div className={`p-4 rounded-2xl border ${theme === "light" ? "bg-white border-slate-200 shadow-sm" : "bg-[#102d33] border-slate-700"}`}>
+                      <div className={`p-4 rounded-xl border ${theme === "light" ? "bg-white border-slate-200 shadow-sm" : "bg-[#102d33] border-slate-700"}`}>
                         <span className="text-[10px] text-slate-400 font-bold block mb-1">3σ Karar Kuralı (|Z| ≥ 3.0)</span>
                         <div className="flex items-center gap-2 mt-1">
-                          <span className={`text-xs font-black px-3 py-1 rounded-full ${
+                          <span className={`text-xs font-bold px-2.5 py-0.5 rounded-md ${
                             activeCellData.zScore >= 3.0
-                              ? "bg-rose-600 text-white animate-pulse"
+                              ? "bg-rose-600 text-white"
                               : activeCellData.isOpportunity
-                              ? "bg-orange-500 text-white"
-                              : "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
+                              ? "bg-orange-600 text-white"
+                              : "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20"
                           }`}>
                             {activeCellData.zScore >= 3.0 ? "KRİTİK ANOMALİ" : activeCellData.isOpportunity ? "ROAS FIRSATI" : "NORM DÂHİLİNDE"}
                           </span>
                         </div>
                         <span className="text-[10px] text-slate-400 block mt-2">
-                          {activeCellData.zScore >= 3.0 ? "3σ eşiği aşıldı, Sense kalkanı tetiklendi." : "İstatistiksel baz çizgi sınırlarında."}
+                          {activeCellData.zScore >= 3.0 ? "3σ eşiği aşıldı, Sense kalkanı devrede." : "İstatistiksel baz çizgi sınırlarında."}
                         </span>
                       </div>
 
                       {/* Formula Step 3: NLP & Reputation */}
-                      <div className={`p-4 rounded-2xl border ${theme === "light" ? "bg-white border-slate-200 shadow-sm" : "bg-[#102d33] border-slate-700"}`}>
+                      <div className={`p-4 rounded-xl border ${theme === "light" ? "bg-white border-slate-200 shadow-sm" : "bg-[#102d33] border-slate-700"}`}>
                         <span className="text-[10px] text-slate-400 font-bold block mb-1">Duygu Polaritesi & DBSCAN Ağırlığı</span>
                         <div className="flex justify-between items-center text-xs">
                           <span>BERTurk Φ(eₖ):</span>
-                          <strong className={`font-mono font-black ${activeCellData.sentiment < 0 ? "text-rose-500" : "text-emerald-600"}`}>
+                          <strong className={`font-mono font-bold ${activeCellData.sentiment < 0 ? "text-rose-600" : "text-emerald-600"}`}>
                             {activeCellData.sentiment >= 0 ? "+" : ""}{activeCellData.sentiment.toFixed(2)}
                           </strong>
                         </div>
@@ -1415,15 +1439,15 @@ export default function Home() {
           {/* VIEW 2: NABIZ-ADS CAMPAIGN WIZARD */}
           {currentPanel === "ads" && (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-              <div className={`lg:col-span-7 p-6 rounded-3xl border transition-all ${
-                theme === "light" ? "bg-white border-slate-200/80 shadow-md" : "bg-[#0d2227] border-slate-800"
+              <div className={`lg:col-span-7 p-6 rounded-2xl border transition-all ${
+                theme === "light" ? "bg-white border-slate-200 shadow-sm" : "bg-[#0d2227] border-slate-800"
               }`}>
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="h-11 w-11 rounded-2xl bg-orange-500/10 text-orange-600 flex items-center justify-center">
-                    <Rocket className="h-6 w-6" />
+                  <div className="h-10 w-10 rounded-xl bg-orange-500/10 text-orange-600 flex items-center justify-center">
+                    <Rocket className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="font-black text-base">Doğal Dil Güdümlü Kampanya Sihirbazı</h3>
+                    <h3 className="font-bold text-base">Doğal Dil Güdümlü Kampanya Sihirbazı</h3>
                     <p className="text-xs text-slate-400">Meta Ads paneli yerine tek bir Türkçe prompt ile kitle, zaman ve metin optimizasyonu</p>
                   </div>
                 </div>
@@ -1437,7 +1461,7 @@ export default function Home() {
                         value={promptInput}
                         onChange={e => setPromptInput(e.target.value)}
                         placeholder="Örn: Kadıköy'deki 3. nesil kahvecimiz için Reels reklamı yap..."
-                        className={`w-full rounded-2xl px-4 py-3.5 text-sm focus:outline-none pr-12 transition-all border ${
+                        className={`w-full rounded-xl px-4 py-3.5 text-sm focus:outline-none pr-12 transition-all border ${
                           theme === "light"
                             ? "bg-slate-50 border-slate-200 text-slate-900 focus:border-teal-500"
                             : "bg-[#102d33] border-slate-700 text-slate-100 focus:border-teal-400"
@@ -1445,7 +1469,7 @@ export default function Home() {
                       />
                       <button
                         onClick={generateAdCampaign}
-                        className="absolute right-2.5 p-2 rounded-xl bg-gradient-to-tr from-orange-500 to-amber-500 text-white hover:opacity-90 transition-all cursor-pointer shadow-md shadow-orange-500/20 active:scale-95"
+                        className="absolute right-2.5 p-2 rounded-lg bg-orange-600 text-white hover:bg-orange-700 transition-all cursor-pointer active:scale-98"
                       >
                         <Send className="h-4 w-4 stroke-[2.5]" />
                       </button>
@@ -1455,13 +1479,13 @@ export default function Home() {
                       <span className="text-xs text-slate-400 font-bold self-center mr-1">Örnek Şablonlar:</span>
                       <button
                         onClick={() => handleQuickPrompt("Kadıköy'deki kahvecimiz için Reels reklamı yap")}
-                        className="text-xs px-3.5 py-1.5 rounded-xl bg-orange-500/10 text-orange-600 border border-orange-500/20 hover:bg-orange-500/20 font-bold cursor-pointer"
+                        className="text-xs px-3 py-1 rounded-lg bg-orange-500/10 text-orange-700 dark:text-orange-300 border border-orange-500/20 hover:bg-orange-500/20 font-bold cursor-pointer"
                       >
                         ☕ Kadıköy Soğuk Kahve
                       </button>
                       <button
                         onClick={() => handleQuickPrompt("Yazılım eğitim kursumuzu yapay zekayla ilgilenen gençlere duyur")}
-                        className="text-xs px-3.5 py-1.5 rounded-xl bg-teal-500/10 text-teal-600 border border-teal-500/20 hover:bg-teal-500/20 font-bold cursor-pointer"
+                        className="text-xs px-3 py-1 rounded-lg bg-teal-500/10 text-teal-700 dark:text-teal-300 border border-teal-500/20 hover:bg-teal-500/20 font-bold cursor-pointer"
                       >
                         💻 Yapay Zeka Kursu
                       </button>
@@ -1469,12 +1493,12 @@ export default function Home() {
                   </div>
 
                   {aiSuggestions && (
-                    <div className="p-5 rounded-3xl border border-orange-500/30 bg-orange-500/5 flex flex-col gap-4 mt-2">
-                      <div className="flex items-center justify-between border-b border-orange-500/20 pb-3">
-                        <span className="text-xs font-bold text-orange-600 flex items-center gap-1.5">
-                          <Sparkles className="h-4 w-4" /> AI Parametre ve Zamanlama Optimizasyonu
+                    <div className="p-5 rounded-xl border border-orange-300 dark:border-orange-900 bg-orange-50/50 dark:bg-orange-950/20 flex flex-col gap-4 mt-2">
+                      <div className="flex items-center justify-between border-b border-orange-200 dark:border-orange-900 pb-3">
+                        <span className="text-xs font-bold text-orange-700 dark:text-orange-300 flex items-center gap-1.5">
+                          <Sparkles className="h-4 w-4 text-orange-600" /> AI Parametre ve Zamanlama Optimizasyonu
                         </span>
-                        <span className="text-[10px] bg-orange-500 text-white font-bold px-2.5 py-0.5 rounded-full font-mono">
+                        <span className="text-[10px] bg-orange-600 text-white font-bold px-2.5 py-0.5 rounded font-mono">
                           +34% ROAS Eşleşti
                         </span>
                       </div>
@@ -1490,11 +1514,11 @@ export default function Home() {
                         </div>
                         <div className="col-span-2">
                           <span className="text-slate-400 block text-[10px]">En Yoğun Etkileşim Penceresi</span>
-                          <strong className="font-bold text-teal-600">{aiSuggestions.timeWindow}</strong>
+                          <strong className="font-bold text-teal-700 dark:text-teal-300">{aiSuggestions.timeWindow}</strong>
                         </div>
                         <div className="col-span-2">
                           <span className="text-slate-400 block text-[10px] mb-1">Yapay Zekâ Türkçe Reklam Metni:</span>
-                          <div className={`p-3.5 rounded-2xl border text-xs italic leading-relaxed ${
+                          <div className={`p-3.5 rounded-xl border text-xs italic leading-relaxed ${
                             theme === "light" ? "bg-white border-slate-200 text-slate-700" : "bg-[#0b1d22] border-slate-800 text-slate-300"
                           }`}>
                             {aiSuggestions.adCopy}
@@ -1504,7 +1528,7 @@ export default function Home() {
 
                       <button
                         onClick={launchCampaign}
-                        className="w-full py-3 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black text-xs transition-all flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20 cursor-pointer active:scale-95"
+                        className="w-full py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98"
                       >
                         <CheckCircle className="h-4 w-4" /> Kampanyayı Canlıya Al (10 Saniyede Yayında)
                       </button>
@@ -1513,22 +1537,22 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className={`lg:col-span-5 p-6 rounded-3xl border transition-all ${
-                theme === "light" ? "bg-white border-slate-200/80 shadow-md" : "bg-[#0d2227] border-slate-800"
+              <div className={`lg:col-span-5 p-6 rounded-2xl border transition-all ${
+                theme === "light" ? "bg-white border-slate-200 shadow-sm" : "bg-[#0d2227] border-slate-800"
               }`}>
-                <h3 className="font-black text-base mb-4 flex items-center gap-2">
-                  <Award className="h-5 w-5 text-orange-500" />
+                <h3 className="font-bold text-base mb-4 flex items-center gap-2">
+                  <Award className="h-5 w-5 text-orange-600" />
                   Aktif Reklam Kampanyaları & ROAS
                 </h3>
 
                 <div className="flex flex-col gap-3">
                   {campaigns.map(camp => (
-                    <div key={camp.id} className={`p-4 rounded-2xl border text-xs ${
+                    <div key={camp.id} className={`p-4 rounded-xl border text-xs ${
                       theme === "light" ? "bg-slate-50 border-slate-200" : "bg-[#102d33] border-slate-700"
                     }`}>
                       <div className="flex justify-between items-start mb-2">
                         <span className="font-bold text-sm">{camp.prompt}</span>
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 font-bold border border-emerald-500/20">
+                        <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 font-bold border border-emerald-500/20 font-mono">
                           {camp.status}
                         </span>
                       </div>
@@ -1540,7 +1564,7 @@ export default function Home() {
                           <span>Tıklama:</span> <strong className="text-slate-700 dark:text-slate-200 block">{camp.clicks}</strong>
                         </div>
                         <div>
-                          <span>Gerçekleşen ROAS:</span> <strong className="text-orange-600 block text-xs font-black">{camp.roas}x</strong>
+                          <span>Gerçekleşen ROAS:</span> <strong className="text-orange-600 block text-xs font-bold">{camp.roas}x</strong>
                         </div>
                       </div>
                     </div>
@@ -1553,11 +1577,11 @@ export default function Home() {
           {/* VIEW 3: NABIZ-SENSE SECURITY & MODERATION */}
           {currentPanel === "sense" && (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-              <div className={`lg:col-span-8 p-6 rounded-3xl border transition-all ${
-                theme === "light" ? "bg-white border-slate-200/80 shadow-md" : "bg-[#0d2227] border-slate-800"
+              <div className={`lg:col-span-8 p-6 rounded-2xl border transition-all ${
+                theme === "light" ? "bg-white border-slate-200 shadow-sm" : "bg-[#0d2227] border-slate-800"
               }`}>
-                <h3 className="font-black text-base mb-6 flex items-center gap-2">
-                  <Bell className="h-5 w-5 text-rose-500" />
+                <h3 className="font-bold text-base mb-6 flex items-center gap-2">
+                  <Bell className="h-5 w-5 text-rose-600" />
                   Aktif Siber Güvenlik ve Moderasyon Alarmları
                 </h3>
 
@@ -1565,29 +1589,29 @@ export default function Home() {
                   {alerts.map(alert => (
                     <div
                       key={alert.id}
-                      className={`p-5 rounded-3xl border flex flex-col gap-4 ${
+                      className={`p-5 rounded-2xl border flex flex-col gap-4 ${
                         alert.status === "RESOLVED"
                           ? "bg-slate-50 border-slate-200 opacity-60 dark:bg-slate-900/40"
                           : alert.type === "CRISIS"
-                          ? "bg-rose-500/5 border-rose-500/30"
-                          : "bg-orange-500/5 border-orange-500/30"
+                          ? "bg-rose-50/50 border-rose-300 dark:bg-rose-950/20 dark:border-rose-900"
+                          : "bg-orange-50/50 border-orange-300 dark:bg-orange-950/20 dark:border-orange-900"
                       }`}
                     >
                       <div className="flex items-center justify-between">
                         <span className="flex items-center gap-2 font-bold text-sm font-mono">
-                          <AlertTriangle className={`h-5 w-5 ${alert.type === "CRISIS" ? "text-rose-500" : "text-orange-500"}`} />
+                          <AlertTriangle className={`h-5 w-5 ${alert.type === "CRISIS" ? "text-rose-600" : "text-orange-600"}`} />
                           {alert.city} × {alert.topic} (Z-Score: {alert.zScore.toFixed(2)})
                         </span>
-                        <span className={`text-xs font-bold px-3 py-1 rounded-full ${
+                        <span className={`text-xs font-bold px-3 py-1 rounded ${
                           alert.status === "RESOLVED"
-                            ? "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
-                            : "bg-rose-500 text-white animate-pulse"
+                            ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20 font-mono"
+                            : "bg-rose-600 text-white font-mono"
                         }`}>
                           {alert.status === "RESOLVED" ? "KONTROL ALTINDA" : "MODERASYON GEREKLİ"}
                         </span>
                       </div>
 
-                      <div className={`p-4 rounded-2xl border text-xs leading-relaxed ${
+                      <div className={`p-4 rounded-xl border text-xs leading-relaxed ${
                         theme === "light" ? "bg-white border-slate-200" : "bg-[#0b1d22] border-slate-800"
                       }`}>
                         <strong className="text-orange-600 block mb-1 text-xs">Yerli LLM Türkçe Kök Neden Açıklaması:</strong>
@@ -1600,7 +1624,7 @@ export default function Home() {
                             <button
                               key={act}
                               onClick={() => handleAction(alert.id, act)}
-                              className="px-4 py-2 rounded-2xl bg-[#0a1e22] text-white hover:bg-[#133e42] text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-md active:scale-95"
+                              className="px-4 py-2 rounded-xl bg-[#0a1e22] text-white hover:bg-[#133e42] text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-98"
                             >
                               <CheckCircle className="h-3.5 w-3.5 text-teal-400" /> {act}
                             </button>
@@ -1612,24 +1636,24 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className={`lg:col-span-4 p-6 rounded-3xl border transition-all flex flex-col gap-6 ${
-                theme === "light" ? "bg-white border-slate-200/80 shadow-md" : "bg-[#0d2227] border-slate-800"
+              <div className={`lg:col-span-4 p-6 rounded-2xl border transition-all flex flex-col gap-6 ${
+                theme === "light" ? "bg-white border-slate-200 shadow-sm" : "bg-[#0d2227] border-slate-800"
               }`}>
-                <h4 className="font-black text-sm flex items-center gap-2">
+                <h4 className="font-bold text-sm flex items-center gap-2">
                   <UserCheck className="h-4.5 w-4.5 text-emerald-600" /> Doğrulama ve NLP Metrikleri
                 </h4>
                 <div className="flex flex-col gap-4 text-xs font-mono">
                   <div className="border-b border-slate-100 dark:border-slate-800 pb-3">
                     <span className="text-slate-400 block text-[10px] font-sans">BERTurk Duygu Eşleşme Doğruluğu</span>
-                    <strong className="text-sm font-black">%92.4 Accuracy (5-Fold CV)</strong>
+                    <strong className="text-sm font-bold">%92.4 Accuracy (5-Fold CV)</strong>
                   </div>
                   <div className="border-b border-slate-100 dark:border-slate-800 pb-3">
                     <span className="text-slate-400 block text-[10px] font-sans">Yerel LLM Çıkarım Gecikmesi</span>
-                    <strong className="text-sm font-black">1.24 saniye (AWQ 4-bit)</strong>
+                    <strong className="text-sm font-bold">1.24 saniye (AWQ 4-bit)</strong>
                   </div>
                   <div>
                     <span className="text-slate-400 block text-[10px] font-sans">DBSCAN Kümeleme F1-Skoru</span>
-                    <strong className="text-sm font-black">0.920 F1-Harmonik Başarım</strong>
+                    <strong className="text-sm font-bold">0.920 F1-Harmonik Başarım</strong>
                   </div>
                 </div>
               </div>
@@ -1639,16 +1663,16 @@ export default function Home() {
           {/* VIEW 4: DETAILED ANALYTICS */}
           {currentPanel === "analytics" && (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-              <div className={`lg:col-span-8 p-6 rounded-3xl border transition-all ${
-                theme === "light" ? "bg-white border-slate-200/80 shadow-md" : "bg-[#0d2227] border-slate-800"
+              <div className={`lg:col-span-8 p-6 rounded-2xl border transition-all ${
+                theme === "light" ? "bg-white border-slate-200 shadow-sm" : "bg-[#0d2227] border-slate-800"
               }`}>
-                <h3 className="font-black text-base mb-6">Detaylı Platform Etkileşim Hacmi</h3>
+                <h3 className="font-bold text-base mb-6">Detaylı Platform Etkileşim Hacmi</h3>
                 <div className="h-64 flex items-end justify-between gap-4 px-4 pt-4 border-b border-slate-200 dark:border-slate-800">
                   {wavePoints1.slice(-10).map((val, idx) => (
                     <div key={idx} className="flex-1 flex flex-col items-center">
                       <span className="text-[10px] font-mono text-slate-400 mb-1">{val * 10}k</span>
                       <div
-                        className="w-full rounded-t-2xl bg-gradient-to-t from-teal-600 to-teal-400 transition-all duration-300"
+                        className="w-full rounded-t-lg bg-teal-700 transition-all duration-300"
                         style={{ height: `${val * 2}%` }}
                       ></div>
                       <span className="text-[10px] text-slate-400 mt-2 font-mono">12:0{idx}</span>
@@ -1657,17 +1681,17 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className={`lg:col-span-4 p-6 rounded-3xl border transition-all ${
-                theme === "light" ? "bg-white border-slate-200/80 shadow-md" : "bg-[#0d2227] border-slate-800"
+              <div className={`lg:col-span-4 p-6 rounded-2xl border transition-all ${
+                theme === "light" ? "bg-white border-slate-200 shadow-sm" : "bg-[#0d2227] border-slate-800"
               }`}>
-                <h4 className="font-black text-sm mb-4">Popüler Kategori Trendleri</h4>
+                <h4 className="font-bold text-sm mb-4">Popüler Kategori Trendleri</h4>
                 <div className="flex flex-col gap-4 text-xs font-mono">
                   <div>
                     <div className="flex justify-between font-bold text-slate-600 dark:text-slate-300 mb-1 font-sans">
                       <span>#Ulaşım</span> <span>%50.5</span>
                     </div>
                     <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-                      <div className="h-full bg-teal-500" style={{ width: "50.5%" }}></div>
+                      <div className="h-full bg-teal-600" style={{ width: "50.5%" }}></div>
                     </div>
                   </div>
                   <div>
@@ -1675,7 +1699,7 @@ export default function Home() {
                       <span>#Kültür</span> <span>%31.7</span>
                     </div>
                     <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-                      <div className="h-full bg-orange-500" style={{ width: "31.7%" }}></div>
+                      <div className="h-full bg-orange-600" style={{ width: "31.7%" }}></div>
                     </div>
                   </div>
                   <div>
@@ -1683,7 +1707,7 @@ export default function Home() {
                       <span>#Teknoloji</span> <span>%17.8</span>
                     </div>
                     <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-                      <div className="h-full bg-cyan-500" style={{ width: "17.8%" }}></div>
+                      <div className="h-full bg-blue-600" style={{ width: "17.8%" }}></div>
                     </div>
                   </div>
                 </div>
@@ -1693,10 +1717,10 @@ export default function Home() {
 
           {/* VIEW 5: KVKK PRIVACY COMPLIANCE */}
           {currentPanel === "privacy" && (
-            <div className={`p-8 rounded-3xl border transition-all ${
-              theme === "light" ? "bg-white border-slate-200/80 shadow-md" : "bg-[#0d2227] border-slate-800"
+            <div className={`p-8 rounded-2xl border transition-all ${
+              theme === "light" ? "bg-white border-slate-200 shadow-sm" : "bg-[#0d2227] border-slate-800"
             }`}>
-              <h3 className="font-black text-lg mb-4 flex items-center gap-2">
+              <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
                 <ShieldCheck className="h-6 w-6 text-emerald-600" />
                 Sıfır Bireysel Profilleme & KVKK Güvenlik Uyumluluğu
               </h3>
@@ -1705,13 +1729,13 @@ export default function Home() {
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#102d33]">
+                <div className="p-5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#102d33]">
                   <strong className="text-xs font-bold block mb-1">Kimliksizleştirme (SHA-256)</strong>
                   <span className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed block">
                     Kullanıcı kimlikleri veri giriş boru hattında SHA-256 hash algoritmalarıyla anında temizlenir.
                   </span>
                 </div>
-                <div className="p-5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#102d33]">
+                <div className="p-5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#102d33]">
                   <strong className="text-xs font-bold block mb-1">Yerli Sunucu & AES-256 Şifreleme</strong>
                   <span className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed block">
                     Tüm veri boru hatları ve açık kaynaklı yerli dil modelleri Türkiye sınırları içindeki yerel sunucularda çalıştırılır.
@@ -1726,55 +1750,55 @@ export default function Home() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
               {/* Table of Contents */}
               <div className="lg:col-span-3">
-                <div className={`p-4 rounded-3xl border sticky top-24 ${
-                  theme === "light" ? "bg-white border-slate-200/80 shadow-md" : "bg-[#0d2227] border-slate-800"
+                <div className={`p-4 rounded-2xl border sticky top-24 ${
+                  theme === "light" ? "bg-white border-slate-200 shadow-sm" : "bg-[#0d2227] border-slate-800"
                 }`}>
-                  <h4 className="font-black text-xs uppercase tracking-wider text-slate-400 mb-3">İçindekiler</h4>
+                  <h4 className="font-bold text-xs uppercase tracking-wider text-slate-400 mb-3">İçindekiler</h4>
                   <div className="flex flex-col gap-1.5 text-xs">
                     <button
                       onClick={() => setActiveReportSection("sec-1")}
-                      className={`text-left py-2 px-3 rounded-2xl font-bold transition-all cursor-pointer ${
-                        activeReportSection === "sec-1" ? "bg-teal-500/10 text-teal-600" : "text-slate-500 hover:text-slate-800"
+                      className={`text-left py-2 px-3 rounded-xl font-bold transition-all cursor-pointer ${
+                        activeReportSection === "sec-1" ? "bg-teal-500/10 text-teal-700 dark:text-teal-300" : "text-slate-500 hover:text-slate-800"
                       }`}
                     >
                       1. Proje Özeti
                     </button>
                     <button
                       onClick={() => setActiveReportSection("sec-2")}
-                      className={`text-left py-2 px-3 rounded-2xl font-bold transition-all cursor-pointer ${
-                        activeReportSection === "sec-2" ? "bg-teal-500/10 text-teal-600" : "text-slate-500 hover:text-slate-800"
+                      className={`text-left py-2 px-3 rounded-xl font-bold transition-all cursor-pointer ${
+                        activeReportSection === "sec-2" ? "bg-teal-500/10 text-teal-700 dark:text-teal-300" : "text-slate-500 hover:text-slate-800"
                       }`}
                     >
                       2. Katma Değer & Yenilikçilik
                     </button>
                     <button
                       onClick={() => setActiveReportSection("sec-3")}
-                      className={`text-left py-2 px-3 rounded-2xl font-bold transition-all cursor-pointer ${
-                        activeReportSection === "sec-3" ? "bg-teal-500/10 text-teal-600" : "text-slate-500 hover:text-slate-800"
+                      className={`text-left py-2 px-3 rounded-xl font-bold transition-all cursor-pointer ${
+                        activeReportSection === "sec-3" ? "bg-teal-500/10 text-teal-700 dark:text-teal-300" : "text-slate-500 hover:text-slate-800"
                       }`}
                     >
                       3. Teknoloji & Matematik
                     </button>
                     <button
                       onClick={() => setActiveReportSection("sec-4")}
-                      className={`text-left py-2 px-3 rounded-2xl font-bold transition-all cursor-pointer ${
-                        activeReportSection === "sec-4" ? "bg-teal-500/10 text-teal-600" : "text-slate-500 hover:text-slate-800"
+                      className={`text-left py-2 px-3 rounded-xl font-bold transition-all cursor-pointer ${
+                        activeReportSection === "sec-4" ? "bg-teal-500/10 text-teal-700 dark:text-teal-300" : "text-slate-500 hover:text-slate-800"
                       }`}
                     >
                       4. Uygulanabilirlik & ROAS
                     </button>
                     <button
                       onClick={() => setActiveReportSection("sec-6")}
-                      className={`text-left py-2 px-3 rounded-2xl font-bold transition-all cursor-pointer ${
-                        activeReportSection === "sec-6" ? "bg-teal-500/10 text-teal-600" : "text-slate-500 hover:text-slate-800"
+                      className={`text-left py-2 px-3 rounded-xl font-bold transition-all cursor-pointer ${
+                        activeReportSection === "sec-6" ? "bg-teal-500/10 text-teal-700 dark:text-teal-300" : "text-slate-500 hover:text-slate-800"
                       }`}
                     >
                       6. Sürdürülebilirlik & Finans
                     </button>
                     <button
                       onClick={() => setActiveReportSection("sec-8")}
-                      className={`text-left py-2 px-3 rounded-2xl font-bold transition-all cursor-pointer ${
-                        activeReportSection === "sec-8" ? "bg-teal-500/10 text-teal-600" : "text-slate-500 hover:text-slate-800"
+                      className={`text-left py-2 px-3 rounded-xl font-bold transition-all cursor-pointer ${
+                        activeReportSection === "sec-8" ? "bg-teal-500/10 text-teal-700 dark:text-teal-300" : "text-slate-500 hover:text-slate-800"
                       }`}
                     >
                       8. Takım & Kaynakça
@@ -1784,12 +1808,12 @@ export default function Home() {
               </div>
 
               {/* Document Text */}
-              <div className={`lg:col-span-9 p-8 rounded-3xl border text-xs leading-relaxed ${
-                theme === "light" ? "bg-white border-slate-200/80 shadow-md" : "bg-[#0d2227] border-slate-800"
+              <div className={`lg:col-span-9 p-8 rounded-2xl border text-xs leading-relaxed ${
+                theme === "light" ? "bg-white border-slate-200 shadow-sm" : "bg-[#0d2227] border-slate-800"
               }`}>
                 {activeReportSection === "sec-1" && (
                   <div className="flex flex-col gap-4">
-                    <h3 className="text-lg font-black text-teal-700 dark:text-teal-400 pb-2 border-b">1. PROJE ÖZETİ</h3>
+                    <h3 className="text-lg font-bold text-teal-800 dark:text-teal-300 pb-2 border-b">1. PROJE ÖZETİ</h3>
                     <p className="text-slate-600 dark:text-slate-300 leading-6">
                       <strong>NABIZ Projesi</strong>, dijital sosyal ağlardaki çok boyutlu etkileşim sinyallerini esnek eşlenebilen koordinat eksenlerinde dinamik ısı matrislerine dönüştüren, matematiksel Z-Score ve DBSCAN anomali filtreleriyle sapmaları saptayan ve içgörüleri iki ana kolda eyleme dönüştüren bütünleşik bir Sosyal Yapay Zekâ ve Yeni Nesil AdTech platformudur:
                     </p>
@@ -1802,12 +1826,12 @@ export default function Home() {
 
                 {activeReportSection === "sec-3" && (
                   <div className="flex flex-col gap-4">
-                    <h3 className="text-lg font-black text-teal-700 dark:text-teal-400 pb-2 border-b">3. TEKNOLOJİ VE MATEMATİKSEL MODELLEME</h3>
+                    <h3 className="text-lg font-bold text-teal-800 dark:text-teal-300 pb-2 border-b">3. TEKNOLOJİ VE MATEMATİKSEL MODELLEME</h3>
                     <p className="text-slate-600 dark:text-slate-300">Dinamik Z-Score sapma indeksi ve anomali karar kuralı:</p>
-                    <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#102d33] border text-center font-serif text-sm">
+                    <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#102d33] border text-center font-serif text-sm">
                       Z<sub>i,j</sub>(t) = (X<sub>i,j</sub>(t) - &mu;<sub>i,j</sub>(W)) / (&sigma;<sub>i,j</sub>(W) + &epsilon;)
                       <br />
-                      <strong className="text-rose-500 font-sans block mt-2">Anomali Kriteri: |Z<sub>i,j</sub>(t)| &ge; 3.0</strong>
+                      <strong className="text-rose-600 font-sans block mt-2">Anomali Kriteri: |Z<sub>i,j</sub>(t)| &ge; 3.0</strong>
                     </div>
                   </div>
                 )}
@@ -1815,20 +1839,20 @@ export default function Home() {
                 {activeReportSection === "sec-6" && (
                   <div className="flex flex-col gap-6">
                     <div>
-                      <h3 className="text-lg font-black text-teal-700 dark:text-teal-400 pb-2 border-b">6. SÜRDÜRÜLEBİLİRLİK VE DİNAMİK FİNANSAL PROJEKSİYON</h3>
+                      <h3 className="text-lg font-bold text-teal-800 dark:text-teal-300 pb-2 border-b">6. SÜRDÜRÜLEBİLİRLİK VE DİNAMİK FİNANSAL PROJEKSİYON</h3>
                       <p className="text-slate-600 dark:text-slate-300 mt-2">
                         Aşağıdaki simülatör ile aktif KOBİ reklamveren sayısını değiştirerek 3 yıllık brüt gelir ve net faaliyet kârı (EBITDA) projeksiyonlarını dinamik olarak inceleyebilirsiniz:
                       </p>
                     </div>
 
                     {/* Interactive Financial Growth Simulator Slider */}
-                    <div className={`p-5 rounded-3xl border ${theme === "light" ? "bg-slate-50 border-slate-200" : "bg-[#102d33] border-slate-700"}`}>
+                    <div className={`p-5 rounded-2xl border ${theme === "light" ? "bg-slate-50 border-slate-200" : "bg-[#102d33] border-slate-700"}`}>
                       <div className="flex justify-between items-center mb-3">
                         <span className="font-bold text-xs flex items-center gap-1.5">
-                          <Sliders className="h-4 w-4 text-orange-500" />
+                          <Sliders className="h-4 w-4 text-orange-600" />
                           Aktif KOBİ Reklamveren Sayısı:
                         </span>
-                        <strong className="text-base font-black text-orange-600 font-mono">
+                        <strong className="text-base font-bold text-orange-600 font-mono">
                           {financialSmeCount.toLocaleString("tr-TR")} İşletme
                         </strong>
                       </div>
@@ -1840,7 +1864,7 @@ export default function Home() {
                         step="2500"
                         value={financialSmeCount}
                         onChange={(e) => setFinancialSmeCount(Number(e.target.value))}
-                        className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-orange-500"
+                        className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-orange-600"
                       />
 
                       <div className="grid grid-cols-3 gap-4 mt-6 pt-4 border-t border-slate-200 dark:border-slate-700 text-center font-mono">
@@ -1850,20 +1874,20 @@ export default function Home() {
                         </div>
                         <div>
                           <span className="text-slate-400 block text-[10px] font-sans">Hesaplanan Yıllık Brüt Gelir</span>
-                          <strong className="text-sm font-black text-slate-900 dark:text-white">
+                          <strong className="text-sm font-bold text-slate-900 dark:text-white">
                             {((financialSmeCount * 360) / 1000).toFixed(0)} Bin TL ({((financialSmeCount * 360) / 1000000).toFixed(1)}M TL)
                           </strong>
                         </div>
                         <div>
                           <span className="text-slate-400 block text-[10px] font-sans">Net Faaliyet Kârı (EBITDA)</span>
-                          <strong className="text-sm font-black text-emerald-600">
+                          <strong className="text-sm font-bold text-emerald-600">
                             +{((financialSmeCount * 270) / 1000000).toFixed(2)} Milyon TL
                           </strong>
                         </div>
                       </div>
                     </div>
 
-                    <div className="border rounded-2xl overflow-hidden text-xs">
+                    <div className="border rounded-xl overflow-hidden text-xs">
                       <div className="grid grid-cols-4 gap-2 bg-slate-100 dark:bg-[#102d33] p-3 font-bold">
                         <div>Finansal Gösterge</div>
                         <div>Yıl 1 (Pilot)</div>
