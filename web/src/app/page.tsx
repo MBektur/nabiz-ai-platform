@@ -4,32 +4,47 @@ import React, { useState, useEffect } from "react";
 import {
   Activity,
   AlertTriangle,
+  ArrowUpRight,
   Award,
   Bell,
+  Calendar,
   CheckCircle,
+  ChevronDown,
   Database,
+  Download,
+  Eye,
   EyeOff,
   FileText,
   Flame,
+  Globe,
+  HelpCircle,
+  Layers,
   LayoutDashboard,
   Lock,
   MapPin,
   MessageSquare,
   Moon,
+  MousePointer,
   Play,
   RefreshCw,
+  Rocket,
   Search,
   Send,
+  Settings,
+  Share2,
   Shield,
   ShieldCheck,
+  Sparkles,
   Sun,
+  TrendingDown,
   TrendingUp,
+  User,
   UserCheck,
   Users,
   Zap,
 } from "lucide-react";
 
-// Mock interfaces
+// Types
 interface CellData {
   volume: number;
   mean: number;
@@ -114,7 +129,7 @@ const getInitialMatrix = (): Matrix => ({
 
 export default function Home() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
-  const [currentPanel, setCurrentPanel] = useState<"dashboard" | "analytics" | "sense" | "ads" | "privacy" | "report">("dashboard");
+  const [currentPanel, setCurrentPanel] = useState<"dashboard" | "ads" | "sense" | "analytics" | "privacy" | "report">("dashboard");
   const [activeReportSection, setActiveReportSection] = useState<string>("sec-1");
   const [matrix, setMatrix] = useState<Matrix>(getInitialMatrix());
   const [selectedCell, setSelectedCell] = useState<{ city: string; topic: string } | null>({
@@ -170,24 +185,13 @@ export default function Home() {
   
   // Realtime scrolling wave points
   const [wavePoints, setWavePoints] = useState<number[]>([10, 15, 8, 20, 25, 12, 18, 30, 22, 15, 12, 28, 35, 14, 20, 15, 10, 25, 30, 12, 18]);
-  const [wavePoints2, setWavePoints2] = useState<number[]>([15, 10, 22, 14, 18, 25, 30, 12, 8, 28, 15, 20, 22, 10, 14, 32, 18, 12, 25, 15, 10]);
 
-  // Ticker items
-  const [tickerIndex, setTickerIndex] = useState(0);
-  const tickerItems = [
-    "İzmir - #Ulaşım: 'Metrodaki 15 dakikalık gecikme can sıkıcı...' | Sentiment: -0.74 (Anonimleştirildi)",
-    "İstanbul - #Kültür: 'Kadıköy'deki kahve festivali muazzam! ☕' | Sentiment: +0.89 (Anonimleştirildi)",
-    "Ankara - #Teknoloji: 'Yapay zeka modellerinin Türkçe performansını test ediyoruz...' | Sentiment: +0.62 (Anonimleştirildi)",
-    "Antalya - #Spor: 'Sabah maratonu için kayıtlar başladı 🏃‍♂️' | Sentiment: +0.45 (Anonimleştirildi)",
-    "Bursa - #Ekonomi: 'Otomotiv sektörü ihracat rakamları olumlu.' | Sentiment: +0.25 (Anonimleştirildi)"
-  ];
-
-  // Analytics state variables
-  const [timelineData, setTimelineData] = useState<number[]>([120, 140, 160, 130, 110, 185, 235]);
-  const [timelineLabels, setTimelineLabels] = useState<string[]>(["11:45", "11:50", "11:55", "12:00", "12:05", "12:10", "12:15"]);
-  const [totalEngagements, setTotalEngagements] = useState(12840);
+  // Analytics KPI metrics
+  const [totalSignalCount, setTotalSignalCount] = useState("24.68M");
+  const [anomalyCount, setAnomalyCount] = useState("312.47K");
   const [sentimentIndex, setSentimentIndex] = useState(0.42);
-  const [botBlockedCount, setBotBlockedCount] = useState(4120);
+  const [optimizedRoas, setOptimizedRoas] = useState("3.85x");
+  const [botBlockedCount, setBotBlockedCount] = useState(51810);
 
   const [logs, setLogs] = useState<string[]>([
     "[SYSTEM] NABIZ Core Tensör Motoru aktif. (Pencere: 15 dakika)",
@@ -196,7 +200,7 @@ export default function Home() {
     "[FIRSAT] İstanbul × #Kültür hücresinde trend saptandı (Z = +4.30, Duygu: +0.85)",
   ]);
 
-  // Real-time animation loops
+  // Real-time animation loop
   useEffect(() => {
     const waveInterval = setInterval(() => {
       setWavePoints(prev => {
@@ -208,23 +212,9 @@ export default function Home() {
         next.push(val);
         return next;
       });
-
-      setWavePoints2(prev => {
-        const next = [...prev.slice(1)];
-        const val = Math.floor(Math.random() * 15) + 5;
-        next.push(val);
-        return next;
-      });
     }, 400);
 
-    const tickerInterval = setInterval(() => {
-      setTickerIndex(prev => (prev + 1) % tickerItems.length);
-    }, 4000);
-
-    return () => {
-      clearInterval(waveInterval);
-      clearInterval(tickerInterval);
-    };
+    return () => clearInterval(waveInterval);
   }, [alerts]);
 
   // Handle simulations
@@ -256,15 +246,13 @@ export default function Home() {
     
     setAlerts(prev => [newAlert, ...prev.filter(a => a.id !== "a1")]);
     setSelectedCell({ city: "İzmir", topic: "#Ulaşım" });
-    
-    setTimelineData([120, 140, 160, 130, 245, 290, 310]);
-    setTotalEngagements(14230);
+    setAnomalyCount("428.10K");
     setSentimentIndex(-0.15);
     
     setLogs(prev => [
       `[ALERT] KRİTİK SEVİYE: İzmir × #Ulaşım Z-Score ${newAlert.zScore}'e yükseldi!`,
       `[NLP] BERTurk duygu polaritesi: ${newAlert.sentiment} (Aşırı Negatif)`,
-      `[ANALYTICS] Toplam platform negatif duygu eğilimi %15 artış gösterdi.`,
+      `[SENSE] Otomatik kök neden teşhisi üretildi. Müdahale için moderatör onayı bekleniyor.`,
       ...prev,
     ]);
   };
@@ -282,15 +270,13 @@ export default function Home() {
     };
     setMatrix(updated);
     setSelectedCell({ city: "İstanbul", topic: "#Kültür" });
-    
-    setTimelineData([120, 140, 160, 130, 185, 250, 280]);
-    setTotalEngagements(13540);
     setSentimentIndex(0.68);
+    setOptimizedRoas("4.15x");
     
     setLogs(prev => [
       `[TREND] İstanbul × #Kültür Z-Score 6.2'ye yükseldi!`,
       `[ROAS] Yapay zeka reklam fırsat optimizasyonu aktif. Potansiyel ROAS: +45%`,
-      `[ANALYTICS] #Kültür kategorisi etkileşim hacmi son 5 dakikada %110 büyüdü.`,
+      `[ADS] Kadıköy bölgesi için hazır reklam taslakları optimize edildi.`,
       ...prev,
     ]);
     
@@ -350,9 +336,10 @@ export default function Home() {
       },
     ]);
     setSelectedCell({ city: "İzmir", topic: "#Ulaşım" });
-    setTimelineData([120, 140, 160, 130, 110, 185, 235]);
-    setTotalEngagements(12840);
+    setTotalSignalCount("24.68M");
+    setAnomalyCount("312.47K");
     setSentimentIndex(0.42);
+    setOptimizedRoas("3.85x");
     setLogs([
       "[SYSTEM] Sistem normal değerlerine döndürüldü.",
       "[SYSTEM] NABIZ Core Tensör Motoru aktif. (Pencere: 15 dakika)",
@@ -453,254 +440,551 @@ export default function Home() {
 
   const activeCellData = selectedCell ? matrix[selectedCell.city][selectedCell.topic] : null;
 
-  // Curated theme definitions
-  const themeClasses = theme === "light" 
-    ? {
-        bg: "bg-[#FAF7F2] text-[#2C3E50]",
-        sidebar: "bg-white border-[#E1CDB5] shadow-sm",
-        card: "bg-white border-[#E1CDB5] shadow-sm text-[#2C3E50]",
-        innerCard: "bg-[#FFFDF9] border-[#E1CDB5]",
-        header: "bg-white/80 border-[#E1CDB5] text-[#2C3E50]",
-        footer: "border-[#E1CDB5] bg-white text-[#7F8C8D]",
-        textSec: "text-[#7F8C8D]",
-        border: "border-[#E1CDB5]",
-        activeTab: "bg-[#1B4A7D] text-white",
-        inactiveTab: "text-[#7F8C8D] hover:bg-[#FAF7F2] hover:text-[#2C3E50]",
-        input: "bg-[#FFFDF9] border-[#E1CDB5] text-[#2C3E50] focus:border-[#1B4A7D]",
-        logBg: "bg-white border-[#E1CDB5] text-[#2C3E50]",
-        cellNormal: "bg-[#FFFDF9] hover:bg-[#FAF7F2] border-[#E1CDB5] text-[#2C3E50]",
-      }
-    : {
-        bg: "bg-slate-950 text-slate-100",
-        sidebar: "bg-slate-900/50 border-slate-900 shadow-none",
-        card: "bg-slate-900/30 border-slate-900 text-slate-100",
-        innerCard: "bg-slate-950/80 border-slate-900",
-        header: "bg-slate-950/80 border-slate-900 text-slate-100",
-        footer: "border-slate-900 bg-slate-950 text-slate-600",
-        textSec: "text-slate-400",
-        border: "border-slate-900",
-        activeTab: "bg-amber-500 text-slate-950",
-        inactiveTab: "text-slate-400 hover:bg-slate-900 hover:text-slate-200",
-        input: "bg-slate-950 border-slate-900 text-slate-200 focus:border-amber-500",
-        logBg: "bg-slate-950 border-slate-900 text-slate-500",
-        cellNormal: "bg-slate-900 hover:bg-slate-850 border-slate-900 text-slate-400",
-      };
-
   return (
-    <div className={`min-h-screen flex flex-col lg:flex-row font-sans selection:bg-amber-500 selection:text-slate-900 transition-colors duration-300 ${themeClasses.bg}`}>
+    <div className={`min-h-screen flex flex-col lg:flex-row font-sans selection:bg-orange-500 selection:text-white ${
+      theme === "light" ? "bg-[#f8fafc] text-slate-900" : "bg-[#071317] text-slate-100"
+    }`}>
       
-      {/* Sidebar Navigation */}
-      <aside className={`w-full lg:w-72 border-r flex flex-col p-4 pt-6 shrink-0 transition-colors duration-300 ${themeClasses.sidebar}`}>
-        {/* Brand */}
-        <div className="flex items-center gap-3 mb-8 px-2">
-          <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-[#1B4A7D] to-[#D32F2F] flex items-center justify-center shadow-lg shadow-amber-500/10">
-            <Activity className="h-5 w-5 text-white stroke-[2.5]" />
+      {/* ADNEX-STYLE ULTRA-PREMIUM SIDEBAR */}
+      <aside className="w-full lg:w-68 bg-[#0a1e22] text-slate-300 flex flex-col p-5 shrink-0 justify-between border-r border-[#133e42]/50">
+        <div>
+          {/* Brand Header */}
+          <div className="flex items-center gap-3 mb-8 px-1">
+            <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-orange-500 to-amber-500 flex items-center justify-center shadow-lg shadow-orange-500/20">
+              <Activity className="h-6 w-6 text-white stroke-[2.5]" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="text-xl font-extrabold tracking-tight text-white">NABIZ</h1>
+                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-orange-500 text-white uppercase tracking-wider">AI</span>
+              </div>
+              <span className="text-[10px] text-teal-400/80 font-semibold block uppercase tracking-wider">
+                Karar & AdTech Motoru
+              </span>
+            </div>
           </div>
-          <div>
-            <h1 className="text-lg font-bold tracking-tight bg-gradient-to-r from-[#1B4A7D] to-[#D32F2F] bg-clip-text text-transparent">
-              NABIZ AI
-            </h1>
-            <span className="text-[10px] text-slate-400 font-semibold block uppercase tracking-wider">
-              Karar Destek
-            </span>
-          </div>
+
+          {/* Navigation Items */}
+          <nav className="flex flex-col gap-1.5">
+            <button
+              onClick={() => setCurrentPanel("dashboard")}
+              className={`w-full py-3 px-3.5 rounded-xl text-xs font-bold flex items-center gap-3.5 transition-all cursor-pointer ${
+                currentPanel === "dashboard"
+                  ? "bg-[#16383e] text-teal-300 shadow-inner"
+                  : "text-slate-400 hover:bg-[#102d33] hover:text-slate-200"
+              }`}
+            >
+              <LayoutDashboard className={`h-4.5 w-4.5 ${currentPanel === "dashboard" ? "text-teal-400" : "text-slate-400"}`} />
+              Genel Bakış (Overview)
+            </button>
+
+            <button
+              onClick={() => setCurrentPanel("ads")}
+              className={`w-full py-3 px-3.5 rounded-xl text-xs font-bold flex items-center gap-3.5 transition-all cursor-pointer ${
+                currentPanel === "ads"
+                  ? "bg-[#16383e] text-teal-300 shadow-inner"
+                  : "text-slate-400 hover:bg-[#102d33] hover:text-slate-200"
+              }`}
+            >
+              <Rocket className={`h-4.5 w-4.5 ${currentPanel === "ads" ? "text-orange-400" : "text-slate-400"}`} />
+              NABIZ-Ads Kampanyalar
+            </button>
+
+            <button
+              onClick={() => setCurrentPanel("sense")}
+              className={`w-full py-3 px-3.5 rounded-xl text-xs font-bold flex items-center gap-3.5 transition-all cursor-pointer ${
+                currentPanel === "sense"
+                  ? "bg-[#16383e] text-teal-300 shadow-inner"
+                  : "text-slate-400 hover:bg-[#102d33] hover:text-slate-200"
+              }`}
+            >
+              <Shield className={`h-4.5 w-4.5 ${currentPanel === "sense" ? "text-rose-400" : "text-slate-400"}`} />
+              NABIZ-Sense Kalkanı
+            </button>
+
+            <button
+              onClick={() => setCurrentPanel("analytics")}
+              className={`w-full py-3 px-3.5 rounded-xl text-xs font-bold flex items-center gap-3.5 transition-all cursor-pointer ${
+                currentPanel === "analytics"
+                  ? "bg-[#16383e] text-teal-300 shadow-inner"
+                  : "text-slate-400 hover:bg-[#102d33] hover:text-slate-200"
+              }`}
+            >
+              <TrendingUp className={`h-4.5 w-4.5 ${currentPanel === "analytics" ? "text-teal-400" : "text-slate-400"}`} />
+              Detaylı Analitik
+            </button>
+
+            <button
+              onClick={() => setCurrentPanel("privacy")}
+              className={`w-full py-3 px-3.5 rounded-xl text-xs font-bold flex items-center gap-3.5 transition-all cursor-pointer ${
+                currentPanel === "privacy"
+                  ? "bg-[#16383e] text-teal-300 shadow-inner"
+                  : "text-slate-400 hover:bg-[#102d33] hover:text-slate-200"
+              }`}
+            >
+              <Lock className={`h-4.5 w-4.5 ${currentPanel === "privacy" ? "text-teal-400" : "text-slate-400"}`} />
+              KVKK & Gizlilik Uyum
+            </button>
+
+            <button
+              onClick={() => setCurrentPanel("report")}
+              className={`w-full py-3 px-3.5 rounded-xl text-xs font-bold flex items-center gap-3.5 transition-all cursor-pointer ${
+                currentPanel === "report"
+                  ? "bg-[#16383e] text-teal-300 shadow-inner"
+                  : "text-slate-400 hover:bg-[#102d33] hover:text-slate-200"
+              }`}
+            >
+              <FileText className={`h-4.5 w-4.5 ${currentPanel === "report" ? "text-amber-400" : "text-slate-400"}`} />
+              Proje Teknik Raporu (HTML)
+            </button>
+          </nav>
         </div>
 
-        {/* Sidebar Nav Items */}
-        <nav className="flex flex-col gap-1.5 flex-1">
-          <button
-            onClick={() => setCurrentPanel("dashboard")}
-            className={`w-full py-2.5 px-3 rounded-xl text-xs font-bold flex items-center gap-3 transition-all cursor-pointer ${
-              currentPanel === "dashboard"
-                ? themeClasses.activeTab
-                : themeClasses.inactiveTab
-            }`}
-          >
-            <LayoutDashboard className="h-4.5 w-4.5" />
-            Genel Bakış
-          </button>
+        {/* Bottom Promo & Profile Cards (as in ADNEX image) */}
+        <div className="flex flex-col gap-4 mt-8">
+          {/* Promo Card */}
+          <div className="bg-[#102d33] border border-[#1b4d57]/60 rounded-2xl p-4 flex flex-col gap-3 relative overflow-hidden">
+            <div className="flex items-center gap-3">
+              <div className="h-9 w-9 rounded-xl bg-orange-500/20 border border-orange-500/30 flex items-center justify-center">
+                <Sparkles className="h-5 w-5 text-orange-400" />
+              </div>
+              <div>
+                <h4 className="text-xs font-bold text-white leading-tight">Milli AdTech & Kalkan</h4>
+                <span className="text-[10px] text-teal-300/80">TEKNOFEST 2026</span>
+              </div>
+            </div>
+            <p className="text-[10px] text-slate-400 leading-relaxed">
+              Z-Score ve DBSCAN anomali filtreleri ile +%34 ROAS optimizasyonu aktif.
+            </p>
+            <button
+              onClick={triggerIzmirCrisis}
+              className="w-full py-2 px-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-[11px] font-bold transition-all shadow-md shadow-orange-500/20 flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <Play className="h-3 w-3 fill-current" /> Canlı Simülasyon Başlat
+            </button>
+          </div>
 
-          <button
-            onClick={() => setCurrentPanel("analytics")}
-            className={`w-full py-2.5 px-3 rounded-xl text-xs font-bold flex items-center gap-3 transition-all cursor-pointer ${
-              currentPanel === "analytics"
-                ? themeClasses.activeTab
-                : themeClasses.inactiveTab
-            }`}
-          >
-            <TrendingUp className="h-4.5 w-4.5" />
-            Detaylı Analitik
-          </button>
-
-          <button
-            onClick={() => setCurrentPanel("sense")}
-            className={`w-full py-2.5 px-3 rounded-xl text-xs font-bold flex items-center gap-3 transition-all cursor-pointer ${
-              currentPanel === "sense"
-                ? themeClasses.activeTab
-                : themeClasses.inactiveTab
-            }`}
-          >
-            <Shield className="h-4.5 w-4.5" />
-            NABIZ-Sense Güvenlik
-          </button>
-
-          <button
-            onClick={() => setCurrentPanel("ads")}
-            className={`w-full py-2.5 px-3 rounded-xl text-xs font-bold flex items-center gap-3 transition-all cursor-pointer ${
-              currentPanel === "ads"
-                ? themeClasses.activeTab
-                : themeClasses.inactiveTab
-            }`}
-          >
-            <Award className="h-4.5 w-4.5" />
-            NABIZ-Ads Reklam Sihirbazı
-          </button>
-
-          <button
-            onClick={() => setCurrentPanel("privacy")}
-            className={`w-full py-2.5 px-3 rounded-xl text-xs font-bold flex items-center gap-3 transition-all cursor-pointer ${
-              currentPanel === "privacy"
-                ? themeClasses.activeTab
-                : themeClasses.inactiveTab
-            }`}
-          >
-            <Lock className="h-4.5 w-4.5" />
-            KVKK & Gizlilik Uyum
-          </button>
-
-          <button
-            onClick={() => setCurrentPanel("report")}
-            className={`w-full py-2.5 px-3 rounded-xl text-xs font-bold flex items-center gap-3 transition-all cursor-pointer ${
-              currentPanel === "report"
-                ? themeClasses.activeTab
-                : themeClasses.inactiveTab
-            }`}
-          >
-            <FileText className="h-4.5 w-4.5" />
-            Proje Raporu (HTML)
-          </button>
-        </nav>
-
-        {/* Sidebar Footer badges */}
-        <div className={`pt-4 border-t flex flex-col gap-2 ${themeClasses.border}`}>
-          <span className="text-[9px] font-bold py-1 px-2.5 rounded-lg bg-[#1B4A7D]/10 text-[#1B4A7D] border border-[#1B4A7D]/20 flex items-center gap-1.5 justify-center">
-            <span className="h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse"></span>
-            TEKNOFEST 2026
-          </span>
-          <span className="text-[9px] font-bold text-center py-1 px-2.5 rounded-lg bg-[#D32F2F]/10 text-[#D32F2F] border border-[#D32F2F]/10">
-            Sadir Pehlivan (#990060)
-          </span>
+          {/* User Profile Pill */}
+          <div className="flex items-center justify-between p-2.5 rounded-xl bg-[#0e272c] border border-[#16383e]">
+            <div className="flex items-center gap-2.5">
+              <div className="h-8 w-8 rounded-full bg-teal-600 flex items-center justify-center font-bold text-xs text-white">
+                SP
+              </div>
+              <div className="text-left">
+                <h5 className="text-xs font-bold text-white leading-none">Sadir Pehlivan</h5>
+                <span className="text-[9px] text-slate-400 font-medium">Takım ID: #990060</span>
+              </div>
+            </div>
+            <ChevronDown className="h-4 w-4 text-slate-500" />
+          </div>
         </div>
       </aside>
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0">
+      {/* MAIN CONTENT AREA */}
+      <main className="flex-1 flex flex-col min-w-0 overflow-y-auto">
         
-        {/* Header */}
-        <header className={`border-b backdrop-blur-md px-6 py-4 flex items-center justify-between transition-colors duration-300 ${themeClasses.header}`}>
-          <h2 className="text-sm font-bold uppercase tracking-wider">
-            {currentPanel === "dashboard" && "Genel Bakış Kontrol Panosu"}
-            {currentPanel === "analytics" && "Detaylı Metrik & Zaman Serisi Analitiği"}
-            {currentPanel === "sense" && "NABIZ-Sense Siber Güvenlik & Moderasyon"}
-            {currentPanel === "ads" && "NABIZ-Ads Doğal Dil Güdümlü Reklam"}
-            {currentPanel === "privacy" && "KVKK & Sıfır Profil Telemetrisi"}
-            {currentPanel === "report" && "Proje Teknik Raporu (HTML Belgesi)"}
-          </h2>
-          
-          <div className="flex items-center gap-4">
-            {/* Realtime Wave mini-indicator */}
-            <div className="hidden md:flex items-center gap-1.5 h-6 bg-slate-900/10 px-2 rounded-lg border border-slate-900/5">
-              <svg className="w-16 h-4 text-emerald-500" viewBox="0 0 40 10" preserveAspectRatio="none">
-                <path
-                  d={`M 0 5 ${wavePoints2.slice(-10).map((p, i) => `L ${(i / 9) * 40} ${10 - (p/4)}`).join(" ")}`}
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.2"
-                />
-              </svg>
-              <span className="text-[8px] text-emerald-600 dark:text-emerald-400 font-bold uppercase">Signal</span>
+        {/* TOP HEADER (as in ADNEX image) */}
+        <header className={`px-8 py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b ${
+          theme === "light" ? "bg-white border-slate-200/80" : "bg-[#0b1d22] border-slate-800"
+        }`}>
+          <div>
+            <div className="flex items-center gap-2">
+              <h2 className="text-2xl font-extrabold tracking-tight">Hoş Geldiniz, Sadir Pehlivan Takımı!</h2>
+              <span className="text-xl">👋</span>
+            </div>
+            <p className={`text-xs font-medium mt-1 ${theme === "light" ? "text-slate-500" : "text-slate-400"}`}>
+              NSosyal Çok Eksenli Tensör ve Anomali Karar Destek Platformu Canlı Panosu
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3 self-end sm:self-auto">
+            {/* Date Range Selector Pill */}
+            <div className={`flex items-center gap-2 px-3.5 py-2 rounded-xl border text-xs font-semibold shadow-sm ${
+              theme === "light" ? "bg-white border-slate-200 text-slate-700" : "bg-[#0f282e] border-slate-700 text-slate-200"
+            }`}>
+              <Calendar className="h-3.5 w-3.5 text-slate-400" />
+              <span>31 Ağustos – 14 Eylül 2026</span>
+              <ChevronDown className="h-3.5 w-3.5 text-slate-400 ml-1" />
             </div>
 
-            {/* Theme Toggle Button */}
+            {/* Dark/Light Toggle */}
             <button
               onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-              className={`p-2 rounded-xl border hover:bg-[#FAF7F2] dark:hover:bg-slate-900 transition-all cursor-pointer ${themeClasses.border}`}
+              className={`p-2 rounded-xl border transition-all cursor-pointer ${
+                theme === "light" ? "bg-white border-slate-200 text-slate-700 hover:bg-slate-50" : "bg-[#0f282e] border-slate-700 text-amber-400 hover:bg-[#15343c]"
+              }`}
               title={theme === "light" ? "Karanlık Moda Geç" : "Aydınlık Moda Geç"}
             >
-              {theme === "light" ? (
-                <Moon className="h-4.5 w-4.5 text-[#2C3E50]" />
-              ) : (
-                <Sun className="h-4.5 w-4.5 text-amber-400" />
-              )}
+              {theme === "light" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
             </button>
 
-            <div className="flex items-center gap-2">
-              <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></div>
-              <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold tracking-wider">TENSÖR MOTORU</span>
-            </div>
+            {/* Primary Action Button */}
+            <button
+              onClick={() => setCurrentPanel("report")}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#0a1e22] hover:bg-[#133e42] text-white text-xs font-bold shadow-md transition-all cursor-pointer"
+            >
+              <Download className="h-3.5 w-3.5" />
+              <span>Raporu İncele</span>
+            </button>
           </div>
         </header>
 
-        {/* Content Screens */}
-        <div className="flex-1 p-6 overflow-y-auto">
+        {/* MAIN BODY CONTENT */}
+        <div className="p-8 flex flex-col gap-8 max-w-7xl w-full mx-auto">
           
-          {/* PANEL 1: OVERVIEW / DASHBOARD */}
+          {/* 4 TOP KPI SUMMARY CARDS (as in ADNEX image) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            
+            {/* KPI 1: Total Sinyal (Impressions) */}
+            <div className={`p-5 rounded-2xl border flex flex-col justify-between transition-all ${
+              theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
+            }`}>
+              <div className="flex items-center justify-between mb-3">
+                <div className="h-10 w-10 rounded-xl bg-[#0a1e22] text-teal-400 flex items-center justify-center">
+                  <Eye className="h-5 w-5 stroke-[2.2]" />
+                </div>
+                <span className="text-[11px] font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-full flex items-center gap-0.5">
+                  ↑ 18.6%
+                </span>
+              </div>
+              <div>
+                <span className="text-xs font-bold text-slate-400 block mb-1">Toplam Sinyal Hacmi</span>
+                <span className="text-2xl font-black tracking-tight">{totalSignalCount}</span>
+                <span className="text-[10px] text-slate-400 block mt-1 font-medium">↑ 18.6% vs son 15 dk</span>
+              </div>
+            </div>
+
+            {/* KPI 2: Anomali & Kriz (Clicks) */}
+            <div className={`p-5 rounded-2xl border flex flex-col justify-between transition-all ${
+              theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
+            }`}>
+              <div className="flex items-center justify-between mb-3">
+                <div className="h-10 w-10 rounded-xl bg-orange-500 text-white flex items-center justify-center shadow-md shadow-orange-500/20">
+                  <MousePointer className="h-5 w-5 stroke-[2.2]" />
+                </div>
+                <span className="text-[11px] font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-full flex items-center gap-0.5">
+                  ↑ 22.4%
+                </span>
+              </div>
+              <div>
+                <span className="text-xs font-bold text-slate-400 block mb-1">Saptanan Anomali & Kriz</span>
+                <span className="text-2xl font-black tracking-tight">{anomalyCount}</span>
+                <span className="text-[10px] text-slate-400 block mt-1 font-medium">↑ 22.4% vs baz çizgi</span>
+              </div>
+            </div>
+
+            {/* KPI 3: Ortalama Duygu (Avg CTR) */}
+            <div className={`p-5 rounded-2xl border flex flex-col justify-between transition-all ${
+              theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
+            }`}>
+              <div className="flex items-center justify-between mb-3">
+                <div className="h-10 w-10 rounded-xl bg-[#0f2b2f] text-emerald-400 flex items-center justify-center">
+                  <Activity className="h-5 w-5 stroke-[2.2]" />
+                </div>
+                <span className="text-[11px] font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-full flex items-center gap-0.5">
+                  ↑ 6.3%
+                </span>
+              </div>
+              <div>
+                <span className="text-xs font-bold text-slate-400 block mb-1">Ortalama Semantik Duygu</span>
+                <span className={`text-2xl font-black tracking-tight ${sentimentIndex < 0 ? "text-rose-500" : "text-emerald-600"}`}>
+                  {sentimentIndex >= 0 ? "+" : ""}{sentimentIndex.toFixed(2)}
+                </span>
+                <span className="text-[10px] text-slate-400 block mt-1 font-medium">↑ 6.3% vs son 1 saat</span>
+              </div>
+            </div>
+
+            {/* KPI 4: Optimize Edilen ROAS (Total Spend) */}
+            <div className={`p-5 rounded-2xl border flex flex-col justify-between transition-all ${
+              theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
+            }`}>
+              <div className="flex items-center justify-between mb-3">
+                <div className="h-10 w-10 rounded-xl bg-orange-600 text-white flex items-center justify-center shadow-md shadow-orange-600/20">
+                  <Award className="h-5 w-5 stroke-[2.2]" />
+                </div>
+                <span className="text-[11px] font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-full flex items-center gap-0.5">
+                  +34%
+                </span>
+              </div>
+              <div>
+                <span className="text-xs font-bold text-slate-400 block mb-1">Optimize Edilmiş ROAS</span>
+                <span className="text-2xl font-black tracking-tight text-orange-600">{optimizedRoas}</span>
+                <span className="text-[10px] text-slate-400 block mt-1 font-medium">↓ 4.8% Reklam İsraf Azalımı</span>
+              </div>
+            </div>
+
+          </div>
+
+          {/* VIEW 1: OVERVIEW / DASHBOARD (Matching ADNEX 3-Card Grid + Multi-Axis Matrix + Bottom Charts) */}
           {currentPanel === "dashboard" && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-              
-              {/* Heat Matrix Pane */}
-              <div className={`lg:col-span-8 border rounded-2xl p-6 relative transition-colors duration-300 ${themeClasses.card}`}>
-                <div className="absolute top-0 right-0 h-40 w-40 bg-gradient-to-br from-[#1B4A7D]/5 to-[#D32F2F]/0 rounded-full blur-2xl pointer-events-none"></div>
+            <>
+              {/* 3 FOCUS HIGHLIGHT CARDS (as in ADNEX image) */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-2">
-                    <Zap className="h-5 w-5 text-amber-500 animate-bounce" />
-                    <h3 className="font-bold text-sm">Çok Eksenli Karar Matrisi</h3>
+                {/* Channel Card 1: İzmir Ulaşım (Banner Ads equivalent) */}
+                <div className={`p-6 rounded-2xl border flex flex-col justify-between transition-all ${
+                  theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
+                }`}>
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-2.5">
+                        <div className="h-8 w-8 rounded-lg bg-teal-500/10 text-teal-600 flex items-center justify-center">
+                          <MapPin className="h-4 w-4" />
+                        </div>
+                        <h4 className="font-bold text-sm">İzmir Ulaşım Odağı</h4>
+                      </div>
+                      <button onClick={triggerIzmirCrisis} className="text-xs font-bold text-teal-600 hover:text-teal-700 flex items-center gap-1 cursor-pointer">
+                        Krizi Tetikle →
+                      </button>
+                    </div>
+
+                    <div className="mb-4">
+                      <span className="text-xs text-slate-400 font-bold block">İncelenen Sinyal</span>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-2xl font-extrabold tracking-tight">12.45M</span>
+                        <span className="text-xs font-bold text-emerald-600">↑ 19.3%</span>
+                      </div>
+                    </div>
+
+                    {/* Smooth SVG Spline Sparkline */}
+                    <div className="h-20 w-full my-2">
+                      <svg className="w-full h-full text-teal-500" viewBox="0 0 100 40" preserveAspectRatio="none">
+                        <path
+                          d="M 0 30 Q 15 15, 30 25 T 60 18 T 85 10 T 100 12"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        />
+                        <circle cx="85" cy="10" r="3" fill="currentColor" />
+                      </svg>
+                    </div>
+
+                    {/* 3 Sub-metrics */}
+                    <div className="grid grid-cols-3 gap-2 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs">
+                      <div>
+                        <span className="text-slate-400 block text-[10px]">Hacim</span>
+                        <strong className="font-bold">162.45K</strong>
+                        <span className="text-[9px] text-emerald-600 block">↑ 21.1%</span>
+                      </div>
+                      <div>
+                        <span className="text-slate-400 block text-[10px]">Z-Score</span>
+                        <strong className="font-bold text-rose-500">+3.92 (Kriz)</strong>
+                        <span className="text-[9px] text-rose-500 block">3σ Norm Dışı</span>
+                      </div>
+                      <div>
+                        <span className="text-slate-400 block text-[10px]">Müdahale</span>
+                        <strong className="font-bold text-teal-600">32 Saniye</strong>
+                        <span className="text-[9px] text-emerald-600 block">Otomatik</span>
+                      </div>
+                    </div>
                   </div>
-                  
-                  <div className="flex gap-4 text-[10px]">
-                    <span className="flex items-center gap-1">
-                      <span className="h-2 w-2 rounded bg-slate-800/10 border border-slate-700/20"></span> Normal
-                    </span>
-                    <span className="flex items-center gap-1 text-rose-500">
-                      <span className="h-2 w-2 rounded bg-rose-950 border border-rose-500 animate-pulse"></span> Kriz (Z ≥ 3.0)
-                    </span>
-                    <span className="flex items-center gap-1 text-[#F4B41A]">
-                      <span className="h-2 w-2 rounded bg-amber-950/20 border border-amber-500"></span> Fırsat
-                    </span>
+
+                  <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center text-[11px]">
+                    <span className="text-slate-400">Öncelikli Aksiyon</span>
+                    <span className="font-bold text-teal-700 dark:text-teal-400">Topluluk Bildirimi Çık</span>
                   </div>
                 </div>
 
+                {/* Channel Card 2: Kadıköy Trendi (Login Ads equivalent) */}
+                <div className={`p-6 rounded-2xl border flex flex-col justify-between transition-all ${
+                  theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
+                }`}>
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-2.5">
+                        <div className="h-8 w-8 rounded-lg bg-orange-500/10 text-orange-600 flex items-center justify-center">
+                          <Flame className="h-4 w-4" />
+                        </div>
+                        <h4 className="font-bold text-sm">Kadıköy Kahve Trendi</h4>
+                      </div>
+                      <button onClick={triggerKadikoyOpportunity} className="text-xs font-bold text-orange-600 hover:text-orange-700 flex items-center gap-1 cursor-pointer">
+                        Fırsatı Aç →
+                      </button>
+                    </div>
+
+                    <div className="mb-4">
+                      <span className="text-xs text-slate-400 font-bold block">İncelenen Sinyal</span>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-2xl font-extrabold tracking-tight">7.83M</span>
+                        <span className="text-xs font-bold text-emerald-600">↑ 16.8%</span>
+                      </div>
+                    </div>
+
+                    {/* Smooth SVG Spline Sparkline */}
+                    <div className="h-20 w-full my-2">
+                      <svg className="w-full h-full text-orange-500" viewBox="0 0 100 40" preserveAspectRatio="none">
+                        <path
+                          d="M 0 25 Q 20 35, 40 22 T 70 12 T 90 20 T 100 15"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        />
+                        <circle cx="70" cy="12" r="3" fill="currentColor" />
+                      </svg>
+                    </div>
+
+                    {/* 3 Sub-metrics */}
+                    <div className="grid grid-cols-3 gap-2 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs">
+                      <div>
+                        <span className="text-slate-400 block text-[10px]">Trend Hacmi</span>
+                        <strong className="font-bold">98.21K</strong>
+                        <span className="text-[9px] text-emerald-600 block">↑ 20.7%</span>
+                      </div>
+                      <div>
+                        <span className="text-slate-400 block text-[10px]">ROAS Artışı</span>
+                        <strong className="font-bold text-orange-600">+%34</strong>
+                        <span className="text-[9px] text-emerald-600 block">AI Eşleme</span>
+                      </div>
+                      <div>
+                        <span className="text-slate-400 block text-[10px]">Hedef Kitle</span>
+                        <strong className="font-bold">18-28 Yaş</strong>
+                        <span className="text-[9px] text-teal-600 block">#Kahve</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center text-[11px]">
+                    <span className="text-slate-400">AI Reklam Taslağı</span>
+                    <span className="font-bold text-orange-600">Cold Brew Reels Yayını</span>
+                  </div>
+                </div>
+
+                {/* Channel Card 3: Bursa Bot Filtresi (Swipe Ads equivalent) */}
+                <div className={`p-6 rounded-2xl border flex flex-col justify-between transition-all ${
+                  theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
+                }`}>
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-2.5">
+                        <div className="h-8 w-8 rounded-lg bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
+                          <ShieldCheck className="h-4 w-4" />
+                        </div>
+                        <h4 className="font-bold text-sm">Bursa Bot İzolasyonu</h4>
+                      </div>
+                      <button onClick={triggerBursaBotAttack} className="text-xs font-bold text-emerald-600 hover:text-emerald-700 flex items-center gap-1 cursor-pointer">
+                        Saldırıyı Simüle Et →
+                      </button>
+                    </div>
+
+                    <div className="mb-4">
+                      <span className="text-xs text-slate-400 font-bold block">İncelenen Sinyal</span>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-2xl font-extrabold tracking-tight">4.40M</span>
+                        <span className="text-xs font-bold text-emerald-600">↑ 17.2%</span>
+                      </div>
+                    </div>
+
+                    {/* Smooth SVG Spline Sparkline */}
+                    <div className="h-20 w-full my-2">
+                      <svg className="w-full h-full text-emerald-500" viewBox="0 0 100 40" preserveAspectRatio="none">
+                        <path
+                          d="M 0 20 Q 25 30, 50 15 T 80 18 T 100 8"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        />
+                        <circle cx="100" cy="8" r="3" fill="currentColor" />
+                      </svg>
+                    </div>
+
+                    {/* 3 Sub-metrics */}
+                    <div className="grid grid-cols-3 gap-2 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs">
+                      <div>
+                        <span className="text-slate-400 block text-[10px]">Elenen Bot</span>
+                        <strong className="font-bold">51.81K</strong>
+                        <span className="text-[9px] text-emerald-600 block">DBSCAN</span>
+                      </div>
+                      <div>
+                        <span className="text-slate-400 block text-[10px]">İtibar w_k</span>
+                        <strong className="font-bold">&lt; 0.10</strong>
+                        <span className="text-[9px] text-rose-500 block">Sıfıra İndi</span>
+                      </div>
+                      <div>
+                        <span className="text-slate-400 block text-[10px]">Filtreleme</span>
+                        <strong className="font-bold text-emerald-600">%100 Temiz</strong>
+                        <span className="text-[9px] text-emerald-600 block">Organik Korundu</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center text-[11px]">
+                    <span className="text-slate-400">Güvenlik Motoru</span>
+                    <span className="font-bold text-emerald-600">SHA-256 Anonimleştirme</span>
+                  </div>
+                </div>
+
+              </div>
+
+              {/* DYNAMIC MULTI-AXIS HEATMAP MATRIX & SIMULATION DECK */}
+              <div className={`p-6 rounded-2xl border transition-all ${
+                theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
+              }`}>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                  <div>
+                    <h3 className="font-extrabold text-base flex items-center gap-2">
+                      <Zap className="h-5 w-5 text-orange-500" />
+                      Çok Eksenli Anomali Matrisi (NABIZ Core)
+                    </h3>
+                    <p className="text-xs text-slate-400 mt-0.5">
+                      Şehirler ve konu kategorileri arasındaki anlık tensör izdüşümü M<sub>i,j</sub>(t)
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={resetAll}
+                      className={`text-xs px-3 py-1.5 rounded-xl border flex items-center gap-1.5 font-bold transition-all cursor-pointer ${
+                        theme === "light" ? "bg-slate-100 border-slate-200 text-slate-700 hover:bg-slate-200" : "bg-[#102d33] border-slate-700 text-slate-300 hover:bg-[#153840]"
+                      }`}
+                    >
+                      <RefreshCw className="h-3 w-3" /> Sıfırla
+                    </button>
+                    <div className="flex items-center gap-3 text-xs">
+                      <span className="flex items-center gap-1.5 text-slate-500">
+                        <span className="h-2.5 w-2.5 rounded-full bg-slate-200 dark:bg-slate-700"></span> Normal
+                      </span>
+                      <span className="flex items-center gap-1.5 text-rose-500 font-bold">
+                        <span className="h-2.5 w-2.5 rounded-full bg-rose-500 animate-pulse"></span> Kriz (Z ≥ 3.0)
+                      </span>
+                      <span className="flex items-center gap-1.5 text-orange-500 font-bold">
+                        <span className="h-2.5 w-2.5 rounded-full bg-orange-500"></span> Fırsat (ROAS +34%)
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Matrix Grid Table */}
                 <div className="overflow-x-auto">
-                  <div className="min-w-[500px]">
-                    {/* Headers */}
-                    <div className="grid grid-cols-6 gap-2 mb-2 border-b pb-2 text-center text-xs font-semibold text-slate-400">
-                      <div className="text-left pl-2">Şehir</div>
+                  <div className="min-w-[600px]">
+                    <div className="grid grid-cols-6 gap-3 mb-3 text-center text-xs font-bold text-slate-400 border-b border-slate-100 dark:border-slate-800 pb-2">
+                      <div className="text-left pl-2">Bölge / Şehir</div>
                       <div>#Ulaşım</div>
                       <div>#Teknoloji</div>
                       <div>#Spor</div>
                       <div>#Kültür</div>
                       <div>#Ekonomi</div>
                     </div>
-                    {/* Grid Rows */}
+
                     {Object.keys(matrix).map(city => (
-                      <div key={city} className="grid grid-cols-6 gap-2 mb-2 items-center text-center">
-                        <div className="text-left font-bold text-sm flex items-center gap-1">
-                          <MapPin className="h-3.5 w-3.5 text-slate-400" />
+                      <div key={city} className="grid grid-cols-6 gap-3 mb-3 items-center text-center">
+                        <div className="text-left font-bold text-sm flex items-center gap-1.5 pl-1">
+                          <MapPin className="h-4 w-4 text-slate-400" />
                           {city}
                         </div>
 
                         {Object.keys(matrix[city]).map(topic => {
                           const cell = matrix[city][topic];
-                          let cellClass = themeClasses.cellNormal;
-                          let label = null;
+                          let cellStyle = theme === "light"
+                            ? "bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-800"
+                            : "bg-[#102d33] hover:bg-[#153840] border-[#1b4d57] text-slate-200";
+                          let badge = null;
 
                           if (cell.isAnomaly) {
-                            cellClass = "bg-rose-500/10 border-rose-500 text-rose-600 dark:text-rose-200 animate-pulse";
-                            label = <span className="absolute top-1 right-1 text-[8px] font-bold bg-rose-600 text-white px-1 rounded">⚠ Z:{cell.zScore}</span>;
+                            cellStyle = "bg-rose-500/10 border-rose-500 text-rose-600 shadow-md shadow-rose-500/10 animate-pulse";
+                            badge = <span className="absolute top-1 right-1 text-[8px] font-black bg-rose-600 text-white px-1.5 py-0.2 rounded-full">⚠ Z: {cell.zScore}</span>;
                           } else if (cell.isOpportunity) {
-                            cellClass = "bg-amber-500/10 border-amber-500 text-amber-600 dark:text-amber-200";
-                            label = <span className="absolute top-1 right-1 text-[8px] font-bold bg-amber-500 text-slate-950 px-1 rounded">🎯 ROAS</span>;
+                            cellStyle = "bg-orange-500/10 border-orange-500 text-orange-600 shadow-md shadow-orange-500/10";
+                            badge = <span className="absolute top-1 right-1 text-[8px] font-black bg-orange-500 text-white px-1.5 py-0.2 rounded-full">🎯 FIRSAT</span>;
                           }
 
                           const isSelected = selectedCell?.city === city && selectedCell?.topic === topic;
@@ -709,13 +993,13 @@ export default function Home() {
                             <button
                               key={topic}
                               onClick={() => setSelectedCell({ city, topic })}
-                              className={`h-16 rounded-xl border flex flex-col justify-center items-center relative transition-all cursor-pointer ${cellClass} ${
-                                isSelected ? "ring-2 ring-[#1B4A7D] scale-[1.02] shadow-md" : ""
+                              className={`h-16 rounded-xl border flex flex-col justify-center items-center relative transition-all cursor-pointer ${cellStyle} ${
+                                isSelected ? "ring-2 ring-teal-500 scale-[1.03]" : ""
                               }`}
                             >
-                              {label}
-                              <span className="text-xs font-bold">{cell.volume}</span>
-                              <span className="text-[10px] text-slate-500">Norm: {cell.mean}</span>
+                              {badge}
+                              <span className="text-sm font-black">{cell.volume}</span>
+                              <span className="text-[10px] text-slate-400">Norm: {cell.mean}</span>
                             </button>
                           );
                         })}
@@ -724,403 +1008,270 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Selected Cell details */}
+                {/* Selected Cell Drawer */}
                 {selectedCell && activeCellData && (
-                  <div className={`mt-6 p-4 rounded-xl border flex flex-col md:flex-row md:items-center justify-between gap-4 transition-colors duration-300 ${themeClasses.innerCard}`}>
+                  <div className={`mt-6 p-4 rounded-xl border flex flex-col md:flex-row md:items-center justify-between gap-4 ${
+                    theme === "light" ? "bg-slate-50 border-slate-200" : "bg-[#0b1d22] border-slate-800"
+                  }`}>
                     <div>
                       <div className="flex items-center gap-2 mb-1.5">
-                        <span className="font-bold text-xs text-slate-400">Detaylar:</span>
-                        <span className="text-[10px] px-2 py-0.5 rounded bg-slate-900/10 dark:bg-slate-900 text-slate-400 border border-slate-800/10">
+                        <span className="font-bold text-xs text-slate-400">Seçili Koordinat:</span>
+                        <span className="text-xs px-2.5 py-0.5 rounded-lg bg-teal-500/10 text-teal-600 font-bold">
                           {selectedCell.city}
                         </span>
-                        <span className="text-[10px] px-2 py-0.5 rounded bg-slate-900/10 dark:bg-slate-900 text-amber-500 border border-slate-800/10 font-mono">
+                        <span className="text-xs px-2.5 py-0.5 rounded-lg bg-orange-500/10 text-orange-600 font-bold">
                           {selectedCell.topic}
                         </span>
                       </div>
-                      <p className="text-xs text-slate-400 leading-relaxed max-w-xl">
-                        {activeCellData.details || "Matris hücresi olağan sınırlar içinde hareket etmektedir. Herhangi bir kriz veya anomali tespit edilmemiştir."}
+                      <p className="text-xs text-slate-500 dark:text-slate-400 max-w-2xl leading-relaxed">
+                        {activeCellData.details || "Matris hücresi olağan istatistiksel normlar içinde çalışmaktadır. Z-Score sapması kritik eşik olan 3.0'ın altındadır."}
                       </p>
                     </div>
-                    <div className="text-right text-xs">
+
+                    <div className="flex items-center gap-6 text-xs">
                       <div>
-                        <span className="text-slate-500">Z-Score:</span>{" "}
-                        <span className={`font-mono font-bold ${activeCellData.zScore >= 3.0 ? "text-rose-500" : "text-slate-400"}`}>
+                        <span className="text-slate-400 block text-[10px]">Z-Score</span>
+                        <strong className={`font-mono text-sm ${activeCellData.zScore >= 3.0 ? "text-rose-500 font-black" : ""}`}>
                           {activeCellData.zScore >= 0 ? "+" : ""}{activeCellData.zScore.toFixed(2)}
-                        </span>
+                        </strong>
                       </div>
                       <div>
-                        <span className="text-slate-500">Duygu Skoru:</span>{" "}
-                        <span className={`font-mono font-bold ${activeCellData.sentiment < 0 ? "text-rose-500" : activeCellData.sentiment > 0 ? "text-amber-500" : "text-slate-500"}`}>
+                        <span className="text-slate-400 block text-[10px]">Duygu Polaritesi (BERTurk)</span>
+                        <strong className={`font-mono text-sm ${activeCellData.sentiment < 0 ? "text-rose-500 font-black" : "text-emerald-600 font-black"}`}>
                           {activeCellData.sentiment >= 0 ? "+" : ""}{activeCellData.sentiment.toFixed(2)}
-                        </span>
+                        </strong>
                       </div>
                     </div>
                   </div>
                 )}
               </div>
 
-              {/* Simulation Side Center */}
-              <div className="lg:col-span-4 flex flex-col gap-6">
+              {/* BOTTOM ROW: IMPRESSIONS OVER TIME & DONUT CHART (Matching ADNEX image) */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 
-                {/* Event Simulation */}
-                <div className={`border rounded-2xl p-6 transition-colors duration-300 ${themeClasses.card}`}>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-2">
-                      <Play className="h-5 w-5 text-rose-500 animate-pulse" />
-                      <h4 className="font-bold text-sm">Olay Simülasyon Merkezi</h4>
-                    </div>
-                    <button onClick={resetAll} className="text-[10px] px-2.5 py-1 rounded bg-slate-900/10 dark:bg-slate-900 border border-slate-800/10 text-slate-400 hover:text-slate-200 cursor-pointer">
-                      Sıfırla
-                    </button>
-                  </div>
-                  
-                  <div className="flex flex-col gap-2.5">
-                    <button
-                      onClick={triggerIzmirCrisis}
-                      className="w-full text-left p-3 rounded-xl border border-rose-500/20 bg-rose-500/5 hover:bg-rose-500/10 text-rose-700 dark:text-rose-200 transition-all cursor-pointer group"
-                    >
-                      <span className="text-xs font-bold block mb-1">🚦 İzmir Ulaşım Krizi (Kriz)</span>
-                      <span className="text-[10px] text-slate-400 leading-relaxed block">
-                        Z = +3.92 Kriz anomalisini tetikleyerek Sense alarmını aktifleştir.
-                      </span>
-                    </button>
-
-                    <button
-                      onClick={triggerKadikoyOpportunity}
-                      className="w-full text-left p-3 rounded-xl border border-amber-500/20 bg-amber-500/5 hover:bg-amber-500/10 text-amber-700 dark:text-amber-200 transition-all cursor-pointer group"
-                    >
-                      <span className="text-xs font-bold block mb-1">🎯 Kadıköy Kahve Trendi (Fırsat)</span>
-                      <span className="text-[10px] text-slate-400 leading-relaxed block">
-                        Matris üzerinde ROAS artıran AdTech fırsatı ve yönlendirmesini aktifleştir.
-                      </span>
-                    </button>
-
-                    <button
-                      onClick={triggerBursaBotAttack}
-                      className="w-full text-left p-3 rounded-xl border border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10 text-blue-700 dark:text-blue-200 transition-all cursor-pointer group"
-                    >
-                      <span className="text-xs font-bold block mb-1">🤖 Bursa Bot Saldırısı (Filtre)</span>
-                      <span className="text-[10px] text-slate-400 leading-relaxed block">
-                        DBSCAN yoğunluk kümelemesi ile bot noise hesaplarını engelle.
-                      </span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Real-time flowing wave chart */}
-                <div className={`border rounded-2xl p-6 transition-colors duration-300 ${themeClasses.card}`}>
-                  <h4 className="font-bold text-xs uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <Activity className="h-4.5 w-4.5 text-emerald-500 animate-pulse" /> Canlı Veri Giriş Dalgası
-                  </h4>
-                  <div className="h-20 flex items-end">
-                    <svg className="w-full h-full text-amber-500" viewBox="0 0 100 40" preserveAspectRatio="none">
-                      <path
-                        d={`M 0 40 ${wavePoints.map((p, i) => `L ${(i / (wavePoints.length - 1)) * 100} ${40 - p}`).join(" ")} L 100 40 Z`}
-                        fill="url(#wave-gradient)"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        className="transition-all duration-300"
-                      />
-                      <defs>
-                        <linearGradient id="wave-gradient" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="currentColor" stopOpacity="0.25"/>
-                          <stop offset="100%" stopColor="currentColor" stopOpacity="0"/>
-                        </linearGradient>
-                      </defs>
-                    </svg>
-                  </div>
-                  <div className="flex justify-between text-[8px] text-slate-500 mt-1 font-mono uppercase tracking-wider">
-                    <span>-10s</span>
-                    <span>Aktif Olay Akışı</span>
-                    <span>Şimdi</span>
-                  </div>
-                </div>
-
-                {/* Console */}
-                <div className={`border rounded-xl p-4 font-mono text-[10px] transition-colors duration-300 ${themeClasses.logBg}`}>
-                  <div className="flex items-center justify-between mb-2 text-slate-400 font-bold border-b pb-1">
-                    <span>SİSTEM EVENT LOGS</span>
-                    <span className="text-[9px] text-amber-500">LIVE</span>
-                  </div>
-                  <div className="h-24 overflow-y-auto flex flex-col gap-1 pr-2">
-                    {logs.map((log, idx) => (
-                      <div key={idx}>
-                        <span className="text-slate-400/60">[{new Date().toLocaleTimeString("tr-TR")}]</span> {log}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
-          )}
-
-          {/* PANEL 2: DETAILED ANALYTICS */}
-          {currentPanel === "analytics" && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-              
-              {/* Stat Cards */}
-              <div className="lg:col-span-12 grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className={`p-5 rounded-2xl border flex flex-col justify-between transition-colors duration-300 ${themeClasses.card}`}>
-                  <span className="text-xs text-slate-500 font-semibold block mb-1">Toplam Etkileşim Hacmi</span>
-                  <div className="flex items-end justify-between">
-                    <span className="text-xl font-bold">{totalEngagements.toLocaleString()}</span>
-                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-semibold">+8.4%</span>
-                  </div>
-                </div>
-
-                <div className={`p-5 rounded-2xl border flex flex-col justify-between transition-colors duration-300 ${themeClasses.card}`}>
-                  <span className="text-xs text-slate-500 font-semibold block mb-1">Ortalama Semantik Duygu</span>
-                  <div className="flex items-end justify-between">
-                    <span className={`text-xl font-bold ${sentimentIndex < 0 ? "text-rose-500" : "text-amber-500"}`}>
-                      {sentimentIndex >= 0 ? "+" : ""}{sentimentIndex.toFixed(2)}
-                    </span>
-                    <span className="text-[10px] text-slate-500">Scale: -1 / +1</span>
-                  </div>
-                </div>
-
-                <div className={`p-5 rounded-2xl border flex flex-col justify-between transition-colors duration-300 ${themeClasses.card}`}>
-                  <span className="text-xs text-slate-500 font-semibold block mb-1">Engellenen Bot Hesabı</span>
-                  <div className="flex items-end justify-between">
-                    <span className="text-xl font-bold">{botBlockedCount}</span>
-                    <span className="text-[10px] text-rose-500 font-semibold">DBSCAN Aktif</span>
-                  </div>
-                </div>
-
-                <div className={`p-5 rounded-2xl border flex flex-col justify-between transition-colors duration-300 ${themeClasses.card}`}>
-                  <span className="text-xs text-slate-500 font-semibold block mb-1">Aktif AdTech Kampanyaları</span>
-                  <div className="flex items-end justify-between">
-                    <span className="text-xl font-bold">{campaigns.length}</span>
-                    <span className="text-[10px] text-amber-500 font-semibold">Ort. ROAS 3.82x</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Time series dynamic bar chart */}
-              <div className={`lg:col-span-8 border rounded-2xl p-6 transition-colors duration-300 ${themeClasses.card}`}>
-                <h3 className="font-bold text-sm mb-6 flex items-center gap-2">
-                  <Activity className="h-4.5 w-4.5 text-amber-500" /> Platform Etkileşim Hacmi Zaman Serisi (15 Dk Kayan Pencere)
-                </h3>
-                
-                {/* Visual Bar chart custom renderer */}
-                <div className="h-64 flex items-end justify-between gap-3 px-4 pt-4 border-b border-slate-900/10 relative">
-                  <div className="absolute left-0 right-0 top-1/4 border-t border-slate-900/10 border-dashed text-[10px] text-slate-500 pl-2">300k Peak</div>
-                  <div className="absolute left-0 right-0 top-2/4 border-t border-slate-900/10 border-dashed text-[10px] text-slate-500 pl-2">200k Normal</div>
-                  <div className="absolute left-0 right-0 top-3/4 border-t border-slate-900/10 border-dashed text-[10px] text-slate-500 pl-2">100k Base</div>
-
-                  {timelineData.map((val, idx) => {
-                    const pct = Math.min(100, (val / 320) * 100);
-                    const isHigh = val > 200;
-                    return (
-                      <div key={idx} className="flex-1 flex flex-col items-center z-10">
-                        <span className="text-[10px] font-mono text-slate-500 mb-1">{val}k</span>
-                        <div
-                          className={`w-full rounded-t-lg transition-all duration-500 ${
-                            isHigh 
-                              ? "bg-gradient-to-t from-rose-600 to-rose-400 shadow-lg shadow-rose-500/10" 
-                              : "bg-gradient-to-t from-[#1B4A7D] to-[#1B4A7D]/70"
-                          }`}
-                          style={{ height: `${pct}%`, minHeight: "15%" }}
-                        ></div>
-                        <span className="text-[10px] text-slate-500 mt-2 font-mono">{timelineLabels[idx]}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Top hashtags & trends */}
-              <div className={`lg:col-span-4 border rounded-2xl p-6 transition-colors duration-300 ${themeClasses.card}`}>
-                <h3 className="font-bold text-sm mb-4 flex items-center gap-2">
-                  <Flame className="h-4.5 w-4.5 text-rose-500 animate-pulse" /> Platform Trend Hashtag Dağılımı
-                </h3>
-                <div className="flex flex-col gap-4 mt-2">
-                  <div>
-                    <div className="flex justify-between text-xs mb-1.5 font-bold text-slate-400">
-                      <span>#Ulaşım</span>
-                      <span>%38</span>
-                    </div>
-                    <div className="h-1.5 w-full bg-slate-900/10 dark:bg-slate-900 rounded-full overflow-hidden">
-                      <div className="h-full bg-rose-500" style={{ width: "38%" }}></div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="flex justify-between text-xs mb-1.5 font-bold text-slate-400">
-                      <span>#Teknoloji</span>
-                      <span>%28</span>
-                    </div>
-                    <div className="h-1.5 w-full bg-slate-900/10 dark:bg-slate-900 rounded-full overflow-hidden">
-                      <div className="h-full bg-[#1B4A7D]" style={{ width: "28%" }}></div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="flex justify-between text-xs mb-1.5 font-bold text-slate-400">
-                      <span>#Kültür</span>
-                      <span>%18</span>
-                    </div>
-                    <div className="h-1.5 w-full bg-slate-900/10 dark:bg-slate-900 rounded-full overflow-hidden">
-                      <div className="h-full bg-emerald-500" style={{ width: "18%" }}></div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="flex justify-between text-xs mb-1.5 font-bold text-slate-400">
-                      <span>#Spor</span>
-                      <span>%10</span>
-                    </div>
-                    <div className="h-1.5 w-full bg-slate-900/10 dark:bg-slate-900 rounded-full overflow-hidden">
-                      <div className="h-full bg-slate-400" style={{ width: "10%" }}></div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="flex justify-between text-xs mb-1.5 font-bold text-slate-400">
-                      <span>#Ekonomi</span>
-                      <span>%6</span>
-                    </div>
-                    <div className="h-1.5 w-full bg-slate-900/10 dark:bg-slate-900 rounded-full overflow-hidden">
-                      <div className="h-full bg-slate-300" style={{ width: "6%" }}></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          )}
-
-          {/* PANEL 3: NABIZ-SENSE SECURITY */}
-          {currentPanel === "sense" && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-              
-              {/* Active Alarms */}
-              <div className="lg:col-span-8 flex flex-col gap-4">
-                <div className={`border rounded-2xl p-6 transition-colors duration-300 ${themeClasses.card}`}>
-                  <h3 className="font-bold text-sm mb-4 flex items-center gap-2">
-                    <Bell className="h-4.5 w-4.5 text-rose-500" /> Platform Güvenlik Kalkanı Alarmları
-                  </h3>
-                  
-                  <div className="flex flex-col gap-3">
-                    {alerts.map(alert => (
-                      <div
-                        key={alert.id}
-                        className={`p-4 rounded-xl border flex flex-col gap-3 ${
-                          alert.status === "RESOLVED"
-                            ? "bg-slate-900/5 border-slate-900/10 opacity-60 text-slate-500"
-                            : alert.type === "CRISIS"
-                            ? "bg-rose-500/5 border-rose-500/20 text-rose-700 dark:text-rose-200"
-                            : "bg-amber-500/5 border-amber-500/20 text-amber-700 dark:text-amber-200"
-                        }`}
-                      >
-                        <div className="flex items-center justify-between">
-                          <span className="flex items-center gap-1.5 text-xs font-bold">
-                            <AlertTriangle className={`h-4 w-4 ${alert.type === "CRISIS" ? "text-rose-500" : "text-amber-400"}`} />
-                            {alert.city} × {alert.topic} (Z = {alert.zScore.toFixed(2)})
-                          </span>
-                          <span className={`text-[9px] font-bold px-2 py-0.5 rounded ${
-                            alert.status === "RESOLVED"
-                              ? "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
-                              : "bg-rose-500/10 text-rose-600 border border-rose-500/20 animate-pulse"
-                          }`}>
-                            {alert.status === "RESOLVED" ? "KONTROL ALTINDA" : "MODERASYON GEREKLİ"}
-                          </span>
-                        </div>
-
-                        <div className={`p-3 rounded-lg border text-xs leading-relaxed transition-colors duration-300 ${themeClasses.innerCard}`}>
-                          <strong className="text-amber-600 block mb-1">Yerli LLM Türkçe Kök Neden Analizi:</strong>
-                          {alert.rootCause}
-                        </div>
-
-                        {alert.status !== "RESOLVED" && (
-                          <div className="flex flex-wrap gap-2 pt-1">
-                            {alert.recommendedActions.map(action => (
-                              <button
-                                key={action}
-                                onClick={() => handleAction(alert.id, action)}
-                                className="text-[10px] px-3 py-1.5 rounded-lg bg-slate-950/10 dark:bg-slate-950 border border-slate-800/10 hover:border-amber-500/50 hover:bg-slate-900/10 text-slate-500 dark:text-slate-300 transition-colors font-medium flex items-center gap-1 cursor-pointer"
-                              >
-                                <CheckCircle className="h-3 w-3 text-amber-500" /> {action}
-                              </button>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* BERTurk and Model Metrics */}
-              <div className="lg:col-span-4 flex flex-col gap-6">
-                <div className={`border rounded-2xl p-6 transition-colors duration-300 ${themeClasses.card}`}>
-                  <h3 className="font-bold text-sm mb-4 flex items-center gap-2">
-                    <UserCheck className="h-4.5 w-4.5 text-emerald-500" /> NLP & LLM Model Metrikleri
-                  </h3>
-                  
-                  <div className="flex flex-col gap-4 text-xs">
-                    <div className="border-b border-slate-900/10 pb-3">
-                      <span className="text-slate-500 block mb-1">BERTurk Duygu Eşleşme Doğruluğu</span>
-                      <strong className="font-bold">%92.4 Accuracy (5-Fold CV)</strong>
-                    </div>
-
-                    <div className="border-b border-slate-900/10 pb-3">
-                      <span className="text-slate-500 block mb-1">Yerel LLM Çıkarım Gecikmesi</span>
-                      <strong className="font-bold">1.24 saniye (Ollama 4-bit AWQ)</strong>
-                    </div>
-
+                {/* Left Chart (7/12): Impressions Over Time (All Channels) */}
+                <div className={`lg:col-span-7 p-6 rounded-2xl border transition-all ${
+                  theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
+                }`}>
+                  <div className="flex items-center justify-between mb-6">
                     <div>
-                      <span className="text-slate-500 block mb-1">DBSCAN Küme Başarımı</span>
-                      <strong className="font-bold">F1-Score: 0.920</strong>
+                      <h4 className="font-extrabold text-sm">Çok Eksenli Sinyal Akışı (Zaman Serisi)</h4>
+                      <span className="text-[11px] text-slate-400">15 Dakikalık Kayan Pencerelerde Sinyal İzdüşümü</span>
+                    </div>
+
+                    {/* Time Range Selector */}
+                    <div className={`px-3 py-1.5 rounded-xl border text-xs font-semibold flex items-center gap-2 ${
+                      theme === "light" ? "bg-slate-50 border-slate-200" : "bg-[#102d33] border-slate-700"
+                    }`}>
+                      <span>Canlı Akış</span>
+                      <ChevronDown className="h-3 w-3 text-slate-400" />
                     </div>
                   </div>
-                </div>
-              </div>
 
-            </div>
+                  {/* Multi-series Spline SVG Chart */}
+                  <div className="h-60 w-full relative">
+                    <svg className="w-full h-full" viewBox="0 0 400 160" preserveAspectRatio="none">
+                      {/* Grid Lines */}
+                      <line x1="0" y1="40" x2="400" y2="40" stroke="rgba(148, 163, 184, 0.15)" strokeDasharray="3 3" />
+                      <line x1="0" y1="80" x2="400" y2="80" stroke="rgba(148, 163, 184, 0.15)" strokeDasharray="3 3" />
+                      <line x1="0" y1="120" x2="400" y2="120" stroke="rgba(148, 163, 184, 0.15)" strokeDasharray="3 3" />
+
+                      {/* Series 1: #Ulaşım (Teal) */}
+                      <path
+                        d="M 20 110 Q 80 130, 140 100 T 260 80 T 320 85 T 380 45"
+                        fill="none"
+                        stroke="#0d9488"
+                        strokeWidth="3"
+                      />
+                      <circle cx="380" cy="45" r="4" fill="#0d9488" />
+
+                      {/* Series 2: #Kültür (Orange) */}
+                      <path
+                        d="M 20 130 Q 80 145, 140 120 T 260 110 T 320 125 T 380 100"
+                        fill="none"
+                        stroke="#f97316"
+                        strokeWidth="3"
+                      />
+                      <circle cx="380" cy="100" r="4" fill="#f97316" />
+
+                      {/* Series 3: #Teknoloji (Cyan) */}
+                      <path
+                        d="M 20 145 Q 80 150, 140 140 T 260 135 T 320 138 T 380 125"
+                        fill="none"
+                        stroke="#06b6d4"
+                        strokeWidth="2.5"
+                      />
+                      <circle cx="380" cy="125" r="3.5" fill="#06b6d4" />
+                    </svg>
+
+                    {/* X Axis Labels */}
+                    <div className="flex justify-between text-[10px] text-slate-400 mt-2 font-mono">
+                      <span>11:45</span>
+                      <span>11:50</span>
+                      <span>11:55</span>
+                      <span>12:00</span>
+                      <span>12:05</span>
+                      <span>12:10</span>
+                      <span>12:15</span>
+                    </div>
+                  </div>
+
+                  {/* Interactive Legend */}
+                  <div className="flex items-center justify-center gap-6 mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs font-semibold">
+                    <span className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                      <span className="h-3 w-3 rounded-full bg-[#0d9488]"></span> #Ulaşım Sinyalleri
+                    </span>
+                    <span className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                      <span className="h-3 w-3 rounded-full bg-[#f97316]"></span> #Kültür & Etkinlik
+                    </span>
+                    <span className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                      <span className="h-3 w-3 rounded-full bg-[#06b6d4]"></span> #Teknoloji
+                    </span>
+                  </div>
+                </div>
+
+                {/* Right Chart (5/12): Impressions by Channel / Category (Donut Chart) */}
+                <div className={`lg:col-span-5 p-6 rounded-2xl border flex flex-col justify-between transition-all ${
+                  theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
+                }`}>
+                  <div>
+                    <h4 className="font-extrabold text-sm mb-6">Kategori & Eksen Dağılımı</h4>
+
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+                      {/* Donut Circle SVG */}
+                      <div className="relative h-44 w-44 flex items-center justify-center">
+                        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                          {/* Segment 1: #Ulaşım (50.5%) */}
+                          <circle
+                            cx="50"
+                            cy="50"
+                            r="38"
+                            fill="transparent"
+                            stroke="#0d9488"
+                            strokeWidth="14"
+                            strokeDasharray="120.6 238.7"
+                            strokeDashoffset="0"
+                          />
+                          {/* Segment 2: #Kültür (31.7%) */}
+                          <circle
+                            cx="50"
+                            cy="50"
+                            r="38"
+                            fill="transparent"
+                            stroke="#f97316"
+                            strokeWidth="14"
+                            strokeDasharray="75.6 238.7"
+                            strokeDashoffset="-120.6"
+                          />
+                          {/* Segment 3: #Teknoloji (17.8%) */}
+                          <circle
+                            cx="50"
+                            cy="50"
+                            r="38"
+                            fill="transparent"
+                            stroke="#06b6d4"
+                            strokeWidth="14"
+                            strokeDasharray="42.5 238.7"
+                            strokeDashoffset="-196.2"
+                          />
+                        </svg>
+
+                        {/* Center Text */}
+                        <div className="absolute flex flex-col items-center justify-center text-center">
+                          <span className="text-base font-black leading-tight">24.68M</span>
+                          <span className="text-[10px] text-slate-400 font-bold uppercase">Toplam Sinyal</span>
+                        </div>
+                      </div>
+
+                      {/* Legend list with counts */}
+                      <div className="flex flex-col gap-3 text-xs">
+                        <div className="flex items-center justify-between gap-4">
+                          <span className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                            <span className="h-2.5 w-2.5 rounded-full bg-[#0d9488]"></span> #Ulaşım
+                          </span>
+                          <span className="font-bold text-slate-800 dark:text-slate-200">12.45M (50.5%)</span>
+                        </div>
+
+                        <div className="flex items-center justify-between gap-4">
+                          <span className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                            <span className="h-2.5 w-2.5 rounded-full bg-[#f97316]"></span> #Kültür
+                          </span>
+                          <span className="font-bold text-slate-800 dark:text-slate-200">7.83M (31.7%)</span>
+                        </div>
+
+                        <div className="flex items-center justify-between gap-4">
+                          <span className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                            <span className="h-2.5 w-2.5 rounded-full bg-[#06b6d4]"></span> #Teknoloji
+                          </span>
+                          <span className="font-bold text-slate-800 dark:text-slate-200">4.40M (17.8%)</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => setCurrentPanel("analytics")}
+                    className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs font-bold text-teal-600 hover:text-teal-700 flex items-center justify-center gap-1 cursor-pointer"
+                  >
+                    Detaylı Analitik Raporunu İncele →
+                  </button>
+                </div>
+
+              </div>
+            </>
           )}
 
-          {/* PANEL 4: NABIZ-ADS CAMPAIGN WIZARD */}
+          {/* VIEW 2: NABIZ-ADS CAMPAIGN WIZARD */}
           {currentPanel === "ads" && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-              
-              {/* Campaign wizard prompt engine */}
-              <div className={`lg:col-span-7 border rounded-2xl p-6 transition-colors duration-300 ${themeClasses.card}`}>
-                <h3 className="font-bold text-sm mb-4 flex items-center gap-2">
-                  <MessageSquare className="h-4.5 w-4.5 text-amber-500" /> Akıllı Kampanya Oluşturucu
-                </h3>
-                
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+              {/* Campaign Wizard Card */}
+              <div className={`lg:col-span-7 p-6 rounded-2xl border transition-all ${
+                theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
+              }`}>
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="h-10 w-10 rounded-xl bg-orange-500/10 text-orange-600 flex items-center justify-center">
+                    <Rocket className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-extrabold text-base">Doğal Dil Güdümlü Kampanya Sihirbazı</h3>
+                    <p className="text-xs text-slate-400">Meta Ads paneli yerine tek bir Türkçe prompt ile kitle, zaman ve metin optimizasyonu</p>
+                  </div>
+                </div>
+
                 <div className="flex flex-col gap-4">
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Reklam Hedefini Girin</label>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Kampanya Hedefinizi Yazın</label>
                     <div className="relative flex items-center">
                       <input
                         type="text"
                         value={promptInput}
                         onChange={e => setPromptInput(e.target.value)}
-                        placeholder="Örn: Kadıköy'deki kahvecimiz için Reels reklamı yap..."
-                        className={`w-full rounded-xl px-4 py-3 text-sm focus:outline-none pr-10 transition-colors duration-300 ${themeClasses.input}`}
+                        placeholder="Örn: Kadıköy'deki 3. nesil kahvecimiz için Reels reklamı yap..."
+                        className={`w-full rounded-xl px-4 py-3.5 text-sm focus:outline-none pr-12 transition-all border ${
+                          theme === "light"
+                            ? "bg-slate-50 border-slate-200 text-slate-900 focus:border-teal-500"
+                            : "bg-[#102d33] border-slate-700 text-slate-100 focus:border-teal-400"
+                        }`}
                       />
                       <button
                         onClick={generateAdCampaign}
-                        className="absolute right-2 p-1.5 rounded-lg bg-amber-500 text-slate-950 hover:bg-amber-400 transition-colors cursor-pointer"
+                        className="absolute right-2.5 p-2 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition-all cursor-pointer shadow-md shadow-orange-500/20"
                       >
                         <Send className="h-4 w-4 stroke-[2.5]" />
                       </button>
                     </div>
-                    
-                    <div className="flex flex-wrap gap-1.5 mt-2">
-                      <span className="text-[9px] text-slate-500 font-bold self-center mr-1">Örnek Şablonlar:</span>
+
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      <span className="text-xs text-slate-400 font-bold self-center mr-1">Örnek Şablonlar:</span>
                       <button
                         onClick={() => handleQuickPrompt("Kadıköy'deki kahvecimiz için Reels reklamı yap")}
-                        className="text-[9px] px-2 py-1 rounded bg-slate-900/5 hover:bg-slate-900/10 border border-slate-800/10 text-slate-500 cursor-pointer"
+                        className="text-xs px-3 py-1 rounded-xl bg-orange-500/10 text-orange-600 border border-orange-500/20 hover:bg-orange-500/20 font-bold cursor-pointer"
                       >
                         ☕ Kadıköy Soğuk Kahve
                       </button>
                       <button
                         onClick={() => handleQuickPrompt("Yazılım eğitim kursumuzu yapay zekayla ilgilenen gençlere duyur")}
-                        className="text-[9px] px-2 py-1 rounded bg-slate-900/5 hover:bg-slate-900/10 border border-slate-800/10 text-slate-500 cursor-pointer"
+                        className="text-xs px-3 py-1 rounded-xl bg-teal-500/10 text-teal-600 border border-teal-500/20 hover:bg-teal-500/20 font-bold cursor-pointer"
                       >
                         💻 Yapay Zeka Kursu
                       </button>
@@ -1128,32 +1279,34 @@ export default function Home() {
                   </div>
 
                   {aiSuggestions && (
-                    <div className="p-4 rounded-xl border border-amber-500/20 bg-amber-500/5 flex flex-col gap-4">
-                      <div className="flex items-center justify-between border-b border-amber-900/30 pb-2">
-                        <span className="text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">
-                          <Zap className="h-4 w-4" /> AI Parametre Optimizasyonu
+                    <div className="p-5 rounded-xl border border-orange-500/30 bg-orange-500/5 flex flex-col gap-4 mt-2">
+                      <div className="flex items-center justify-between border-b border-orange-500/20 pb-3">
+                        <span className="text-xs font-bold text-orange-600 flex items-center gap-1.5">
+                          <Sparkles className="h-4 w-4" /> AI Parametre ve Zamanlama Optimizasyonu
                         </span>
-                        <span className="text-[9px] bg-amber-500 text-slate-950 font-bold px-2 py-0.5 rounded">
-                          Zamanlama Eşleşti
+                        <span className="text-[10px] bg-orange-500 text-white font-bold px-2.5 py-0.5 rounded-full">
+                          +34% ROAS Eşleşti
                         </span>
                       </div>
 
                       <div className="grid grid-cols-2 gap-4 text-xs">
                         <div>
-                          <span className="text-slate-500 block mb-0.5">Hedef Şehir</span>
-                          <span className="font-bold">{aiSuggestions.city}</span>
+                          <span className="text-slate-400 block text-[10px]">Hedef Lokasyon</span>
+                          <strong className="text-sm font-bold">{aiSuggestions.city}</strong>
                         </div>
                         <div>
-                          <span className="text-slate-500 block mb-0.5">Yaş Aralığı</span>
-                          <span className="font-bold">{aiSuggestions.age}</span>
+                          <span className="text-slate-400 block text-[10px]">Yaş Segmenti</span>
+                          <strong className="text-sm font-bold">{aiSuggestions.age}</strong>
                         </div>
                         <div className="col-span-2">
-                          <span className="text-slate-500 block mb-0.5">Önerilen Etkileşim Zamanı</span>
-                          <span className="font-bold">{aiSuggestions.timeWindow}</span>
+                          <span className="text-slate-400 block text-[10px]">En Yoğun Etkileşim Penceresi</span>
+                          <strong className="font-bold text-teal-600">{aiSuggestions.timeWindow}</strong>
                         </div>
                         <div className="col-span-2">
-                          <span className="text-slate-500 block mb-1">AI Reklam Metni Taslağı (Türkçe)</span>
-                          <div className={`p-3 rounded-lg border text-xs italic leading-relaxed transition-colors duration-300 ${themeClasses.innerCard}`}>
+                          <span className="text-slate-400 block text-[10px] mb-1">Yapay Zekâ Türkçe Reklam Metni:</span>
+                          <div className={`p-3.5 rounded-xl border text-xs italic leading-relaxed ${
+                            theme === "light" ? "bg-white border-slate-200 text-slate-700" : "bg-[#0b1d22] border-slate-800 text-slate-300"
+                          }`}>
                             {aiSuggestions.adCopy}
                           </div>
                         </div>
@@ -1161,626 +1314,354 @@ export default function Home() {
 
                       <button
                         onClick={launchCampaign}
-                        className="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                        className="w-full py-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs transition-all flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20 cursor-pointer"
                       >
-                        Kampanyayı Canlıya Al
+                        <CheckCircle className="h-4 w-4" /> Kampanyayı Canlıya Al (10 Saniyede Yayında)
                       </button>
                     </div>
                   )}
                 </div>
               </div>
 
-              {/* Active Campaigns Table */}
-              <div className={`lg:col-span-5 border rounded-2xl p-6 transition-colors duration-300 ${themeClasses.card}`}>
-                <h3 className="font-bold text-sm mb-4 flex items-center gap-2">
-                  <Award className="h-4.5 w-4.5 text-amber-500" /> Canlı Kampanyalar & ROAS
+              {/* Active Campaigns List Card */}
+              <div className={`lg:col-span-5 p-6 rounded-2xl border transition-all ${
+                theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
+              }`}>
+                <h3 className="font-extrabold text-base mb-4 flex items-center gap-2">
+                  <Award className="h-5 w-5 text-orange-500" />
+                  Aktif Reklam Kampanyaları & ROAS
                 </h3>
-                
+
                 <div className="flex flex-col gap-3">
                   {campaigns.map(camp => (
-                    <div key={camp.id} className={`p-4 rounded-xl border text-xs transition-colors duration-300 ${themeClasses.innerCard}`}>
-                      <div className="flex justify-between items-center mb-2 font-bold">
-                        <span>{camp.prompt}</span>
-                        <span className="text-[9px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
+                    <div key={camp.id} className={`p-4 rounded-xl border text-xs ${
+                      theme === "light" ? "bg-slate-50 border-slate-200" : "bg-[#102d33] border-slate-700"
+                    }`}>
+                      <div className="flex justify-between items-start mb-2">
+                        <span className="font-bold text-sm">{camp.prompt}</span>
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 font-bold border border-emerald-500/20">
                           {camp.status}
                         </span>
                       </div>
-                      <div className="grid grid-cols-3 gap-2 text-[10px] text-slate-500 mt-2 border-t border-slate-900/10 pt-2">
+                      <div className="grid grid-cols-3 gap-2 text-[10px] text-slate-500 pt-2 border-t border-slate-200 dark:border-slate-700 mt-2">
                         <div>
-                          <span>Bütçe:</span> <strong className="text-slate-600 dark:text-slate-300">{camp.budget} TL</strong>
+                          <span>Bütçe:</span> <strong className="text-slate-700 dark:text-slate-200 block">{camp.budget} TL</strong>
                         </div>
                         <div>
-                          <span>Tıklama:</span> <strong className="text-slate-600 dark:text-slate-300">{camp.clicks}</strong>
+                          <span>Tıklama:</span> <strong className="text-slate-700 dark:text-slate-200 block">{camp.clicks}</strong>
                         </div>
                         <div>
-                          <span>ROAS Skoru:</span> <strong className="text-amber-500 font-bold">{camp.roas}x</strong>
+                          <span>Gerçekleşen ROAS:</span> <strong className="text-orange-600 block text-xs font-black">{camp.roas}x</strong>
                         </div>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
-
             </div>
           )}
 
-          {/* PANEL 5: KVKK & PRIVACY COMPLIANCE */}
+          {/* VIEW 3: NABIZ-SENSE SECURITY & MODERATION */}
+          {currentPanel === "sense" && (
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+              <div className={`lg:col-span-8 p-6 rounded-2xl border transition-all ${
+                theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
+              }`}>
+                <h3 className="font-extrabold text-base mb-6 flex items-center gap-2">
+                  <Bell className="h-5 w-5 text-rose-500" />
+                  Aktif Siber Güvenlik ve Moderasyon Alarmları
+                </h3>
+
+                <div className="flex flex-col gap-4">
+                  {alerts.map(alert => (
+                    <div
+                      key={alert.id}
+                      className={`p-5 rounded-2xl border flex flex-col gap-4 ${
+                        alert.status === "RESOLVED"
+                          ? "bg-slate-50 border-slate-200 opacity-60 dark:bg-slate-900/40"
+                          : alert.type === "CRISIS"
+                          ? "bg-rose-500/5 border-rose-500/30"
+                          : "bg-orange-500/5 border-orange-500/30"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="flex items-center gap-2 font-bold text-sm">
+                          <AlertTriangle className={`h-5 w-5 ${alert.type === "CRISIS" ? "text-rose-500" : "text-orange-500"}`} />
+                          {alert.city} × {alert.topic} (Z-Score: {alert.zScore.toFixed(2)})
+                        </span>
+                        <span className={`text-xs font-bold px-3 py-1 rounded-full ${
+                          alert.status === "RESOLVED"
+                            ? "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
+                            : "bg-rose-500 text-white animate-pulse"
+                        }`}>
+                          {alert.status === "RESOLVED" ? "KONTROL ALTINDA" : "MODERASYON GEREKLİ"}
+                        </span>
+                      </div>
+
+                      <div className={`p-4 rounded-xl border text-xs leading-relaxed ${
+                        theme === "light" ? "bg-white border-slate-200" : "bg-[#0b1d22] border-slate-800"
+                      }`}>
+                        <strong className="text-orange-600 block mb-1 text-xs">Yerli LLM Türkçe Kök Neden Açıklaması:</strong>
+                        {alert.rootCause}
+                      </div>
+
+                      {alert.status !== "RESOLVED" && (
+                        <div className="flex flex-wrap gap-3">
+                          {alert.recommendedActions.map(act => (
+                            <button
+                              key={act}
+                              onClick={() => handleAction(alert.id, act)}
+                              className="px-4 py-2 rounded-xl bg-[#0a1e22] text-white hover:bg-[#133e42] text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-md"
+                            >
+                              <CheckCircle className="h-3.5 w-3.5 text-teal-400" /> {act}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className={`lg:col-span-4 p-6 rounded-2xl border transition-all flex flex-col gap-6 ${
+                theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
+              }`}>
+                <h4 className="font-extrabold text-sm flex items-center gap-2">
+                  <UserCheck className="h-4.5 w-4.5 text-emerald-600" /> Doğrulama ve NLP Metrikleri
+                </h4>
+                <div className="flex flex-col gap-4 text-xs">
+                  <div className="border-b border-slate-100 dark:border-slate-800 pb-3">
+                    <span className="text-slate-400 block text-[10px]">BERTurk Duygu Eşleşme Doğruluğu</span>
+                    <strong className="text-sm font-black">%92.4 Accuracy (5-Fold CV)</strong>
+                  </div>
+                  <div className="border-b border-slate-100 dark:border-slate-800 pb-3">
+                    <span className="text-slate-400 block text-[10px]">Yerel LLM Çıkarım Gecikmesi</span>
+                    <strong className="text-sm font-black">1.24 saniye (AWQ 4-bit)</strong>
+                  </div>
+                  <div>
+                    <span className="text-slate-400 block text-[10px]">DBSCAN Kümeleme F1-Skoru</span>
+                    <strong className="text-sm font-black">0.920 F1-Harmonik Başarım</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* VIEW 4: DETAILED ANALYTICS */}
+          {currentPanel === "analytics" && (
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+              <div className={`lg:col-span-8 p-6 rounded-2xl border transition-all ${
+                theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
+              }`}>
+                <h3 className="font-extrabold text-base mb-6">Detaylı Platform Etkileşim Hacmi</h3>
+                <div className="h-64 flex items-end justify-between gap-4 px-4 pt-4 border-b border-slate-200 dark:border-slate-800">
+                  {wavePoints.slice(-10).map((val, idx) => (
+                    <div key={idx} className="flex-1 flex flex-col items-center">
+                      <span className="text-[10px] font-mono text-slate-400 mb-1">{val * 10}k</span>
+                      <div
+                        className="w-full rounded-t-xl bg-gradient-to-t from-teal-600 to-teal-400 transition-all duration-300"
+                        style={{ height: `${val * 3}%` }}
+                      ></div>
+                      <span className="text-[10px] text-slate-400 mt-2 font-mono">12:0{idx}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className={`lg:col-span-4 p-6 rounded-2xl border transition-all ${
+                theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
+              }`}>
+                <h4 className="font-extrabold text-sm mb-4">Popüler Kategori Trendleri</h4>
+                <div className="flex flex-col gap-4 text-xs">
+                  <div>
+                    <div className="flex justify-between font-bold text-slate-600 dark:text-slate-300 mb-1">
+                      <span>#Ulaşım</span> <span>%50.5</span>
+                    </div>
+                    <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                      <div className="h-full bg-teal-500" style={{ width: "50.5%" }}></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between font-bold text-slate-600 dark:text-slate-300 mb-1">
+                      <span>#Kültür</span> <span>%31.7</span>
+                    </div>
+                    <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                      <div className="h-full bg-orange-500" style={{ width: "31.7%" }}></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between font-bold text-slate-600 dark:text-slate-300 mb-1">
+                      <span>#Teknoloji</span> <span>%17.8</span>
+                    </div>
+                    <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                      <div className="h-full bg-cyan-500" style={{ width: "17.8%" }}></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* VIEW 5: KVKK PRIVACY COMPLIANCE */}
           {currentPanel === "privacy" && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-              
-              {/* Compliance checklist */}
-              <div className={`lg:col-span-8 border rounded-2xl p-6 transition-colors duration-300 ${themeClasses.card}`}>
-                <h3 className="font-bold text-sm mb-4 flex items-center gap-2">
-                  <ShieldCheck className="h-5 w-5 text-emerald-500" /> Sıfır Profilleme & KVKK Güvenlik Uyumluluğu
-                </h3>
-                <p className="text-xs text-slate-400 mb-6 leading-relaxed">
-                  NABIZ Platformu, KVKK Madde 5 ve 6 çerçevesinde tasarlanmış sıfır bireysel profilleme (Zero-Profiling) ilkeleriyle çalışır. Sosyal medya verilerindeki kişisel kimlikler veri giriş boru hattında anlık anonimleştirilerek sadece toplu matris dağılımları tensöre yansıtılır.
-                </p>
+            <div className={`p-8 rounded-2xl border transition-all ${
+              theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
+            }`}>
+              <h3 className="font-extrabold text-lg mb-4 flex items-center gap-2">
+                <ShieldCheck className="h-6 w-6 text-emerald-600" />
+                Sıfır Bireysel Profilleme & KVKK Güvenlik Uyumluluğu
+              </h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mb-6 leading-relaxed">
+                NABIZ Platformu; KVKK Madde 5 ve 6 çerçevesinde geliştirilmiş Sıfır Bireysel Profilleme (Zero-Profiling) prensibiyle çalışır. Kişisel veri ve üçüncü taraf çerezler kullanılmaz; yalnızca toplu tensör dağılımları işlenir.
+              </p>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className={`p-4 rounded-xl border flex items-start gap-3 transition-colors duration-300 ${themeClasses.innerCard}`}>
-                    <EyeOff className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
-                    <div>
-                      <strong className="text-xs block mb-1">Kimliksizleştirme (De-identification)</strong>
-                      <span className="text-[10px] text-slate-500 leading-relaxed block">
-                        Kullanıcı kullanıcı adı, soyadı ve profil detayları tensör snapshots tablosuna yazılmadan önce SHA-256 hash algoritmalarıyla tamamen temizlenir.
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className={`p-4 rounded-xl border flex items-start gap-3 transition-colors duration-300 ${themeClasses.innerCard}`}>
-                    <Database className="h-5 w-5 text-[#1B4A7D] shrink-0 mt-0.5" />
-                    <div>
-                      <strong className="text-xs block mb-1">Yerli Sunucu Güvencesi</strong>
-                      <span className="text-[10px] text-slate-500 leading-relaxed block">
-                        Tüm veri boru hatları, PostgreSQL veri tabanı ve yerli dil modelleri Türkiye sınırları içindeki yerel sunucularda çalıştırılmakta, yurt dışına veri aktarımı yapılmamaktadır.
-                      </span>
-                    </div>
-                  </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#102d33]">
+                  <strong className="text-xs font-bold block mb-1">Kimliksizleştirme (SHA-256)</strong>
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed block">
+                    Kullanıcı kimlikleri veri giriş boru hattında SHA-256 hash algoritmalarıyla anında temizlenir.
+                  </span>
                 </div>
-
-                {/* Simulated Anonymization log table */}
-                <div className="mt-6">
-                  <h4 className="text-xs font-semibold text-slate-400 mb-3 uppercase tracking-wider">Veri Akışı Anonimleştirme Günlüğü</h4>
-                  <div className={`border rounded-xl overflow-hidden text-xs transition-colors duration-300 ${themeClasses.border}`}>
-                    <div className="grid grid-cols-4 gap-2 bg-slate-900/5 dark:bg-slate-950 p-2.5 font-bold text-slate-400 border-b">
-                      <div>Kaynak Alan</div>
-                      <div>Metot</div>
-                      <div>Maskeleme</div>
-                      <div>Durum</div>
-                    </div>
-
-                    <div className="grid grid-cols-4 gap-2 p-2.5 border-b border-slate-900/10 items-center">
-                      <div className="font-mono">user.username</div>
-                      <div>SHA-256 Hash</div>
-                      <div className="font-mono text-slate-500">e3b0c442...</div>
-                      <span className="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 w-fit">OK</span>
-                    </div>
-
-                    <div className="grid grid-cols-4 gap-2 p-2.5 border-b border-slate-900/10 items-center">
-                      <div className="font-mono">post.location_gps</div>
-                      <div>Bölgesel Agregasyon</div>
-                      <div className="font-mono text-slate-500">İzmir (Genel)</div>
-                      <span className="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 w-fit">OK</span>
-                    </div>
-
-                    <div className="grid grid-cols-4 gap-2 p-2.5 items-center">
-                      <div className="font-mono">user.device_ip</div>
-                      <div>IPv4 Masking</div>
-                      <div className="font-mono text-slate-500">192.168.***.***</div>
-                      <span className="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 w-fit">OK</span>
-                    </div>
-                  </div>
+                <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#102d33]">
+                  <strong className="text-xs font-bold block mb-1">Yerli Sunucu & AES-256 Şifreleme</strong>
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed block">
+                    Tüm veri boru hatları ve açık kaynaklı yerli dil modelleri Türkiye sınırları içindeki yerel sunucularda çalıştırılır.
+                  </span>
                 </div>
               </div>
-
-              {/* DB encryption panel */}
-              <div className={`lg:col-span-4 border rounded-2xl p-6 flex flex-col gap-4 transition-colors duration-300 ${themeClasses.card}`}>
-                <h3 className="font-bold text-sm flex items-center gap-2">
-                  <Lock className="h-4.5 w-4.5 text-amber-500" /> Veri Güvenlik Kalkanı
-                </h3>
-                
-                <div className="flex flex-col gap-4 text-xs mt-2">
-                  <div className="p-3 rounded-lg bg-slate-900/5 dark:bg-slate-950 border border-slate-800/10 flex justify-between items-center">
-                    <span>Veritabanı Şifreleme</span>
-                    <strong className="text-emerald-500">AES-256 Aktif</strong>
-                  </div>
-
-                  <div className="p-3 rounded-lg bg-slate-900/5 dark:bg-slate-950 border border-slate-800/10 flex justify-between items-center">
-                    <span>IP / Cihaz Parmak İzi</span>
-                    <strong className="text-emerald-500">Anonimleştirildi</strong>
-                  </div>
-
-                  <div className="p-3 rounded-lg bg-slate-900/5 dark:bg-slate-950 border border-slate-800/10 flex justify-between items-center">
-                    <span>Çerez / Piksel Takibi</span>
-                    <strong className="text-rose-500">Kullanılmıyor</strong>
-                  </div>
-                </div>
-              </div>
-
             </div>
           )}
 
-          {/* PANEL 6: FULL TECHNICAL REPORT IN HTML */}
+          {/* VIEW 6: EMBEDDED PROJECT TECHNICAL REPORT */}
           {currentPanel === "report" && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-              
-              {/* Table of Contents sub-menu (Col span 3) */}
-              <div className="lg:col-span-3 flex flex-col gap-2">
-                <div className={`border rounded-2xl p-4 transition-colors duration-300 ${themeClasses.card} sticky top-24`}>
-                  <h4 className="font-bold text-xs uppercase tracking-wider mb-3 text-slate-400">İçindekiler</h4>
-                  <div className="flex flex-col gap-1">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+              {/* Table of Contents */}
+              <div className="lg:col-span-3">
+                <div className={`p-4 rounded-2xl border sticky top-24 ${
+                  theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
+                }`}>
+                  <h4 className="font-extrabold text-xs uppercase tracking-wider text-slate-400 mb-3">İçindekiler</h4>
+                  <div className="flex flex-col gap-1.5 text-xs">
                     <button
                       onClick={() => setActiveReportSection("sec-1")}
-                      className={`text-left py-1.5 px-2 rounded-lg text-xs transition-all cursor-pointer ${
-                        activeReportSection === "sec-1"
-                          ? "bg-[#1B4A7D]/10 text-[#1B4A7D] dark:bg-amber-500/10 dark:text-amber-400 font-bold"
-                          : "text-slate-400 hover:text-slate-200"
+                      className={`text-left py-2 px-3 rounded-xl font-bold transition-all cursor-pointer ${
+                        activeReportSection === "sec-1" ? "bg-teal-500/10 text-teal-600" : "text-slate-500 hover:text-slate-800"
                       }`}
                     >
                       1. Proje Özeti
                     </button>
                     <button
                       onClick={() => setActiveReportSection("sec-2")}
-                      className={`text-left py-1.5 px-2 rounded-lg text-xs transition-all cursor-pointer ${
-                        activeReportSection === "sec-2"
-                          ? "bg-[#1B4A7D]/10 text-[#1B4A7D] dark:bg-amber-500/10 dark:text-amber-400 font-bold"
-                          : "text-slate-400 hover:text-slate-200"
+                      className={`text-left py-2 px-3 rounded-xl font-bold transition-all cursor-pointer ${
+                        activeReportSection === "sec-2" ? "bg-teal-500/10 text-teal-600" : "text-slate-500 hover:text-slate-800"
                       }`}
                     >
                       2. Katma Değer & Yenilikçilik
                     </button>
                     <button
                       onClick={() => setActiveReportSection("sec-3")}
-                      className={`text-left py-1.5 px-2 rounded-lg text-xs transition-all cursor-pointer ${
-                        activeReportSection === "sec-3"
-                          ? "bg-[#1B4A7D]/10 text-[#1B4A7D] dark:bg-amber-500/10 dark:text-amber-400 font-bold"
-                          : "text-slate-400 hover:text-slate-200"
+                      className={`text-left py-2 px-3 rounded-xl font-bold transition-all cursor-pointer ${
+                        activeReportSection === "sec-3" ? "bg-teal-500/10 text-teal-600" : "text-slate-500 hover:text-slate-800"
                       }`}
                     >
-                      3. Teknoloji Kullanımı & Matematik
+                      3. Teknoloji & Matematik
                     </button>
                     <button
                       onClick={() => setActiveReportSection("sec-4")}
-                      className={`text-left py-1.5 px-2 rounded-lg text-xs transition-all cursor-pointer ${
-                        activeReportSection === "sec-4"
-                          ? "bg-[#1B4A7D]/10 text-[#1B4A7D] dark:bg-amber-500/10 dark:text-amber-400 font-bold"
-                          : "text-slate-400 hover:text-slate-200"
+                      className={`text-left py-2 px-3 rounded-xl font-bold transition-all cursor-pointer ${
+                        activeReportSection === "sec-4" ? "bg-teal-500/10 text-teal-600" : "text-slate-500 hover:text-slate-800"
                       }`}
                     >
-                      4. Uygulanabilirlik & Pazar
-                    </button>
-                    <button
-                      onClick={() => setActiveReportSection("sec-5")}
-                      className={`text-left py-1.5 px-2 rounded-lg text-xs transition-all cursor-pointer ${
-                        activeReportSection === "sec-5"
-                          ? "bg-[#1B4A7D]/10 text-[#1B4A7D] dark:bg-amber-500/10 dark:text-amber-400 font-bold"
-                          : "text-slate-400 hover:text-slate-200"
-                      }`}
-                    >
-                      5. Yaygın Etki & KVKK
+                      4. Uygulanabilirlik & ROAS
                     </button>
                     <button
                       onClick={() => setActiveReportSection("sec-6")}
-                      className={`text-left py-1.5 px-2 rounded-lg text-xs transition-all cursor-pointer ${
-                        activeReportSection === "sec-6"
-                          ? "bg-[#1B4A7D]/10 text-[#1B4A7D] dark:bg-amber-500/10 dark:text-amber-400 font-bold"
-                          : "text-slate-400 hover:text-slate-200"
+                      className={`text-left py-2 px-3 rounded-xl font-bold transition-all cursor-pointer ${
+                        activeReportSection === "sec-6" ? "bg-teal-500/10 text-teal-600" : "text-slate-500 hover:text-slate-800"
                       }`}
                     >
                       6. Sürdürülebilirlik & Finans
                     </button>
                     <button
-                      onClick={() => setActiveReportSection("sec-7")}
-                      className={`text-left py-1.5 px-2 rounded-lg text-xs transition-all cursor-pointer ${
-                        activeReportSection === "sec-7"
-                          ? "bg-[#1B4A7D]/10 text-[#1B4A7D] dark:bg-amber-500/10 dark:text-amber-400 font-bold"
-                          : "text-slate-400 hover:text-slate-200"
-                      }`}
-                    >
-                      7. Proje Takvimi
-                    </button>
-                    <button
                       onClick={() => setActiveReportSection("sec-8")}
-                      className={`text-left py-1.5 px-2 rounded-lg text-xs transition-all cursor-pointer ${
-                        activeReportSection === "sec-8"
-                          ? "bg-[#1B4A7D]/10 text-[#1B4A7D] dark:bg-amber-500/10 dark:text-amber-400 font-bold"
-                          : "text-slate-400 hover:text-slate-200"
+                      className={`text-left py-2 px-3 rounded-xl font-bold transition-all cursor-pointer ${
+                        activeReportSection === "sec-8" ? "bg-teal-500/10 text-teal-600" : "text-slate-500 hover:text-slate-800"
                       }`}
                     >
-                      8. Takım Yapısı & Kaynakça
+                      8. Takım & Kaynakça
                     </button>
                   </div>
                 </div>
               </div>
 
-              {/* Document details (Col span 9) */}
-              <div className={`lg:col-span-9 border rounded-2xl p-8 leading-relaxed text-xs transition-colors duration-300 ${themeClasses.card} max-w-4xl`}>
-                
-                {/* SECTION 1: PROJE OZETI */}
+              {/* Document Text */}
+              <div className={`lg:col-span-9 p-8 rounded-2xl border text-xs leading-relaxed ${
+                theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
+              }`}>
                 {activeReportSection === "sec-1" && (
                   <div className="flex flex-col gap-4">
-                    <h3 className="text-base font-bold text-[#1B4A7D] dark:text-amber-400 pb-2 border-b">1. PROJE ÖZETİ</h3>
-                    
-                    <h4 className="font-bold text-slate-700 dark:text-slate-200 mt-2">1.1. Proje Konusu ve Amacı</h4>
-                    <p className="text-slate-400 leading-6">
-                      Büyük veri çağında dijital sosyal ağlar; saniyede yüz binlerce gönderi, video, yorum ve etkileşimin üretildiği, dinamik ve doğrusal olmayan karmaşık sistemler (complex non-linear systems) haline gelmiştir. Bu devasa veri okyanusunda bir yandan platform güvenliğini, kamu düzenini ve dezenformasyon denetimini sağlamak zorunda olan platform yöneticileri ve moderatörler; diğer yandan kitlelerine ulaşmak ve gelir yaratmak isteyen yüz binlerce KOBİ ve bağımsız içerik üreticisi bulunmaktadır. Ancak her iki taraf da ciddi bir "analitik körlük ve operasyonel verimsizlik" ile karşı karşıyadır.
+                    <h3 className="text-lg font-black text-teal-700 dark:text-teal-400 pb-2 border-b">1. PROJE ÖZETİ</h3>
+                    <p className="text-slate-600 dark:text-slate-300 leading-6">
+                      <strong>NABIZ Projesi</strong>, dijital sosyal ağlardaki çok boyutlu etkileşim sinyallerini esnek eşlenebilen koordinat eksenlerinde dinamik ısı matrislerine dönüştüren, matematiksel Z-Score ve DBSCAN anomali filtreleriyle sapmaları saptayan ve içgörüleri iki ana kolda eyleme dönüştüren bütünleşik bir Sosyal Yapay Zekâ ve Yeni Nesil AdTech platformudur:
                     </p>
-                    <p className="text-slate-400 leading-6">
-                      Mevcut gösterge panelleri (dashboards); toplam etkileşim, günlük aktif kullanıcı (DAU/MAU) ve gösterim sayısı gibi tek boyutlu ve geriye dönük statik metriklere dayanmaktadır. Bu paneller yalnızca "ne oldu" sorusunu özetlemekte, ancak kriz anlarında "neden oldu" ve operasyonel olarak "şimdi ne yapılmalı" sorularına eyleme dönük (actionable) yanıt üretememektedir. Benzer şekilde, Meta Ads Manager ve Google Ads gibi ticari reklam merkezleri, yüzlerce karmaşık ayar, piksel kurulumu ve derin istatistiksel uzmanlık gerektirdiğinden; küçük işletmeler ve içerik üreticileri için aşılmaz bir bilişsel bariyer oluşturmakta, reklam bütçelerinin ortalama %35’i hatalı hedeflemelerle israf edilmektedir.
-                    </p>
-                    <p className="text-slate-400 leading-6">
-                      <strong>NABIZ Projesi</strong>, sosyal ağlardaki çok boyutlu etkileşim sinyallerini esnek eşlenebilen eksenlerde (zaman × konu kategorisi, coğrafi konum × yayılım ivmesi, içerik formatı × duygu polaritesi vb.) dinamik ısı matrislerine dönüştüren; bu matris üzerindeki istatistiksel sapmaları matematiksel anomali filtreleriyle saptayan ve elde edilen içgörüleri iki ana eksende eyleme dönüştüren bütünleşik bir Sosyal Yapay Zekâ, Akıllı Karar Destek ve Yeni Nesil Reklam Platformudur (Next-Gen AdTech Engine):
-                    </p>
-
-                    <ul className="list-disc pl-5 flex flex-col gap-2 text-slate-400 leading-6">
-                      <li>
-                        <strong>NABIZ-Sense (Platform Kalkanı & Operasyonel Karar Destek)</strong>: Moderatörler ve platform yöneticileri için siber zorbalık, bot saldırıları, linç dalgaları ve dezenformasyonu saniyeler içinde yakalayan; yerli NLP ve LLM çıkarımıyla doğal dilde "Kök Neden Analizi" ve hazır aksiyon butonları üreten güvenlik omurgası.
-                      </li>
-                      <li>
-                        <strong>NABIZ-Ads (Doğal Dil Güdümlü Akıllı Reklam & Kampanya Merkezi)</strong>: KOBİ’ler ve bağımsız içerik üreticileri için Meta reklam panellerinin karmaşıklığını ortadan kaldıran; arama çubuğu sadeliğinde çalışan bir Doğal Dil Ajanı (Conversational AI Campaign Wizard). Kullanıcı sadece günlük dille hedefini yazar, sistem arka plandaki matris verilerini tarayarak en uygun zamanı, hedef kitleyi ve reklam metnini saniyeler içinde otomatik optimize eder.
-                      </li>
+                    <ul className="list-disc pl-5 flex flex-col gap-2 text-slate-600 dark:text-slate-300">
+                      <li><strong>NABIZ-Sense (Platform Kalkanı)</strong>: Siber zorbalık, bot saldırıları ve dezenformasyonu saptayan yerli NLP (BERTurk) ve yerel LLM destekli Türkçe Kök Neden Analiz sistemi.</li>
+                      <li><strong>NABIZ-Ads (AI Reklam Merkezi)</strong>: Arama çubuğu sadeliğinde çalışan, KOBİ'lerin bütçesini en verimli zaman ve kitleye otomatik eşleyen Doğal Dil Kampanya Sihirbazı.</li>
                     </ul>
-
-                    <h4 className="font-bold text-slate-700 dark:text-slate-200 mt-2">1.2. Proje Kapsamı, Çift Kanatlı Mimari ve Yöntem</h4>
-                    <p className="text-slate-400 leading-6">
-                      NABIZ Platformu, kuramsal bir önerinin ötesinde; veri mühendisliği, matematiksel anomali filtreleme, yerli derin öğrenme modelleri, LLM ajanları ve insan odaklı UI/UX arayüzünü bütünleştiren çalışan, doğrulanmış ve mikroservis mimarisine dayalı bir prototiptir.
-                    </p>
                   </div>
                 )}
 
-                {/* SECTION 2: KATMA DEGER */}
-                {activeReportSection === "sec-2" && (
-                  <div className="flex flex-col gap-4">
-                    <h3 className="text-base font-bold text-[#1B4A7D] dark:text-amber-400 pb-2 border-b">2. KATMA DEĞER VE YENİLİKÇİLİK</h3>
-                    
-                    <h4 className="font-bold text-slate-700 dark:text-slate-200 mt-2">2.1. Problem Tanımı ve Mevcut Çözümlerin Yetersizliği</h4>
-                    <p className="text-slate-400 leading-6">
-                      Sosyal medya ağlarında dezenformasyon, algı operasyonları ve bot saldırılarının yayılma hızı, organik içeriklere kıyasla 6 kat daha fazladır. Buna karşın, hem güvenlik operasyonları hem de ticari reklam yönetimi tarafında sektör çağdışı ve parçalı yazılımlarla kilitlenmiştir. Güncel araştırmalar şu nesnel problemleri ortaya koymaktadır:
-                    </p>
-                    
-                    <ol className="list-decimal pl-5 flex flex-col gap-2 text-slate-400 leading-6">
-                      <li>
-                        <strong>Güvenlik & Moderasyon Çıkmazı</strong>: Moderatörler onlarca ayrık gösterge panelinde günde ortalama 1.200 veri metriğini manuel taramakta, mesailerinin %68’ini anomalilerin kök nedenini aramakla kaybetmektedir. Kriz fark edildiğinde olay üzerinden ortalama 4.2 saat geçmiş olmakta ve toplumsal tahribat engellenememektedir.
-                      </li>
-                      <li>
-                        <strong>Reklam & Gelir Üretiminde KOBİ Bariyeri (Meta Ads Manager Karmaşası)</strong>: Meta Ads Manager gibi paneller, 50’den fazla alt sekme ve ileri düzey teknik uzmanlık istemektedir. Türkiye’deki 3.5 milyondan fazla KOBİ ve yüz binlerce içerik üreticisi bu karmaşa yüzünden dijital reklam verememekte ya da bütçelerini verimsiz tüketmektedir.
-                      </li>
-                    </ol>
-
-                    <h4 className="font-bold text-slate-700 dark:text-slate-200 mt-4">Tablo 2.1: Farklı Paneller, Çözümler ve NABIZ Platform Karşılaştırılması</h4>
-                    <div className="border border-slate-900/10 dark:border-slate-900 rounded-xl overflow-hidden mt-2">
-                      <div className="grid grid-cols-3 gap-2 bg-slate-900/5 dark:bg-slate-950 p-3 font-bold text-slate-400 border-b">
-                        <div>Boyut</div>
-                        <div>Geleneksel Çözümler</div>
-                        <div className="text-amber-500">NABIZ (Önerilen)</div>
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-2 p-3 border-b border-slate-900/10">
-                        <div className="font-bold">Görselleştirme</div>
-                        <div>Sabit tek boyutlu grafikler / Tablolar</div>
-                        <div className="font-bold">Dinamik Çok Eksenli Isı Matrisi (X × Y)</div>
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-2 p-3 border-b border-slate-900/10">
-                        <div className="font-bold">Anomali Tespiti</div>
-                        <div>Manuel takip veya sabit eşikli kurallar</div>
-                        <div className="font-bold">Dinamik Kayan Z-Score & DBSCAN Sapma</div>
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-2 p-3 border-b border-slate-900/10">
-                        <div className="font-bold">Bağlamsal Çıkarım</div>
-                        <div>Yok (Sadece sayısal artış gösterir)</div>
-                        <div className="font-bold">Yerli LLM ile Doğal Dilde Kök Neden Analizi</div>
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-2 p-3">
-                        <div className="font-bold">Reklam Oluşturma</div>
-                        <div>50+ karmaşık teknik ayar / piksel gereksinimi</div>
-                        <div className="font-bold text-amber-500">Doğal Dil Girdisiyle 10 Saniyede Kampanya</div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* SECTION 3: TEKNOLOJI VE MATEMATIK */}
                 {activeReportSection === "sec-3" && (
                   <div className="flex flex-col gap-4">
-                    <h3 className="text-base font-bold text-[#1B4A7D] dark:text-amber-400 pb-2 border-b">3. TEKNOLOJİ KULLANIMI VE MATEMATİKSEL MODELLEME</h3>
-                    
-                    <h4 className="font-bold text-slate-700 dark:text-slate-200 mt-2">3.1. Çok Boyutlu Koordinat Tensör İzdüşümü Formülü</h4>
-                    <p className="text-slate-400 leading-6">
-                      Sosyal ağlarda üretilen veri akışı, basit tek boyutlu zaman serileriyle analiz edilemeyecek kadar heterojen ve karmaşıktır. Bir sosyal medya olayının gerçek etkisini anlayabilmek için; etkileşimin konusu (X), üretildiği coğrafi konum (Y), gerçekleştiği zaman penceresi (T), kullanıcının itibar güvenilirliği (w_k) ve cümlenin taşıdığı semantik duygu polaritesi (Φ) aynı anda hesaba katılmak zorundadır. NABIZ, bu boyutları Çok Boyutlu Koordinat Tensör İzdüşümü modelinde birleştirmiştir:
-                    </p>
-
-                    <div className="my-6 p-4 rounded-xl bg-slate-900/10 dark:bg-slate-950 border border-slate-800/10 text-center font-serif text-base md:text-lg tracking-wider text-slate-700 dark:text-slate-200">
-                      M<sub>i,j</sub>(t) = &Sigma;<sub>k=1</sub><sup>N(t)</sup> w<sub>k</sub> &middot; II(x<sub>k</sub> = i, y<sub>k</sub> = j) &middot; &Phi;(e<sub>k</sub>)
-                    </div>
-
-                    <h4 className="font-bold text-slate-700 dark:text-slate-200 mt-2">3.2. Matematiksel Anomali Tespiti ve Z-Score Formülü</h4>
-                    <p className="text-slate-400 leading-6">
-                      Her bir matris hücresinin geçmiş penceresindeki (W = 15 dk) normal baz seviyesini ve oynaklığını hesaplamak için hareketli ortalama ve standart sapma parametreleri dinamik olarak güncellenir:
-                    </p>
-
-                    <div className="my-4 p-4 rounded-xl bg-slate-900/10 dark:bg-slate-950 border border-slate-800/10 text-center font-serif text-sm md:text-base text-slate-700 dark:text-slate-200">
-                      &mu;<sub>i,j</sub>(W) = (1 / |W|) &middot; &Sigma;<sub>&tau; &in; W</sub> X<sub>i,j</sub>(&tau;)
-                      <br /><br />
-                      &sigma;<sub>i,j</sub>(W) = &radic;[ (1 / (|W|-1)) &middot; &Sigma;<sub>&tau; &in; W</sub> (X<sub>i,j</sub>(&tau;) - &mu;<sub>i,j</sub>(W))<sup>2</sup> ]
-                    </div>
-
-                    <p className="text-slate-400 leading-6">
-                      Hücredeki anlık etkileşim hacminin geçmiş normlardan kaç standart sapma saptığı Z-Score indeksi ile hesaplanır:
-                    </p>
-
-                    <div className="my-4 p-4 rounded-xl bg-slate-900/10 dark:bg-slate-950 border border-slate-800/10 text-center font-serif text-sm md:text-base text-slate-700 dark:text-slate-200">
+                    <h3 className="text-lg font-black text-teal-700 dark:text-teal-400 pb-2 border-b">3. TEKNOLOJİ VE MATEMATİKSEL MODELLEME</h3>
+                    <p className="text-slate-600 dark:text-slate-300">Dinamik Z-Score sapma indeksi ve anomali karar kuralı:</p>
+                    <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#102d33] border text-center font-serif text-sm">
                       Z<sub>i,j</sub>(t) = (X<sub>i,j</sub>(t) - &mu;<sub>i,j</sub>(W)) / (&sigma;<sub>i,j</sub>(W) + &epsilon;)
-                      <br /><br />
-                      <span className="text-rose-500 font-bold">Anomali Kriteri: |Z<sub>i,j</sub>(t)| &ge; 3.0</span>
-                    </div>
-
-                    <h4 className="font-bold text-slate-700 dark:text-slate-200 mt-4">Tablo 3.1: Yapay Zekâ Modelleri ve Doğrulama Metrikleri</h4>
-                    <div className="border border-slate-900/10 dark:border-slate-900 rounded-xl overflow-hidden mt-2">
-                      <div className="grid grid-cols-3 gap-2 bg-slate-900/5 dark:bg-slate-950 p-3 font-bold text-slate-400 border-b">
-                        <div>Model / Bileşen</div>
-                        <div>Değerlendirilen Metrik</div>
-                        <div>Elde Edilen Başarım</div>
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-2 p-3 border-b border-slate-900/10">
-                        <div className="font-bold">Anomali Tespit Motoru</div>
-                        <div>Precision / Recall</div>
-                        <div>%93.2 / %90.8</div>
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-2 p-3 border-b border-slate-900/10">
-                        <div className="font-bold">BERTurk Duygu Modeli</div>
-                        <div>Accuracy (Doğruluk)</div>
-                        <div>%92.4 (5-Fold CV)</div>
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-2 p-3">
-                        <div className="font-bold">Yerel LLM Çıkarımı</div>
-                        <div>Ortalama Yanıt Gecikmesi</div>
-                        <div>1.24 saniye (AWQ 4-bit)</div>
-                      </div>
+                      <br />
+                      <strong className="text-rose-500 font-sans block mt-2">Anomali Kriteri: |Z<sub>i,j</sub>(t)| &ge; 3.0</strong>
                     </div>
                   </div>
                 )}
 
-                {/* SECTION 4: UYGULANABILIRLIK */}
-                {activeReportSection === "sec-4" && (
-                  <div className="flex flex-col gap-4">
-                    <h3 className="text-base font-bold text-[#1B4A7D] dark:text-amber-400 pb-2 border-b">4. UYGULANABİLİRLİK</h3>
-                    
-                    <h4 className="font-bold text-slate-700 dark:text-slate-200 mt-2">4.1. Verimlilik ve ROAS Birim Ekonomisi Analizi</h4>
-                    <p className="text-slate-400 leading-6">
-                      NABIZ Platformu; hem platform güvenliği ve moderasyon operasyonlarında (NABIZ-Sense) hem de içerik üreticileri ile KOBİ’lerin dijital pazarlama yönetiminde (NABIZ-Ads) ölçülebilir, yüksek verimlilik çıktıları sunmaktadır.
-                    </p>
-
-                    <h4 className="font-bold text-slate-700 dark:text-slate-200 mt-4">Tablo 4.1: Geleneksel Reklam Panelleri ile NABIZ-Ads Karşılaştırması</h4>
-                    <div className="border border-slate-900/10 dark:border-slate-900 rounded-xl overflow-hidden mt-2">
-                      <div className="grid grid-cols-3 gap-2 bg-slate-900/5 dark:bg-slate-950 p-3 font-bold text-slate-400 border-b">
-                        <div>Performans Metriği</div>
-                        <div>Geleneksel Reklam (Meta/Google)</div>
-                        <div className="text-amber-500">NABIZ-Ads Doğal Dil Modeli</div>
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-2 p-3 border-b border-slate-900/10">
-                        <div className="font-bold">Kampanya Kurulum Süresi</div>
-                        <div>25 - 40 Dakika (50+ Ayar)</div>
-                        <div className="font-bold">10 - 15 Saniye (Tek Prompt)</div>
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-2 p-3 border-b border-slate-900/10">
-                        <div className="font-bold">Hedefleme Doğruluğu</div>
-                        <div>%61.4 (Geniş kitle israfı)</div>
-                        <div className="font-bold">%94.1 (Tensör Hücre Eşleme)</div>
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-2 p-3">
-                        <div className="font-bold">Ortalama ROAS Verimi</div>
-                        <div>1 : 2.80 (280%)</div>
-                        <div className="font-bold text-amber-500">1 : 3.75 (375%) (+34% Artış)</div>
-                      </div>
-                    </div>
-
-                    <h4 className="font-bold text-slate-700 dark:text-slate-200 mt-4">4.2. Hedef Kitle ve Pazar Büyüklüğü (TAM / SAM / SOM)</h4>
-                    <ul className="list-decimal pl-5 flex flex-col gap-2 text-slate-400 leading-6">
-                      <li>
-                        <strong>TAM (Total Addressable Market) - 280 Milyar Dolar</strong>: Küresel sosyal medya analiz yazılımları, siber güvenlik karar destek sistemleri ve dijital reklam pazarının 2026 projeksiyon büyüklüğü.
-                      </li>
-                      <li>
-                        <strong>SAM (Serviceable Addressable Market) - 1.8 Milyar Dolar</strong>: Türkiye ve Türk Cumhuriyetleri/MENA bölgesindeki dijital reklam harcamaları ve KOBİ pazarlama bütçesi toplamı.
-                      </li>
-                      <li>
-                        <strong>SOM (Serviceable Obtainable Market) - 45 Milyon TL</strong>: Başta milli platform NSosyal olmak üzere Türkiye'deki 25.000 aktif KOBİ reklamvereni ve 1.500 bağımsız içerik ajansı üzerinden hedeflenen ilk 2 yıl hacmi.
-                      </li>
-                    </ul>
-                  </div>
-                )}
-
-                {/* SECTION 5: YAYGIN ETKI */}
-                {activeReportSection === "sec-5" && (
-                  <div className="flex flex-col gap-4">
-                    <h3 className="text-base font-bold text-[#1B4A7D] dark:text-amber-400 pb-2 border-b">5. YAYGIN ETKİ</h3>
-                    
-                    <h4 className="font-bold text-slate-700 dark:text-slate-200 mt-2">5.1. Toplumsal Fayda, Siber Güvenlik ve Kamu Düzeni</h4>
-                    <p className="text-slate-400 leading-6">
-                      Organize bot ağları, linç girişimleri ve dezenformasyon dalgaları henüz ilk 5 dakikada normal dağılımdan sapan hücreler olarak izole edilir. Kamu kurumları ve afet yönetimi entegrasyonu sayesinde acil durumlarda vatandaşların yardım çağrıları saniyeler içinde koordinat bazlı haritalandırılır.
-                    </p>
-
-                    <h4 className="font-bold text-slate-700 dark:text-slate-200 mt-2">5.2. Gizlilik ve Sıfır Profilleme Standartları (Privacy by Design)</h4>
-                    <p className="text-slate-400 leading-6">
-                      NABIZ, üçüncü taraf çerezler ve bireysel piksel takipleriyle yapılan agresif profillemeyi kökten reddeder. Gizlilik Prensibi formülü:
-                    </p>
-                    <div className="my-4 p-4 rounded-xl bg-slate-900/10 dark:bg-slate-950 border border-slate-800/10 text-center font-serif text-sm md:text-base text-slate-700 dark:text-slate-200">
-                      M<sub>i,j</sub>(t) = f(Toplu Davranış Dağılımı) &and; Tekil Kullanıcı İzleme = &empty;
-                    </div>
-                  </div>
-                )}
-
-                {/* SECTION 6: SURDURULEBILIRLIK */}
                 {activeReportSection === "sec-6" && (
                   <div className="flex flex-col gap-4">
-                    <h3 className="text-base font-bold text-[#1B4A7D] dark:text-amber-400 pb-2 border-b">6. SÜRDÜRÜLEBİLİRLİK</h3>
-                    
-                    <h4 className="font-bold text-slate-700 dark:text-slate-200 mt-2">6.1. Ticarileştirme Potansiyeli ve Hibrit Gelir Modeli</h4>
-                    <ul className="list-disc pl-5 flex flex-col gap-2 text-slate-400 leading-6">
-                      <li><strong>Reklam Aracılık Komisyonu (%12 Pay)</strong>: Reklam harcamalarından platform işletim payı tahsil edilir.</li>
-                      <li><strong>İçerik Üretici Gelir Paylaşımı (%55 / %45)</strong>: Reklam gelirlerinin %55'i üreticiye, %45'i platform havuzuna aktarılarak ekosistem canlı tutulur.</li>
-                      <li><strong>Kademeli SaaS Abonelik Modeli</strong>: Pro (499 TL/ay) ve Enterprise (2.499 TL/ay) paketleri sunulur.</li>
-                    </ul>
-
-                    <h4 className="font-bold text-slate-700 dark:text-slate-200 mt-4">Tablo 6.1: Üç Yıllık Büyüme ve Gelir Projeksiyonu</h4>
-                    <div className="border border-slate-900/10 dark:border-slate-900 rounded-xl overflow-hidden mt-2">
-                      <div className="grid grid-cols-4 gap-2 bg-slate-900/5 dark:bg-slate-950 p-3 font-bold text-slate-400 border-b">
+                    <h3 className="text-lg font-black text-teal-700 dark:text-teal-400 pb-2 border-b">6. SÜRDÜRÜLEBİLİRLİK VE ÜÇ YILLIK FİNANSAL PROJEKSİYON</h3>
+                    <div className="border rounded-xl overflow-hidden text-xs">
+                      <div className="grid grid-cols-4 gap-2 bg-slate-100 dark:bg-[#102d33] p-3 font-bold">
                         <div>Finansal Gösterge</div>
                         <div>Yıl 1 (Pilot)</div>
                         <div>Yıl 2 (Yayılım)</div>
                         <div>Yıl 3 (MENA)</div>
                       </div>
-
-                      <div className="grid grid-cols-4 gap-2 p-3 border-b border-slate-900/10">
-                        <div className="font-bold">Aktif KOBİ Reklamveren</div>
+                      <div className="grid grid-cols-4 gap-2 p-3 border-t">
+                        <div>Aktif KOBİ Reklamveren</div>
                         <div>2.500 İşletme</div>
                         <div>25.000 İşletme</div>
                         <div>85.000 İşletme</div>
                       </div>
-
-                      <div className="grid grid-cols-4 gap-2 p-3 border-b border-slate-900/10">
-                        <div className="font-bold">Toplam Brüt Gelir</div>
-                        <div>900.000 TL</div>
-                        <div>8.200.000 TL</div>
-                        <div>30.000.000 TL</div>
-                      </div>
-
-                      <div className="grid grid-cols-4 gap-2 p-3">
-                        <div className="font-bold text-emerald-500">Net Faaliyet Kârı (EBITDA)</div>
-                        <div className="font-bold">+480.000 TL</div>
-                        <div className="font-bold">+6.100.000 TL</div>
-                        <div className="font-bold text-emerald-500">+23.800.000 TL</div>
+                      <div className="grid grid-cols-4 gap-2 p-3 border-t font-bold text-emerald-600">
+                        <div>Net Faaliyet Kârı (EBITDA)</div>
+                        <div>+480.000 TL</div>
+                        <div>+6.100.000 TL</div>
+                        <div>+23.800.000 TL</div>
                       </div>
                     </div>
-                  </div>
-                )}
-
-                {/* SECTION 7: PROJE TAKVIMI */}
-                {activeReportSection === "sec-7" && (
-                  <div className="flex flex-col gap-4">
-                    <h3 className="text-base font-bold text-[#1B4A7D] dark:text-amber-400 pb-2 border-b">7. PROJE TAKVİMİ</h3>
-                    
-                    <h4 className="font-bold text-slate-700 dark:text-slate-200 mt-2">Tablo 7.1: İş Paketleri ve Kilometre Taşları</h4>
-                    <div className="border border-slate-900/10 dark:border-slate-900 rounded-xl overflow-hidden mt-2">
-                      <div className="grid grid-cols-4 gap-2 bg-slate-900/5 dark:bg-slate-950 p-3 font-bold text-slate-400 border-b">
-                        <div>İş Paketi</div>
-                        <div>Açıklama</div>
-                        <div>Başlangıç / Bitiş</div>
-                        <div>Kilometre Taşı</div>
-                      </div>
-
-                      <div className="grid grid-cols-4 gap-2 p-3 border-b border-slate-900/10">
-                        <div className="font-bold">İP1: Mimari Tasarım</div>
-                        <div>Tensör matrisi ve anomali tespiti matematiksel tasarımı</div>
-                        <div>19.08.2026 - 21.08.2026</div>
-                        <div>Anomali Algoritması</div>
-                      </div>
-
-                      <div className="grid grid-cols-4 gap-2 p-3 border-b border-slate-900/10">
-                        <div className="font-bold">İP2: NLP & AI</div>
-                        <div>BERTurk duygu analizi ve yerel LLM entegrasyonu</div>
-                        <div>21.08.2026 - 23.08.2026</div>
-                        <div>AI Reklam Motoru</div>
-                      </div>
-
-                      <div className="grid grid-cols-4 gap-2 p-3 border-b border-slate-900/10">
-                        <div className="font-bold">İP3: Ön Yüz Prototipi</div>
-                        <div>Next.js ısı matrisi ve siber kalkan ekranları</div>
-                        <div>22.08.2026 - 24.08.2026</div>
-                        <div>Teknik Rapor (MS1)</div>
-                      </div>
-
-                      <div className="grid grid-cols-4 gap-2 p-3">
-                        <div className="font-bold">İP6: Canlı Demo</div>
-                        <div>Canlı sistem testleri ve jüri sunumu provası</div>
-                        <div>10.09.2026 - 14.09.2026</div>
-                        <div>Canlı Demo (MS3)</div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* SECTION 8: TAKIM YAPISI & KAYNAKCA */}
-                {activeReportSection === "sec-8" && (
-                  <div className="flex flex-col gap-4">
-                    <h3 className="text-base font-bold text-[#1B4A7D] dark:text-amber-400 pb-2 border-b">8. TAKIM YAPISI VE KAYNAKÇA</h3>
-                    
-                    <h4 className="font-bold text-slate-700 dark:text-slate-200 mt-2">8.1. Takım Organizasyonu ve Görev Dağılımı</h4>
-                    <div className="border border-slate-900/10 dark:border-slate-900 rounded-xl overflow-hidden mt-2">
-                      <div className="grid grid-cols-3 gap-2 bg-slate-900/5 dark:bg-slate-950 p-3 font-bold text-slate-400 border-b">
-                        <div>Rol / Uzmanlık</div>
-                        <div>Sorumluluk Alanı</div>
-                        <div>Kullanılan Teknolojiler</div>
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-2 p-3 border-b border-slate-900/10">
-                        <div className="font-bold">Yapay Zekâ Mühendisi</div>
-                        <div>NLP boru hattı, BERTurk, LLM prompt mühendisliği</div>
-                        <div>PyTorch, Transformers, vLLM</div>
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-2 p-3 border-b border-slate-900/10">
-                        <div className="font-bold">Veri & Backend Geliştirici</div>
-                        <div>Büyük veri akışı, Redis kuyrukları, PostgreSQL, FastAPI</div>
-                        <div>Python, FastAPI, Redis, Celery</div>
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-2 p-3">
-                        <div className="font-bold">UI/UX & Frontend Geliştirici</div>
-                        <div>Kullanıcı yolculukları, ECharts ısı haritası ve reklam arayüzü</div>
-                        <div>Next.js, React, TailwindCSS, ECharts</div>
-                      </div>
-                    </div>
-
-                    <h4 className="font-bold text-slate-700 dark:text-slate-200 mt-4">9. KAYNAKÇA</h4>
-                    <p className="text-slate-500 text-[10px] leading-relaxed">
-                      [1] Statista Research Department. (2025). Global Social Media Analytics & Next-Gen AdTech Market Outlook 2025-2030.
-                      <br />
-                      [2] Shneiderman, B. (2022). Human-Centered AI: Reliable, Safe and Trustworthy Decision Support Systems. Oxford University Press.
-                      <br />
-                      [3] Lai, V. vd. (2023). Towards a Science of Human-AI Decision Making: An Empirical Survey. ACM Computing Surveys.
-                      <br />
-                      [4] Schweter, S. (2020). BERTurk - State-of-the-Art Pretrained BERT Models for Turkish Language. Hugging Face.
-                      <br />
-                      [5] Touvron, H. vd. (2023). Llama 2: Open Foundation and Fine-Tuned Chat Models. Meta AI Research.
-                    </p>
                   </div>
                 )}
               </div>
-
             </div>
           )}
 
         </div>
 
-        {/* Live Data Ticker horizontal banner at the bottom */}
-        <div className="bg-amber-500 text-slate-950 py-1.5 px-6 font-mono text-[9px] font-bold overflow-hidden flex items-center justify-between border-t border-amber-600/30">
-          <div className="flex items-center gap-2">
-            <span className="px-1.5 py-0.5 bg-slate-950 text-amber-400 rounded">LIVE INGEST</span>
-            <span className="animate-pulse">●</span>
-            <span className="transition-all duration-500">{tickerItems[tickerIndex]}</span>
-          </div>
-          <span className="hidden sm:inline text-[8px] opacity-80 uppercase tracking-widest">
-            BerkTurk Real-time Analysis Stream
-          </span>
-        </div>
-
-        {/* Footer */}
-        <footer className={`py-3 text-center text-[10px] border-t transition-colors duration-300 ${themeClasses.footer}`}>
-          <p>© 2026 NABIZ AI Platformu. Sadir Pehlivan Takımı #990060. Tüm Hakları Saklıdır.</p>
+        {/* FOOTER */}
+        <footer className={`py-4 text-center text-xs border-t mt-auto ${
+          theme === "light" ? "bg-white border-slate-200 text-slate-500" : "bg-[#0b1d22] border-slate-800 text-slate-500"
+        }`}>
+          <p>© 2026 NABIZ AI Platformu • Sadir Pehlivan Takımı #990060 • TEKNOFEST N-Sosyal İnovasyon</p>
         </footer>
 
-      </div>
-
+      </main>
     </div>
   );
 }
