@@ -1,0 +1,20 @@
+# Teknofest Reference Material
+ref/
+ref
+
+# Node dependencies
+node_modules/
+.next/
+out/
+build/
+
+# Python dependencies
+__pycache__/
+*.pyc
+venv/
+.venv/
+.env
+
+# OS files
+.DS_Store
+*.pages
