@@ -1149,48 +1149,48 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* SVG Smooth Spline Chart */}
-                <div className="h-36 w-full relative">
-                  <svg className="w-full h-full" viewBox="0 0 100 50" preserveAspectRatio="none">
+                {/* SVG High-Res Smooth Spline Chart with Hairline Thin Vector Lines */}
+                <div className="h-40 w-full relative">
+                  <svg className="w-full h-full" viewBox="0 0 1000 200" preserveAspectRatio="none">
                     <defs>
                       {/* Vertical Fade Gradient: Teal */}
                       <linearGradient id="vert-fade-teal" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#0d9488" stopOpacity="0.30" />
-                        <stop offset="60%" stopColor="#0d9488" stopOpacity="0.08" />
+                        <stop offset="0%" stopColor="#0d9488" stopOpacity="0.25" />
+                        <stop offset="60%" stopColor="#0d9488" stopOpacity="0.06" />
                         <stop offset="100%" stopColor="#0d9488" stopOpacity="0.00" />
                       </linearGradient>
 
                       {/* Vertical Fade Gradient: Orange */}
                       <linearGradient id="vert-fade-orange" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#ea580c" stopOpacity="0.22" />
-                        <stop offset="60%" stopColor="#ea580c" stopOpacity="0.05" />
+                        <stop offset="0%" stopColor="#ea580c" stopOpacity="0.20" />
+                        <stop offset="60%" stopColor="#ea580c" stopOpacity="0.04" />
                         <stop offset="100%" stopColor="#ea580c" stopOpacity="0.00" />
                       </linearGradient>
 
                       {/* Vertical Fade Gradient: Blue */}
                       <linearGradient id="vert-fade-blue" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#2563eb" stopOpacity="0.18" />
-                        <stop offset="60%" stopColor="#2563eb" stopOpacity="0.04" />
+                        <stop offset="0%" stopColor="#2563eb" stopOpacity="0.15" />
+                        <stop offset="60%" stopColor="#2563eb" stopOpacity="0.03" />
                         <stop offset="100%" stopColor="#2563eb" stopOpacity="0.00" />
                       </linearGradient>
 
                       {/* Vertical Fade Gradient: Crisis Red */}
                       <linearGradient id="vert-fade-crisis" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#dc2626" stopOpacity="0.35" />
-                        <stop offset="60%" stopColor="#dc2626" stopOpacity="0.10" />
+                        <stop offset="0%" stopColor="#dc2626" stopOpacity="0.30" />
+                        <stop offset="60%" stopColor="#dc2626" stopOpacity="0.08" />
                         <stop offset="100%" stopColor="#dc2626" stopOpacity="0.00" />
                       </linearGradient>
                     </defs>
 
                     {/* Subtle Horizontal Gridlines */}
-                    <line x1="0" y1="12" x2="100" y2="12" stroke="rgba(148, 163, 184, 0.12)" strokeDasharray="2 2" strokeWidth="0.5" />
-                    <line x1="0" y1="25" x2="100" y2="25" stroke="rgba(148, 163, 184, 0.12)" strokeDasharray="2 2" strokeWidth="0.5" />
-                    <line x1="0" y1="38" x2="100" y2="38" stroke="rgba(148, 163, 184, 0.12)" strokeDasharray="2 2" strokeWidth="0.5" />
+                    <line x1="0" y1="50" x2="1000" y2="50" stroke="rgba(148, 163, 184, 0.12)" strokeDasharray="3 3" vectorEffect="non-scaling-stroke" strokeWidth="1" />
+                    <line x1="0" y1="100" x2="1000" y2="100" stroke="rgba(148, 163, 184, 0.12)" strokeDasharray="3 3" vectorEffect="non-scaling-stroke" strokeWidth="1" />
+                    <line x1="0" y1="150" x2="1000" y2="150" stroke="rgba(148, 163, 184, 0.12)" strokeDasharray="3 3" vectorEffect="non-scaling-stroke" strokeWidth="1" />
 
-                    {/* Layer 3: Blue #Teknoloji (Spline Curve + Vertical Fade Area) */}
+                    {/* Layer 3: Blue #Teknoloji (Hairline Spline Curve + Vertical Fade Area) */}
                     {(() => {
-                      const step = 100 / (wavePoints3.length - 1);
-                      const coords = wavePoints3.map((val, i) => ({ x: i * step, y: 50 - (val / 55) * 44 }));
+                      const step = 1000 / (wavePoints3.length - 1);
+                      const coords = wavePoints3.map((val, i) => ({ x: i * step, y: 200 - (val / 55) * 175 }));
                       let d = `M ${coords[0].x} ${coords[0].y}`;
                       for (let i = 0; i < coords.length - 1; i++) {
                         const midX = (coords[i].x + coords[i + 1].x) / 2;
@@ -1199,16 +1199,16 @@ export default function Home() {
                       d += ` T ${coords[coords.length - 1].x} ${coords[coords.length - 1].y}`;
                       return (
                         <g>
-                          <path d={`${d} L 100 50 L 0 50 Z`} fill="url(#vert-fade-blue)" />
-                          <path d={d} fill="none" stroke="#2563eb" strokeWidth="1.25" />
+                          <path d={`${d} L 1000 200 L 0 200 Z`} fill="url(#vert-fade-blue)" />
+                          <path d={d} fill="none" stroke="#2563eb" strokeWidth="1" vectorEffect="non-scaling-stroke" />
                         </g>
                       );
                     })()}
 
-                    {/* Layer 2: Orange #Kültür (Spline Curve + Vertical Fade Area) */}
+                    {/* Layer 2: Orange #Kültür (Hairline Spline Curve + Vertical Fade Area) */}
                     {(() => {
-                      const step = 100 / (wavePoints2.length - 1);
-                      const coords = wavePoints2.map((val, i) => ({ x: i * step, y: 50 - (val / 55) * 44 }));
+                      const step = 1000 / (wavePoints2.length - 1);
+                      const coords = wavePoints2.map((val, i) => ({ x: i * step, y: 200 - (val / 55) * 175 }));
                       let d = `M ${coords[0].x} ${coords[0].y}`;
                       for (let i = 0; i < coords.length - 1; i++) {
                         const midX = (coords[i].x + coords[i + 1].x) / 2;
@@ -1217,17 +1217,17 @@ export default function Home() {
                       d += ` T ${coords[coords.length - 1].x} ${coords[coords.length - 1].y}`;
                       return (
                         <g>
-                          <path d={`${d} L 100 50 L 0 50 Z`} fill="url(#vert-fade-orange)" />
-                          <path d={d} fill="none" stroke="#ea580c" strokeWidth="1.25" />
+                          <path d={`${d} L 1000 200 L 0 200 Z`} fill="url(#vert-fade-orange)" />
+                          <path d={d} fill="none" stroke="#ea580c" strokeWidth="1" vectorEffect="non-scaling-stroke" />
                         </g>
                       );
                     })()}
 
-                    {/* Layer 1: Teal/Crisis #Ulaşım (Spline Curve + Vertical Fade Area + Current Point) */}
+                    {/* Layer 1: Teal/Crisis #Ulaşım (Hairline Spline Curve + Vertical Fade Area + Current Point) */}
                     {(() => {
                       const isCrisis = alerts.some(a => a.status === "UNRESOLVED" && a.type === "CRISIS");
-                      const step = 100 / (wavePoints1.length - 1);
-                      const coords = wavePoints1.map((val, i) => ({ x: i * step, y: 50 - (val / 55) * 44 }));
+                      const step = 1000 / (wavePoints1.length - 1);
+                      const coords = wavePoints1.map((val, i) => ({ x: i * step, y: 200 - (val / 55) * 175 }));
                       let d = `M ${coords[0].x} ${coords[0].y}`;
                       for (let i = 0; i < coords.length - 1; i++) {
                         const midX = (coords[i].x + coords[i + 1].x) / 2;
@@ -1237,9 +1237,9 @@ export default function Home() {
                       d += ` T ${last.x} ${last.y}`;
                       return (
                         <g>
-                          <path d={`${d} L 100 50 L 0 50 Z`} fill={isCrisis ? "url(#vert-fade-crisis)" : "url(#vert-fade-teal)"} />
-                          <path d={d} fill="none" stroke={isCrisis ? "#dc2626" : "#0d9488"} strokeWidth="1.5" />
-                          <circle cx={last.x} cy={last.y} r="2" fill={isCrisis ? "#dc2626" : "#0d9488"} />
+                          <path d={`${d} L 1000 200 L 0 200 Z`} fill={isCrisis ? "url(#vert-fade-crisis)" : "url(#vert-fade-teal)"} />
+                          <path d={d} fill="none" stroke={isCrisis ? "#dc2626" : "#0d9488"} strokeWidth="1.25" vectorEffect="non-scaling-stroke" />
+                          <circle cx={last.x} cy={last.y} r="4" fill={isCrisis ? "#dc2626" : "#0d9488"} />
                         </g>
                       );
                     })()}
