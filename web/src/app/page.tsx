@@ -7,17 +7,19 @@ import {
   ArrowUpRight,
   Award,
   Bell,
+  Calculator,
   Calendar,
   CheckCircle,
   ChevronDown,
+  ChevronRight,
   Database,
+  DollarSign,
   Download,
   Eye,
   EyeOff,
   FileText,
   Flame,
   Globe,
-  HelpCircle,
   Layers,
   LayoutDashboard,
   Lock,
@@ -34,6 +36,7 @@ import {
   Share2,
   Shield,
   ShieldCheck,
+  Sliders,
   Sparkles,
   Sun,
   TrendingDown,
@@ -57,8 +60,8 @@ interface CellData {
 }
 
 interface Matrix {
-  [city: string]: {
-    [topic: string]: CellData;
+  [row: string]: {
+    [col: string]: CellData;
   };
 }
 
@@ -89,7 +92,8 @@ interface Campaign {
   impressions: number;
 }
 
-const getInitialMatrix = (): Matrix => ({
+// 3 Dimension Matrix Presets matching Chapter 1.1 & 3.1 of Technical Report
+const getCityTopicMatrix = (): Matrix => ({
   "İstanbul": {
     "#Ulaşım": { volume: 135, mean: 120, std: 10, zScore: 1.5, sentiment: -0.1, isAnomaly: false, isOpportunity: false },
     "#Teknoloji": { volume: 180, mean: 170, std: 15, zScore: 0.67, sentiment: 0.3, isAnomaly: false, isOpportunity: false },
@@ -127,16 +131,62 @@ const getInitialMatrix = (): Matrix => ({
   },
 });
 
+const getAgeFormatMatrix = (): Matrix => ({
+  "13-17 Yaş": {
+    "Reels": { volume: 195, mean: 120, std: 15, zScore: 5.0, sentiment: 0.65, isAnomaly: false, isOpportunity: true, details: "Genç kitlede kısa video formatında viral büyüme tespit edildi." },
+    "Canlı Yayın": { volume: 45, mean: 40, std: 5, zScore: 1.0, sentiment: 0.2, isAnomaly: false, isOpportunity: false },
+    "Metin": { volume: 12, mean: 20, std: 3, zScore: -2.6, sentiment: -0.1, isAnomaly: false, isOpportunity: false },
+    "Carousel": { volume: 35, mean: 30, std: 4, zScore: 1.25, sentiment: 0.3, isAnomaly: false, isOpportunity: false },
+    "Hikaye": { volume: 140, mean: 130, std: 10, zScore: 1.0, sentiment: 0.4, isAnomaly: false, isOpportunity: false },
+  },
+  "18-24 Yaş": {
+    "Reels": { volume: 240, mean: 180, std: 20, zScore: 3.0, sentiment: 0.82, isAnomaly: false, isOpportunity: true, details: "Kültür ve teknoloji reklamları için en yüksek dönüşüm sağlayan segment." },
+    "Canlı Yayın": { volume: 85, mean: 80, std: 8, zScore: 0.62, sentiment: 0.4, isAnomaly: false, isOpportunity: false },
+    "Metin": { volume: 28, mean: 30, std: 4, zScore: -0.5, sentiment: 0.0, isAnomaly: false, isOpportunity: false },
+    "Carousel": { volume: 95, mean: 85, std: 10, zScore: 1.0, sentiment: 0.5, isAnomaly: false, isOpportunity: false },
+    "Hikaye": { volume: 160, mean: 150, std: 12, zScore: 0.83, sentiment: 0.3, isAnomaly: false, isOpportunity: false },
+  },
+  "25-34 Yaş": {
+    "Reels": { volume: 150, mean: 140, std: 12, zScore: 0.83, sentiment: 0.2, isAnomaly: false, isOpportunity: false },
+    "Canlı Yayın": { volume: 60, mean: 55, std: 6, zScore: 0.83, sentiment: 0.1, isAnomaly: false, isOpportunity: false },
+    "Metin": { volume: 90, mean: 80, std: 8, zScore: 1.25, sentiment: 0.1, isAnomaly: false, isOpportunity: false },
+    "Carousel": { volume: 110, mean: 100, std: 9, zScore: 1.11, sentiment: 0.4, isAnomaly: false, isOpportunity: false },
+    "Hikaye": { volume: 120, mean: 115, std: 8, zScore: 0.62, sentiment: 0.2, isAnomaly: false, isOpportunity: false },
+  },
+  "35-44 Yaş": {
+    "Reels": { volume: 75, mean: 70, std: 7, zScore: 0.71, sentiment: 0.1, isAnomaly: false, isOpportunity: false },
+    "Canlı Yayın": { volume: 30, mean: 30, std: 3, zScore: 0.0, sentiment: 0.0, isAnomaly: false, isOpportunity: false },
+    "Metin": { volume: 115, mean: 110, std: 10, zScore: 0.5, sentiment: -0.1, isAnomaly: false, isOpportunity: false },
+    "Carousel": { volume: 80, mean: 75, std: 6, zScore: 0.83, sentiment: 0.2, isAnomaly: false, isOpportunity: false },
+    "Hikaye": { volume: 65, mean: 60, std: 5, zScore: 1.0, sentiment: 0.1, isAnomaly: false, isOpportunity: false },
+  },
+  "45+ Yaş": {
+    "Reels": { volume: 40, mean: 40, std: 4, zScore: 0.0, sentiment: 0.0, isAnomaly: false, isOpportunity: false },
+    "Canlı Yayın": { volume: 20, mean: 20, std: 2, zScore: 0.0, sentiment: 0.0, isAnomaly: false, isOpportunity: false },
+    "Metin": { volume: 140, mean: 50, std: 8, zScore: 11.25, sentiment: -0.85, isAnomaly: true, isOpportunity: false, details: "Dezenformasyon ve kriz içeriklerinin metin formatında yoğunlaştığı saptandı." },
+    "Carousel": { volume: 35, mean: 35, std: 3, zScore: 0.0, sentiment: 0.1, isAnomaly: false, isOpportunity: false },
+    "Hikaye": { volume: 30, mean: 30, std: 3, zScore: 0.0, sentiment: 0.0, isAnomaly: false, isOpportunity: false },
+  },
+});
+
 export default function Home() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [currentPanel, setCurrentPanel] = useState<"dashboard" | "ads" | "sense" | "analytics" | "privacy" | "report">("dashboard");
+  const [activeWing, setActiveWing] = useState<"all" | "sense" | "ads">("all");
+  const [activeAxisDimension, setActiveAxisDimension] = useState<"city_topic" | "age_format">("city_topic");
   const [activeReportSection, setActiveReportSection] = useState<string>("sec-1");
-  const [matrix, setMatrix] = useState<Matrix>(getInitialMatrix());
-  const [selectedCell, setSelectedCell] = useState<{ city: string; topic: string } | null>({
-    city: "İzmir",
-    topic: "#Ulaşım",
-  });
   
+  // Matrix state
+  const [cityMatrix, setCityMatrix] = useState<Matrix>(getCityTopicMatrix());
+  const [ageMatrix, setAgeMatrix] = useState<Matrix>(getAgeFormatMatrix());
+  const [selectedCell, setSelectedCell] = useState<{ row: string; col: string }>({
+    row: "İzmir",
+    col: "#Ulaşım",
+  });
+
+  // Interactive Financial Calculator State (Chapter 6 of Technical Report)
+  const [financialSmeCount, setFinancialSmeCount] = useState<number>(25000);
+
   const [alerts, setAlerts] = useState<Alert[]>([
     {
       id: "a1",
@@ -219,7 +269,7 @@ export default function Home() {
 
   // Handle simulations
   const triggerIzmirCrisis = () => {
-    const updated = getInitialMatrix();
+    const updated = getCityTopicMatrix();
     updated["İzmir"]["#Ulaşım"] = {
       volume: 245,
       mean: 32,
@@ -229,7 +279,7 @@ export default function Home() {
       isAnomaly: true,
       isOpportunity: false,
     };
-    setMatrix(updated);
+    setCityMatrix(updated);
     
     const newAlert: Alert = {
       id: "crisis_" + Date.now(),
@@ -245,7 +295,7 @@ export default function Home() {
     };
     
     setAlerts(prev => [newAlert, ...prev.filter(a => a.id !== "a1")]);
-    setSelectedCell({ city: "İzmir", topic: "#Ulaşım" });
+    setSelectedCell({ row: "İzmir", col: "#Ulaşım" });
     setAnomalyCount("428.10K");
     setSentimentIndex(-0.15);
     
@@ -258,7 +308,7 @@ export default function Home() {
   };
 
   const triggerKadikoyOpportunity = () => {
-    const updated = getInitialMatrix();
+    const updated = getCityTopicMatrix();
     updated["İstanbul"]["#Kültür"] = {
       volume: 185,
       mean: 45,
@@ -268,8 +318,8 @@ export default function Home() {
       isAnomaly: false,
       isOpportunity: true,
     };
-    setMatrix(updated);
-    setSelectedCell({ city: "İstanbul", topic: "#Kültür" });
+    setCityMatrix(updated);
+    setSelectedCell({ row: "İstanbul", col: "#Kültür" });
     setSentimentIndex(0.68);
     setOptimizedRoas("4.15x");
     
@@ -285,7 +335,7 @@ export default function Home() {
   };
 
   const triggerBursaBotAttack = () => {
-    const updated = getInitialMatrix();
+    const updated = getCityTopicMatrix();
     updated["Bursa"]["#Ekonomi"] = {
       volume: 310,
       mean: 30,
@@ -295,8 +345,8 @@ export default function Home() {
       isAnomaly: false,
       isOpportunity: false,
     };
-    setMatrix(updated);
-    setSelectedCell({ city: "Bursa", topic: "#Ekonomi" });
+    setCityMatrix(updated);
+    setSelectedCell({ row: "Bursa", col: "#Ekonomi" });
     setBotBlockedCount(prev => prev + 280);
     
     setLogs(prev => [
@@ -308,7 +358,8 @@ export default function Home() {
   };
 
   const resetAll = () => {
-    setMatrix(getInitialMatrix());
+    setCityMatrix(getCityTopicMatrix());
+    setAgeMatrix(getAgeFormatMatrix());
     setAlerts([
       {
         id: "a1",
@@ -335,7 +386,7 @@ export default function Home() {
         recommendedActions: ["Önerilen Reklam Kampanyası Başlat"],
       },
     ]);
-    setSelectedCell({ city: "İzmir", topic: "#Ulaşım" });
+    setSelectedCell({ row: "İzmir", col: "#Ulaşım" });
     setTotalSignalCount("24.68M");
     setAnomalyCount("312.47K");
     setSentimentIndex(0.42);
@@ -438,7 +489,11 @@ export default function Home() {
     setPromptInput(txt);
   };
 
-  const activeCellData = selectedCell ? matrix[selectedCell.city][selectedCell.topic] : null;
+  // Active matrix selection
+  const activeMatrix = activeAxisDimension === "city_topic" ? cityMatrix : ageMatrix;
+  const activeCellData = (activeMatrix[selectedCell.row] && activeMatrix[selectedCell.row][selectedCell.col])
+    ? activeMatrix[selectedCell.row][selectedCell.col]
+    : { volume: 100, mean: 90, std: 10, zScore: 1.0, sentiment: 0.0, isAnomaly: false, isOpportunity: false, details: "Seçili hücre norm sınırları içindedir." };
 
   return (
     <div className={`min-h-screen flex flex-col lg:flex-row font-sans selection:bg-orange-500 selection:text-white ${
@@ -467,7 +522,7 @@ export default function Home() {
           {/* Navigation Items */}
           <nav className="flex flex-col gap-1.5">
             <button
-              onClick={() => setCurrentPanel("dashboard")}
+              onClick={() => { setCurrentPanel("dashboard"); setActiveWing("all"); }}
               className={`w-full py-3 px-3.5 rounded-xl text-xs font-bold flex items-center gap-3.5 transition-all cursor-pointer ${
                 currentPanel === "dashboard"
                   ? "bg-[#16383e] text-teal-300 shadow-inner"
@@ -479,7 +534,7 @@ export default function Home() {
             </button>
 
             <button
-              onClick={() => setCurrentPanel("ads")}
+              onClick={() => { setCurrentPanel("ads"); setActiveWing("ads"); }}
               className={`w-full py-3 px-3.5 rounded-xl text-xs font-bold flex items-center gap-3.5 transition-all cursor-pointer ${
                 currentPanel === "ads"
                   ? "bg-[#16383e] text-teal-300 shadow-inner"
@@ -491,7 +546,7 @@ export default function Home() {
             </button>
 
             <button
-              onClick={() => setCurrentPanel("sense")}
+              onClick={() => { setCurrentPanel("sense"); setActiveWing("sense"); }}
               className={`w-full py-3 px-3.5 rounded-xl text-xs font-bold flex items-center gap-3.5 transition-all cursor-pointer ${
                 currentPanel === "sense"
                   ? "bg-[#16383e] text-teal-300 shadow-inner"
@@ -511,7 +566,7 @@ export default function Home() {
               }`}
             >
               <TrendingUp className={`h-4.5 w-4.5 ${currentPanel === "analytics" ? "text-teal-400" : "text-slate-400"}`} />
-              Detaylı Analitik
+              Detaylı Analitik & Eksenler
             </button>
 
             <button
@@ -523,7 +578,7 @@ export default function Home() {
               }`}
             >
               <Lock className={`h-4.5 w-4.5 ${currentPanel === "privacy" ? "text-teal-400" : "text-slate-400"}`} />
-              KVKK & Gizlilik Uyum
+              KVKK & Sıfır Profilleme
             </button>
 
             <button
@@ -540,7 +595,7 @@ export default function Home() {
           </nav>
         </div>
 
-        {/* Bottom Promo & Profile Cards (as in ADNEX image) */}
+        {/* Bottom Promo & Profile Cards */}
         <div className="flex flex-col gap-4 mt-8">
           {/* Promo Card */}
           <div className="bg-[#102d33] border border-[#1b4d57]/60 rounded-2xl p-4 flex flex-col gap-3 relative overflow-hidden">
@@ -549,18 +604,18 @@ export default function Home() {
                 <Sparkles className="h-5 w-5 text-orange-400" />
               </div>
               <div>
-                <h4 className="text-xs font-bold text-white leading-tight">Milli AdTech & Kalkan</h4>
+                <h4 className="text-xs font-bold text-white leading-tight">Milli Çift Kanatlı AdTech</h4>
                 <span className="text-[10px] text-teal-300/80">TEKNOFEST 2026</span>
               </div>
             </div>
             <p className="text-[10px] text-slate-400 leading-relaxed">
-              Z-Score ve DBSCAN anomali filtreleri ile +%34 ROAS optimizasyonu aktif.
+              Z-Score ve DBSCAN filtreleri ile +%34 ROAS ve 32 saniyede kriz müdahalesi devrede.
             </p>
             <button
               onClick={triggerIzmirCrisis}
               className="w-full py-2 px-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-[11px] font-bold transition-all shadow-md shadow-orange-500/20 flex items-center justify-center gap-1.5 cursor-pointer"
             >
-              <Play className="h-3 w-3 fill-current" /> Canlı Simülasyon Başlat
+              <Play className="h-3 w-3 fill-current" /> İzmir Krizini Simüle Et
             </button>
           </div>
 
@@ -583,7 +638,7 @@ export default function Home() {
       {/* MAIN CONTENT AREA */}
       <main className="flex-1 flex flex-col min-w-0 overflow-y-auto">
         
-        {/* TOP HEADER (as in ADNEX image) */}
+        {/* TOP HEADER */}
         <header className={`px-8 py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b ${
           theme === "light" ? "bg-white border-slate-200/80" : "bg-[#0b1d22] border-slate-800"
         }`}>
@@ -597,14 +652,33 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="flex items-center gap-3 self-end sm:self-auto">
-            {/* Date Range Selector Pill */}
-            <div className={`flex items-center gap-2 px-3.5 py-2 rounded-xl border text-xs font-semibold shadow-sm ${
-              theme === "light" ? "bg-white border-slate-200 text-slate-700" : "bg-[#0f282e] border-slate-700 text-slate-200"
-            }`}>
-              <Calendar className="h-3.5 w-3.5 text-slate-400" />
-              <span>31 Ağustos – 14 Eylül 2026</span>
-              <ChevronDown className="h-3.5 w-3.5 text-slate-400 ml-1" />
+          <div className="flex flex-wrap items-center gap-3 self-end sm:self-auto">
+            {/* Double-Wing Architecture Quick Switcher */}
+            <div className="flex items-center bg-slate-100 dark:bg-[#102d33] p-1 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-bold">
+              <button
+                onClick={() => { setActiveWing("all"); setCurrentPanel("dashboard"); }}
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                  activeWing === "all" ? "bg-[#0a1e22] text-white shadow-sm" : "text-slate-500 hover:text-slate-800"
+                }`}
+              >
+                Tümü
+              </button>
+              <button
+                onClick={() => { setActiveWing("sense"); setCurrentPanel("sense"); }}
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
+                  activeWing === "sense" ? "bg-rose-600 text-white shadow-sm" : "text-slate-500 hover:text-slate-800"
+                }`}
+              >
+                <Shield className="h-3 w-3" /> Kanat 1: Sense (Kalkan)
+              </button>
+              <button
+                onClick={() => { setActiveWing("ads"); setCurrentPanel("ads"); }}
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
+                  activeWing === "ads" ? "bg-orange-500 text-white shadow-sm" : "text-slate-500 hover:text-slate-800"
+                }`}
+              >
+                <Rocket className="h-3 w-3" /> Kanat 2: Ads (Reklam)
+              </button>
             </div>
 
             {/* Dark/Light Toggle */}
@@ -629,13 +703,39 @@ export default function Home() {
           </div>
         </header>
 
+        {/* SYSTEM USABILITY & OPERATIONAL BENCHMARK BANNER (Chapter 3 & 4 of Report) */}
+        <div className={`px-8 py-3.5 border-b flex flex-wrap items-center justify-between gap-4 text-xs ${
+          theme === "light" ? "bg-slate-50 border-slate-200" : "bg-[#0d2227] border-slate-800"
+        }`}>
+          <div className="flex items-center gap-2 font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[10px]">
+            <Award className="h-4 w-4 text-orange-500" />
+            Doğrulanmış Rapor Başarım Metrikleri:
+          </div>
+          <div className="flex flex-wrap items-center gap-6">
+            <div className="flex items-center gap-2">
+              <span className="text-slate-400">Sense Moderasyon SUS:</span>
+              <strong className="text-teal-600 font-bold bg-teal-500/10 px-2 py-0.5 rounded-full">86.4 / 100 (A+)</strong>
+              <span className="text-[11px] text-slate-500">(4.2 saat → 32 sn)</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-slate-400">Ads Reklamveren SUS:</span>
+              <strong className="text-orange-600 font-bold bg-orange-500/10 px-2 py-0.5 rounded-full">91.2 / 100 (A+)</strong>
+              <span className="text-[11px] text-slate-500">(35 dk → 12 sn)</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-slate-400">ROAS Verim Artışı:</span>
+              <strong className="text-emerald-600 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full">+%34 (1:3.75x)</strong>
+            </div>
+          </div>
+        </div>
+
         {/* MAIN BODY CONTENT */}
         <div className="p-8 flex flex-col gap-8 max-w-7xl w-full mx-auto">
           
-          {/* 4 TOP KPI SUMMARY CARDS (as in ADNEX image) */}
+          {/* 4 TOP KPI SUMMARY CARDS */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             
-            {/* KPI 1: Total Sinyal (Impressions) */}
+            {/* KPI 1: Total Sinyal */}
             <div className={`p-5 rounded-2xl border flex flex-col justify-between transition-all ${
               theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
             }`}>
@@ -654,7 +754,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* KPI 2: Anomali & Kriz (Clicks) */}
+            {/* KPI 2: Anomali & Kriz */}
             <div className={`p-5 rounded-2xl border flex flex-col justify-between transition-all ${
               theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
             }`}>
@@ -673,7 +773,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* KPI 3: Ortalama Duygu (Avg CTR) */}
+            {/* KPI 3: Ortalama Duygu */}
             <div className={`p-5 rounded-2xl border flex flex-col justify-between transition-all ${
               theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
             }`}>
@@ -694,7 +794,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* KPI 4: Optimize Edilen ROAS (Total Spend) */}
+            {/* KPI 4: Optimize Edilen ROAS */}
             <div className={`p-5 rounded-2xl border flex flex-col justify-between transition-all ${
               theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
             }`}>
@@ -715,13 +815,13 @@ export default function Home() {
 
           </div>
 
-          {/* VIEW 1: OVERVIEW / DASHBOARD (Matching ADNEX 3-Card Grid + Multi-Axis Matrix + Bottom Charts) */}
+          {/* VIEW 1: OVERVIEW / DASHBOARD */}
           {currentPanel === "dashboard" && (
             <>
-              {/* 3 FOCUS HIGHLIGHT CARDS (as in ADNEX image) */}
+              {/* 3 FOCUS HIGHLIGHT CARDS */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
-                {/* Channel Card 1: İzmir Ulaşım (Banner Ads equivalent) */}
+                {/* Channel Card 1: İzmir Ulaşım */}
                 <div className={`p-6 rounded-2xl border flex flex-col justify-between transition-all ${
                   theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
                 }`}>
@@ -785,7 +885,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Channel Card 2: Kadıköy Trendi (Login Ads equivalent) */}
+                {/* Channel Card 2: Kadıköy Trendi */}
                 <div className={`p-6 rounded-2xl border flex flex-col justify-between transition-all ${
                   theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
                 }`}>
@@ -849,7 +949,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Channel Card 3: Bursa Bot Filtresi (Swipe Ads equivalent) */}
+                {/* Channel Card 3: Bursa Bot Filtresi */}
                 <div className={`p-6 rounded-2xl border flex flex-col justify-between transition-all ${
                   theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
                 }`}>
@@ -915,7 +1015,7 @@ export default function Home() {
 
               </div>
 
-              {/* DYNAMIC MULTI-AXIS HEATMAP MATRIX & SIMULATION DECK */}
+              {/* DYNAMIC MULTI-AXIS HEATMAP MATRIX WITH DIMENSION SWITCHER */}
               <div className={`p-6 rounded-2xl border transition-all ${
                 theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
               }`}>
@@ -923,14 +1023,34 @@ export default function Home() {
                   <div>
                     <h3 className="font-extrabold text-base flex items-center gap-2">
                       <Zap className="h-5 w-5 text-orange-500" />
-                      Çok Eksenli Anomali Matrisi (NABIZ Core)
+                      Çok Eksenli Tensör İzdüşümü Matrisi
                     </h3>
                     <p className="text-xs text-slate-400 mt-0.5">
-                      Şehirler ve konu kategorileri arasındaki anlık tensör izdüşümü M<sub>i,j</sub>(t)
+                      Rapor Bölüm 1.1 & 3.1: Esnek eşlenebilen koordinat eksenlerinde anlık tensör izdüşümü M<sub>i,j</sub>(t)
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-3">
+                  {/* Multi-Axis Dimension Selector Pills */}
+                  <div className="flex flex-wrap items-center gap-3">
+                    <div className="flex items-center bg-slate-100 dark:bg-[#102d33] p-1 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-bold">
+                      <button
+                        onClick={() => { setActiveAxisDimension("city_topic"); setSelectedCell({ row: "İzmir", col: "#Ulaşım" }); }}
+                        className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                          activeAxisDimension === "city_topic" ? "bg-teal-600 text-white shadow-sm" : "text-slate-500 hover:text-slate-800"
+                        }`}
+                      >
+                        [Şehir × Konu]
+                      </button>
+                      <button
+                        onClick={() => { setActiveAxisDimension("age_format"); setSelectedCell({ row: "18-24 Yaş", col: "Reels" }); }}
+                        className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                          activeAxisDimension === "age_format" ? "bg-teal-600 text-white shadow-sm" : "text-slate-500 hover:text-slate-800"
+                        }`}
+                      >
+                        [Yaş Grubu × Format]
+                      </button>
+                    </div>
+
                     <button
                       onClick={resetAll}
                       className={`text-xs px-3 py-1.5 rounded-xl border flex items-center gap-1.5 font-bold transition-all cursor-pointer ${
@@ -939,41 +1059,30 @@ export default function Home() {
                     >
                       <RefreshCw className="h-3 w-3" /> Sıfırla
                     </button>
-                    <div className="flex items-center gap-3 text-xs">
-                      <span className="flex items-center gap-1.5 text-slate-500">
-                        <span className="h-2.5 w-2.5 rounded-full bg-slate-200 dark:bg-slate-700"></span> Normal
-                      </span>
-                      <span className="flex items-center gap-1.5 text-rose-500 font-bold">
-                        <span className="h-2.5 w-2.5 rounded-full bg-rose-500 animate-pulse"></span> Kriz (Z ≥ 3.0)
-                      </span>
-                      <span className="flex items-center gap-1.5 text-orange-500 font-bold">
-                        <span className="h-2.5 w-2.5 rounded-full bg-orange-500"></span> Fırsat (ROAS +34%)
-                      </span>
-                    </div>
                   </div>
                 </div>
 
                 {/* Matrix Grid Table */}
                 <div className="overflow-x-auto">
-                  <div className="min-w-[600px]">
+                  <div className="min-w-[650px]">
                     <div className="grid grid-cols-6 gap-3 mb-3 text-center text-xs font-bold text-slate-400 border-b border-slate-100 dark:border-slate-800 pb-2">
-                      <div className="text-left pl-2">Bölge / Şehir</div>
-                      <div>#Ulaşım</div>
-                      <div>#Teknoloji</div>
-                      <div>#Spor</div>
-                      <div>#Kültür</div>
-                      <div>#Ekonomi</div>
+                      <div className="text-left pl-2">
+                        {activeAxisDimension === "city_topic" ? "Bölge / Şehir" : "Yaş Segmenti"}
+                      </div>
+                      {Object.keys(Object.values(activeMatrix)[0]).map(col => (
+                        <div key={col}>{col}</div>
+                      ))}
                     </div>
 
-                    {Object.keys(matrix).map(city => (
-                      <div key={city} className="grid grid-cols-6 gap-3 mb-3 items-center text-center">
+                    {Object.keys(activeMatrix).map(row => (
+                      <div key={row} className="grid grid-cols-6 gap-3 mb-3 items-center text-center">
                         <div className="text-left font-bold text-sm flex items-center gap-1.5 pl-1">
-                          <MapPin className="h-4 w-4 text-slate-400" />
-                          {city}
+                          {activeAxisDimension === "city_topic" ? <MapPin className="h-4 w-4 text-slate-400" /> : <Users className="h-4 w-4 text-slate-400" />}
+                          {row}
                         </div>
 
-                        {Object.keys(matrix[city]).map(topic => {
-                          const cell = matrix[city][topic];
+                        {Object.keys(activeMatrix[row]).map(col => {
+                          const cell = activeMatrix[row][col];
                           let cellStyle = theme === "light"
                             ? "bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-800"
                             : "bg-[#102d33] hover:bg-[#153840] border-[#1b4d57] text-slate-200";
@@ -987,12 +1096,12 @@ export default function Home() {
                             badge = <span className="absolute top-1 right-1 text-[8px] font-black bg-orange-500 text-white px-1.5 py-0.2 rounded-full">🎯 FIRSAT</span>;
                           }
 
-                          const isSelected = selectedCell?.city === city && selectedCell?.topic === topic;
+                          const isSelected = selectedCell?.row === row && selectedCell?.col === col;
 
                           return (
                             <button
-                              key={topic}
-                              onClick={() => setSelectedCell({ city, topic })}
+                              key={col}
+                              onClick={() => setSelectedCell({ row, col })}
                               className={`h-16 rounded-xl border flex flex-col justify-center items-center relative transition-all cursor-pointer ${cellStyle} ${
                                 isSelected ? "ring-2 ring-teal-500 scale-[1.03]" : ""
                               }`}
@@ -1008,48 +1117,85 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Selected Cell Drawer */}
+                {/* LIVE MATHEMATICAL FORMULA INSPECTION DRAWER (Chapter 3.2 of Report) */}
                 {selectedCell && activeCellData && (
-                  <div className={`mt-6 p-4 rounded-xl border flex flex-col md:flex-row md:items-center justify-between gap-4 ${
+                  <div className={`mt-6 p-5 rounded-2xl border flex flex-col gap-4 ${
                     theme === "light" ? "bg-slate-50 border-slate-200" : "bg-[#0b1d22] border-slate-800"
                   }`}>
-                    <div>
-                      <div className="flex items-center gap-2 mb-1.5">
-                        <span className="font-bold text-xs text-slate-400">Seçili Koordinat:</span>
-                        <span className="text-xs px-2.5 py-0.5 rounded-lg bg-teal-500/10 text-teal-600 font-bold">
-                          {selectedCell.city}
-                        </span>
-                        <span className="text-xs px-2.5 py-0.5 rounded-lg bg-orange-500/10 text-orange-600 font-bold">
-                          {selectedCell.topic}
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
+                      <div className="flex items-center gap-2">
+                        <Calculator className="h-4.5 w-4.5 text-orange-500" />
+                        <span className="font-extrabold text-xs uppercase tracking-wider">
+                          Canlı Matematiksel Formül Çözümlemesi (Tensör Motoru Çıktısı)
                         </span>
                       </div>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 max-w-2xl leading-relaxed">
-                        {activeCellData.details || "Matris hücresi olağan istatistiksel normlar içinde çalışmaktadır. Z-Score sapması kritik eşik olan 3.0'ın altındadır."}
-                      </p>
+                      <div className="flex items-center gap-2 text-xs">
+                        <span className="px-2.5 py-0.5 rounded-lg bg-teal-500/10 text-teal-600 font-bold">
+                          {selectedCell.row}
+                        </span>
+                        <span className="px-2.5 py-0.5 rounded-lg bg-orange-500/10 text-orange-600 font-bold">
+                          {selectedCell.col}
+                        </span>
+                      </div>
                     </div>
 
-                    <div className="flex items-center gap-6 text-xs">
-                      <div>
-                        <span className="text-slate-400 block text-[10px]">Z-Score</span>
-                        <strong className={`font-mono text-sm ${activeCellData.zScore >= 3.0 ? "text-rose-500 font-black" : ""}`}>
-                          {activeCellData.zScore >= 0 ? "+" : ""}{activeCellData.zScore.toFixed(2)}
-                        </strong>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                      {/* Formula Step 1: Z-Score */}
+                      <div className={`p-4 rounded-xl border ${theme === "light" ? "bg-white border-slate-200" : "bg-[#102d33] border-slate-700"}`}>
+                        <span className="text-[10px] text-slate-400 font-bold block mb-1">Z-Score Sapma Denklemi</span>
+                        <div className="font-mono text-xs text-teal-600 font-bold mb-1">
+                          Z = (X - μ) / (σ + ε)
+                        </div>
+                        <div className="text-slate-500 text-[11px]">
+                          = ({activeCellData.volume} - {activeCellData.mean}) / ({activeCellData.std} + 10⁻⁵)
+                          <strong className="block text-sm font-black text-slate-800 dark:text-slate-100 mt-1">
+                            = {activeCellData.zScore >= 0 ? "+" : ""}{activeCellData.zScore.toFixed(2)}
+                          </strong>
+                        </div>
                       </div>
-                      <div>
-                        <span className="text-slate-400 block text-[10px]">Duygu Polaritesi (BERTurk)</span>
-                        <strong className={`font-mono text-sm ${activeCellData.sentiment < 0 ? "text-rose-500 font-black" : "text-emerald-600 font-black"}`}>
-                          {activeCellData.sentiment >= 0 ? "+" : ""}{activeCellData.sentiment.toFixed(2)}
-                        </strong>
+
+                      {/* Formula Step 2: Anomaly Decision */}
+                      <div className={`p-4 rounded-xl border ${theme === "light" ? "bg-white border-slate-200" : "bg-[#102d33] border-slate-700"}`}>
+                        <span className="text-[10px] text-slate-400 font-bold block mb-1">3σ Karar Kuralı (|Z| ≥ 3.0)</span>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${
+                            activeCellData.zScore >= 3.0
+                              ? "bg-rose-600 text-white animate-pulse"
+                              : activeCellData.isOpportunity
+                              ? "bg-orange-500 text-white"
+                              : "bg-emerald-500/10 text-emerald-600"
+                          }`}>
+                            {activeCellData.zScore >= 3.0 ? "KRİTİK ANOMALİ" : activeCellData.isOpportunity ? "ROAS FIRSATI" : "NORM DÂHİLİNDE"}
+                          </span>
+                        </div>
+                        <span className="text-[10px] text-slate-400 block mt-2">
+                          {activeCellData.zScore >= 3.0 ? "3σ eşiği aşıldı, Sense kalkanı tetiklendi." : "İstatistiksel baz çizgi sınırlarında."}
+                        </span>
+                      </div>
+
+                      {/* Formula Step 3: NLP & Reputation */}
+                      <div className={`p-4 rounded-xl border ${theme === "light" ? "bg-white border-slate-200" : "bg-[#102d33] border-slate-700"}`}>
+                        <span className="text-[10px] text-slate-400 font-bold block mb-1">Duygu Polaritesi & DBSCAN Ağırlığı</span>
+                        <div className="flex justify-between items-center text-xs">
+                          <span>BERTurk Φ(eₖ):</span>
+                          <strong className={`font-mono font-black ${activeCellData.sentiment < 0 ? "text-rose-500" : "text-emerald-600"}`}>
+                            {activeCellData.sentiment >= 0 ? "+" : ""}{activeCellData.sentiment.toFixed(2)}
+                          </strong>
+                        </div>
+                        <div className="flex justify-between items-center text-xs mt-1">
+                          <span>DBSCAN İtibar wₖ:</span>
+                          <strong className="font-mono text-slate-700 dark:text-slate-200">0.95 (Organik)</strong>
+                        </div>
                       </div>
                     </div>
                   </div>
                 )}
               </div>
 
-              {/* BOTTOM ROW: IMPRESSIONS OVER TIME & DONUT CHART (Matching ADNEX image) */}
+              {/* BOTTOM ROW: IMPRESSIONS OVER TIME & DONUT CHART */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 
-                {/* Left Chart (7/12): Impressions Over Time (All Channels) */}
+                {/* Left Chart (7/12): Impressions Over Time */}
                 <div className={`lg:col-span-7 p-6 rounded-2xl border transition-all ${
                   theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
                 }`}>
@@ -1059,7 +1205,6 @@ export default function Home() {
                       <span className="text-[11px] text-slate-400">15 Dakikalık Kayan Pencerelerde Sinyal İzdüşümü</span>
                     </div>
 
-                    {/* Time Range Selector */}
                     <div className={`px-3 py-1.5 rounded-xl border text-xs font-semibold flex items-center gap-2 ${
                       theme === "light" ? "bg-slate-50 border-slate-200" : "bg-[#102d33] border-slate-700"
                     }`}>
@@ -1071,12 +1216,10 @@ export default function Home() {
                   {/* Multi-series Spline SVG Chart */}
                   <div className="h-60 w-full relative">
                     <svg className="w-full h-full" viewBox="0 0 400 160" preserveAspectRatio="none">
-                      {/* Grid Lines */}
                       <line x1="0" y1="40" x2="400" y2="40" stroke="rgba(148, 163, 184, 0.15)" strokeDasharray="3 3" />
                       <line x1="0" y1="80" x2="400" y2="80" stroke="rgba(148, 163, 184, 0.15)" strokeDasharray="3 3" />
                       <line x1="0" y1="120" x2="400" y2="120" stroke="rgba(148, 163, 184, 0.15)" strokeDasharray="3 3" />
 
-                      {/* Series 1: #Ulaşım (Teal) */}
                       <path
                         d="M 20 110 Q 80 130, 140 100 T 260 80 T 320 85 T 380 45"
                         fill="none"
@@ -1085,7 +1228,6 @@ export default function Home() {
                       />
                       <circle cx="380" cy="45" r="4" fill="#0d9488" />
 
-                      {/* Series 2: #Kültür (Orange) */}
                       <path
                         d="M 20 130 Q 80 145, 140 120 T 260 110 T 320 125 T 380 100"
                         fill="none"
@@ -1094,7 +1236,6 @@ export default function Home() {
                       />
                       <circle cx="380" cy="100" r="4" fill="#f97316" />
 
-                      {/* Series 3: #Teknoloji (Cyan) */}
                       <path
                         d="M 20 145 Q 80 150, 140 140 T 260 135 T 320 138 T 380 125"
                         fill="none"
@@ -1104,7 +1245,6 @@ export default function Home() {
                       <circle cx="380" cy="125" r="3.5" fill="#06b6d4" />
                     </svg>
 
-                    {/* X Axis Labels */}
                     <div className="flex justify-between text-[10px] text-slate-400 mt-2 font-mono">
                       <span>11:45</span>
                       <span>11:50</span>
@@ -1116,7 +1256,6 @@ export default function Home() {
                     </div>
                   </div>
 
-                  {/* Interactive Legend */}
                   <div className="flex items-center justify-center gap-6 mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs font-semibold">
                     <span className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
                       <span className="h-3 w-3 rounded-full bg-[#0d9488]"></span> #Ulaşım Sinyalleri
@@ -1130,7 +1269,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Right Chart (5/12): Impressions by Channel / Category (Donut Chart) */}
+                {/* Right Chart (5/12): Impressions by Channel */}
                 <div className={`lg:col-span-5 p-6 rounded-2xl border flex flex-col justify-between transition-all ${
                   theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
                 }`}>
@@ -1138,10 +1277,8 @@ export default function Home() {
                     <h4 className="font-extrabold text-sm mb-6">Kategori & Eksen Dağılımı</h4>
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                      {/* Donut Circle SVG */}
                       <div className="relative h-44 w-44 flex items-center justify-center">
                         <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                          {/* Segment 1: #Ulaşım (50.5%) */}
                           <circle
                             cx="50"
                             cy="50"
@@ -1152,7 +1289,6 @@ export default function Home() {
                             strokeDasharray="120.6 238.7"
                             strokeDashoffset="0"
                           />
-                          {/* Segment 2: #Kültür (31.7%) */}
                           <circle
                             cx="50"
                             cy="50"
@@ -1163,7 +1299,6 @@ export default function Home() {
                             strokeDasharray="75.6 238.7"
                             strokeDashoffset="-120.6"
                           />
-                          {/* Segment 3: #Teknoloji (17.8%) */}
                           <circle
                             cx="50"
                             cy="50"
@@ -1176,14 +1311,12 @@ export default function Home() {
                           />
                         </svg>
 
-                        {/* Center Text */}
                         <div className="absolute flex flex-col items-center justify-center text-center">
                           <span className="text-base font-black leading-tight">24.68M</span>
                           <span className="text-[10px] text-slate-400 font-bold uppercase">Toplam Sinyal</span>
                         </div>
                       </div>
 
-                      {/* Legend list with counts */}
                       <div className="flex flex-col gap-3 text-xs">
                         <div className="flex items-center justify-between gap-4">
                           <span className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
@@ -1224,7 +1357,6 @@ export default function Home() {
           {/* VIEW 2: NABIZ-ADS CAMPAIGN WIZARD */}
           {currentPanel === "ads" && (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-              {/* Campaign Wizard Card */}
               <div className={`lg:col-span-7 p-6 rounded-2xl border transition-all ${
                 theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
               }`}>
@@ -1323,7 +1455,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Active Campaigns List Card */}
               <div className={`lg:col-span-5 p-6 rounded-2xl border transition-all ${
                 theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
               }`}>
@@ -1532,7 +1663,7 @@ export default function Home() {
             </div>
           )}
 
-          {/* VIEW 6: EMBEDDED PROJECT TECHNICAL REPORT */}
+          {/* VIEW 6: EMBEDDED PROJECT TECHNICAL REPORT WITH FINANCIAL SIMULATOR */}
           {currentPanel === "report" && (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
               {/* Table of Contents */}
@@ -1624,8 +1755,56 @@ export default function Home() {
                 )}
 
                 {activeReportSection === "sec-6" && (
-                  <div className="flex flex-col gap-4">
-                    <h3 className="text-lg font-black text-teal-700 dark:text-teal-400 pb-2 border-b">6. SÜRDÜRÜLEBİLİRLİK VE ÜÇ YILLIK FİNANSAL PROJEKSİYON</h3>
+                  <div className="flex flex-col gap-6">
+                    <div>
+                      <h3 className="text-lg font-black text-teal-700 dark:text-teal-400 pb-2 border-b">6. SÜRDÜRÜLEBİLİRLİK VE DİNAMİK FİNANSAL PROJEKSİYON</h3>
+                      <p className="text-slate-600 dark:text-slate-300 mt-2">
+                        Aşağıdaki simülatör ile aktif KOBİ reklamveren sayısını değiştirerek 3 yıllık brüt gelir ve net faaliyet kârı (EBITDA) projeksiyonlarını dinamik olarak inceleyebilirsiniz:
+                      </p>
+                    </div>
+
+                    {/* Interactive Financial Growth Simulator Slider */}
+                    <div className={`p-5 rounded-2xl border ${theme === "light" ? "bg-slate-50 border-slate-200" : "bg-[#102d33] border-slate-700"}`}>
+                      <div className="flex justify-between items-center mb-3">
+                        <span className="font-bold text-xs flex items-center gap-1.5">
+                          <Sliders className="h-4 w-4 text-orange-500" />
+                          Aktif KOBİ Reklamveren Sayısı:
+                        </span>
+                        <strong className="text-base font-black text-orange-600">
+                          {financialSmeCount.toLocaleString("tr-TR")} İşletme
+                        </strong>
+                      </div>
+
+                      <input
+                        type="range"
+                        min="2500"
+                        max="85000"
+                        step="2500"
+                        value={financialSmeCount}
+                        onChange={(e) => setFinancialSmeCount(Number(e.target.value))}
+                        className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-orange-500"
+                      />
+
+                      <div className="grid grid-cols-3 gap-4 mt-6 pt-4 border-t border-slate-200 dark:border-slate-700 text-center">
+                        <div>
+                          <span className="text-slate-400 block text-[10px]">Aylık Ortalama Harcama</span>
+                          <strong className="text-sm font-bold text-slate-700 dark:text-slate-200">1.200 TL / KOBİ</strong>
+                        </div>
+                        <div>
+                          <span className="text-slate-400 block text-[10px]">Hesaplanan Yıllık Brüt Gelir</span>
+                          <strong className="text-sm font-black text-slate-900 dark:text-white">
+                            {((financialSmeCount * 360) / 1000).toFixed(0)} Bin TL ({((financialSmeCount * 360) / 1000000).toFixed(1)}M TL)
+                          </strong>
+                        </div>
+                        <div>
+                          <span className="text-slate-400 block text-[10px]">Net Faaliyet Kârı (EBITDA)</span>
+                          <strong className="text-sm font-black text-emerald-600">
+                            +{((financialSmeCount * 270) / 1000000).toFixed(2)} Milyon TL
+                          </strong>
+                        </div>
+                      </div>
+                    </div>
+
                     <div className="border rounded-xl overflow-hidden text-xs">
                       <div className="grid grid-cols-4 gap-2 bg-slate-100 dark:bg-[#102d33] p-3 font-bold">
                         <div>Finansal Gösterge</div>
@@ -1638,6 +1817,12 @@ export default function Home() {
                         <div>2.500 İşletme</div>
                         <div>25.000 İşletme</div>
                         <div>85.000 İşletme</div>
+                      </div>
+                      <div className="grid grid-cols-4 gap-2 p-3 border-t">
+                        <div>Toplam Brüt Gelir</div>
+                        <div>900.000 TL</div>
+                        <div>8.200.000 TL</div>
+                        <div>30.000.000 TL</div>
                       </div>
                       <div className="grid grid-cols-4 gap-2 p-3 border-t font-bold text-emerald-600">
                         <div>Net Faaliyet Kârı (EBITDA)</div>
