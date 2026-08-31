@@ -20,6 +20,7 @@ import {
   FileText,
   Flame,
   Globe,
+  Info,
   Layers,
   LayoutDashboard,
   Lock,
@@ -44,6 +45,7 @@ import {
   User,
   UserCheck,
   Users,
+  X,
   Zap,
 } from "lucide-react";
 
@@ -184,8 +186,14 @@ export default function Home() {
     col: "#Ulaşım",
   });
 
-  // Interactive Financial Calculator State (Chapter 6 of Technical Report)
+  // Interactive Financial Calculator State
   const [financialSmeCount, setFinancialSmeCount] = useState<number>(25000);
+
+  // Toast Notification State
+  const [toast, setToast] = useState<{ message: string; type: "success" | "info" | "alert" } | null>(null);
+
+  // Time-series hover data state
+  const [hoveredPoint, setHoveredPoint] = useState<{ time: string; vol1: string; vol2: string } | null>(null);
 
   const [alerts, setAlerts] = useState<Alert[]>([
     {
@@ -250,6 +258,11 @@ export default function Home() {
     "[FIRSAT] İstanbul × #Kültür hücresinde trend saptandı (Z = +4.30, Duygu: +0.85)",
   ]);
 
+  const showToast = (message: string, type: "success" | "info" | "alert" = "success") => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3500);
+  };
+
   // Real-time animation loop
   useEffect(() => {
     const waveInterval = setInterval(() => {
@@ -305,6 +318,8 @@ export default function Home() {
       `[SENSE] Otomatik kök neden teşhisi üretildi. Müdahale için moderatör onayı bekleniyor.`,
       ...prev,
     ]);
+
+    showToast("🚦 İzmir Ulaşım Krizi Tetiklendi! (Z = +5.12, Aşırı Negatif)", "alert");
   };
 
   const triggerKadikoyOpportunity = () => {
@@ -332,6 +347,7 @@ export default function Home() {
     
     setPromptInput("Kadıköy'deki butik kahvecimiz için Reels reklamı yap");
     setCurrentPanel("ads");
+    showToast("🎯 Kadıköy Kahve Trendi Fırsatı Açıldı! (+%34 ROAS)", "success");
   };
 
   const triggerBursaBotAttack = () => {
@@ -355,6 +371,8 @@ export default function Home() {
       `[PRIVACY] KVKK uyum boru hattı: şüpheli hesapların IP ve cihaz parmak izleri anonim olarak loglandı.`,
       ...prev,
     ]);
+
+    showToast("🤖 Bursa Bot Saldırısı DBSCAN ile İzolasyona Alındı!", "info");
   };
 
   const resetAll = () => {
@@ -395,6 +413,7 @@ export default function Home() {
       "[SYSTEM] Sistem normal değerlerine döndürüldü.",
       "[SYSTEM] NABIZ Core Tensör Motoru aktif. (Pencere: 15 dakika)",
     ]);
+    showToast("🔄 Sistem Başarıyla Sıfırlandı.", "info");
   };
 
   const handleAction = (alertId: string, action: string) => {
@@ -406,6 +425,7 @@ export default function Home() {
       `[SENSE] Kriz durumu kontrol altına alınıyor. Negatif etkileşim hızı düşüşe geçti.`,
       ...prev,
     ]);
+    showToast(`✅ "${action}" aksiyonu 32 saniyede devreye alındı!`, "success");
   };
 
   const generateAdCampaign = () => {
@@ -447,6 +467,8 @@ export default function Home() {
       `[AI WIZARD] BERTurk & LLM yardımıyla reklam parametreleri eşlendi. Şehir: ${city}, Kategori: ${category}`,
       ...prev,
     ]);
+
+    showToast("✨ AI Reklam Taslağı ve Hedef Kitle Eşlendi!", "success");
   };
 
   const launchCampaign = () => {
@@ -483,6 +505,7 @@ export default function Home() {
 
     setPromptInput("");
     setAiSuggestions(null);
+    showToast("🚀 Kampanya 12 Saniyede Canlıya Alındı! (ROAS 3.86x)", "success");
   };
 
   const handleQuickPrompt = (txt: string) => {
@@ -496,12 +519,29 @@ export default function Home() {
     : { volume: 100, mean: 90, std: 10, zScore: 1.0, sentiment: 0.0, isAnomaly: false, isOpportunity: false, details: "Seçili hücre norm sınırları içindedir." };
 
   return (
-    <div className={`min-h-screen flex flex-col lg:flex-row font-sans selection:bg-orange-500 selection:text-white ${
+    <div className={`h-screen flex flex-col lg:flex-row font-sans selection:bg-orange-500 selection:text-white overflow-hidden ${
       theme === "light" ? "bg-[#f8fafc] text-slate-900" : "bg-[#071317] text-slate-100"
     }`}>
       
-      {/* ADNEX-STYLE ULTRA-PREMIUM SIDEBAR */}
-      <aside className="w-full lg:w-68 bg-[#0a1e22] text-slate-300 flex flex-col p-5 shrink-0 justify-between border-r border-[#133e42]/50">
+      {/* TOAST NOTIFICATION OVERLAY */}
+      {toast && (
+        <div className={`fixed top-5 right-5 z-50 px-4 py-3 rounded-2xl shadow-2xl border flex items-center gap-3 animate-bounce transition-all ${
+          toast.type === "alert"
+            ? "bg-rose-600 text-white border-rose-500"
+            : toast.type === "info"
+            ? "bg-teal-600 text-white border-teal-500"
+            : "bg-[#0a1e22] text-teal-300 border-teal-600"
+        }`}>
+          {toast.type === "alert" ? <AlertTriangle className="h-5 w-5 shrink-0" /> : <CheckCircle className="h-5 w-5 shrink-0" />}
+          <span className="text-xs font-bold">{toast.message}</span>
+          <button onClick={() => setToast(null)} className="p-1 hover:opacity-80 cursor-pointer">
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+      )}
+
+      {/* ADNEX-STYLE ULTRA-PREMIUM SIDEBAR (Pinned h-screen) */}
+      <aside className="w-full lg:w-68 lg:h-screen bg-[#0a1e22] text-slate-300 flex flex-col p-5 shrink-0 justify-between border-r border-[#133e42]/50 overflow-y-auto">
         <div>
           {/* Brand Header */}
           <div className="flex items-center gap-3 mb-8 px-1">
@@ -558,7 +598,7 @@ export default function Home() {
             </button>
 
             <button
-              onClick={() => setCurrentPanel("analytics")}
+              onClick={() => { setCurrentPanel("analytics"); }}
               className={`w-full py-3 px-3.5 rounded-xl text-xs font-bold flex items-center gap-3.5 transition-all cursor-pointer ${
                 currentPanel === "analytics"
                   ? "bg-[#16383e] text-teal-300 shadow-inner"
@@ -570,7 +610,7 @@ export default function Home() {
             </button>
 
             <button
-              onClick={() => setCurrentPanel("privacy")}
+              onClick={() => { setCurrentPanel("privacy"); }}
               className={`w-full py-3 px-3.5 rounded-xl text-xs font-bold flex items-center gap-3.5 transition-all cursor-pointer ${
                 currentPanel === "privacy"
                   ? "bg-[#16383e] text-teal-300 shadow-inner"
@@ -582,7 +622,7 @@ export default function Home() {
             </button>
 
             <button
-              onClick={() => setCurrentPanel("report")}
+              onClick={() => { setCurrentPanel("report"); }}
               className={`w-full py-3 px-3.5 rounded-xl text-xs font-bold flex items-center gap-3.5 transition-all cursor-pointer ${
                 currentPanel === "report"
                   ? "bg-[#16383e] text-teal-300 shadow-inner"
@@ -613,7 +653,7 @@ export default function Home() {
             </p>
             <button
               onClick={triggerIzmirCrisis}
-              className="w-full py-2 px-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-[11px] font-bold transition-all shadow-md shadow-orange-500/20 flex items-center justify-center gap-1.5 cursor-pointer"
+              className="w-full py-2 px-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-[11px] font-bold transition-all shadow-md shadow-orange-500/20 flex items-center justify-center gap-1.5 cursor-pointer active:scale-98"
             >
               <Play className="h-3 w-3 fill-current" /> İzmir Krizini Simüle Et
             </button>
@@ -635,11 +675,11 @@ export default function Home() {
         </div>
       </aside>
 
-      {/* MAIN CONTENT AREA */}
-      <main className="flex-1 flex flex-col min-w-0 overflow-y-auto">
+      {/* MAIN CONTENT AREA (Scrollable independently) */}
+      <main className="flex-1 flex flex-col min-w-0 h-full overflow-y-auto">
         
         {/* TOP HEADER */}
-        <header className={`px-8 py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b ${
+        <header className={`px-8 py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b shrink-0 ${
           theme === "light" ? "bg-white border-slate-200/80" : "bg-[#0b1d22] border-slate-800"
         }`}>
           <div>
@@ -695,7 +735,7 @@ export default function Home() {
             {/* Primary Action Button */}
             <button
               onClick={() => setCurrentPanel("report")}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#0a1e22] hover:bg-[#133e42] text-white text-xs font-bold shadow-md transition-all cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#0a1e22] hover:bg-[#133e42] text-white text-xs font-bold shadow-md transition-all cursor-pointer active:scale-98"
             >
               <Download className="h-3.5 w-3.5" />
               <span>Raporu İncele</span>
@@ -703,8 +743,8 @@ export default function Home() {
           </div>
         </header>
 
-        {/* SYSTEM USABILITY & OPERATIONAL BENCHMARK BANNER (Chapter 3 & 4 of Report) */}
-        <div className={`px-8 py-3.5 border-b flex flex-wrap items-center justify-between gap-4 text-xs ${
+        {/* SYSTEM USABILITY & OPERATIONAL BENCHMARK BANNER */}
+        <div className={`px-8 py-3.5 border-b flex flex-wrap items-center justify-between gap-4 text-xs shrink-0 ${
           theme === "light" ? "bg-slate-50 border-slate-200" : "bg-[#0d2227] border-slate-800"
         }`}>
           <div className="flex items-center gap-2 font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[10px]">
@@ -714,17 +754,17 @@ export default function Home() {
           <div className="flex flex-wrap items-center gap-6">
             <div className="flex items-center gap-2">
               <span className="text-slate-400">Sense Moderasyon SUS:</span>
-              <strong className="text-teal-600 font-bold bg-teal-500/10 px-2 py-0.5 rounded-full">86.4 / 100 (A+)</strong>
+              <strong className="text-teal-600 font-bold bg-teal-500/10 px-2 py-0.5 rounded-full font-mono">86.4 / 100 (A+)</strong>
               <span className="text-[11px] text-slate-500">(4.2 saat → 32 sn)</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-slate-400">Ads Reklamveren SUS:</span>
-              <strong className="text-orange-600 font-bold bg-orange-500/10 px-2 py-0.5 rounded-full">91.2 / 100 (A+)</strong>
+              <strong className="text-orange-600 font-bold bg-orange-500/10 px-2 py-0.5 rounded-full font-mono">91.2 / 100 (A+)</strong>
               <span className="text-[11px] text-slate-500">(35 dk → 12 sn)</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-slate-400">ROAS Verim Artışı:</span>
-              <strong className="text-emerald-600 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full">+%34 (1:3.75x)</strong>
+              <strong className="text-emerald-600 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full font-mono">+%34 (1:3.75x)</strong>
             </div>
           </div>
         </div>
@@ -743,13 +783,13 @@ export default function Home() {
                 <div className="h-10 w-10 rounded-xl bg-[#0a1e22] text-teal-400 flex items-center justify-center">
                   <Eye className="h-5 w-5 stroke-[2.2]" />
                 </div>
-                <span className="text-[11px] font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-full flex items-center gap-0.5">
+                <span className="text-[11px] font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-full flex items-center gap-0.5 font-mono">
                   ↑ 18.6%
                 </span>
               </div>
               <div>
                 <span className="text-xs font-bold text-slate-400 block mb-1">Toplam Sinyal Hacmi</span>
-                <span className="text-2xl font-black tracking-tight">{totalSignalCount}</span>
+                <span className="text-2xl font-black tracking-tight font-mono">{totalSignalCount}</span>
                 <span className="text-[10px] text-slate-400 block mt-1 font-medium">↑ 18.6% vs son 15 dk</span>
               </div>
             </div>
@@ -762,13 +802,13 @@ export default function Home() {
                 <div className="h-10 w-10 rounded-xl bg-orange-500 text-white flex items-center justify-center shadow-md shadow-orange-500/20">
                   <MousePointer className="h-5 w-5 stroke-[2.2]" />
                 </div>
-                <span className="text-[11px] font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-full flex items-center gap-0.5">
+                <span className="text-[11px] font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-full flex items-center gap-0.5 font-mono">
                   ↑ 22.4%
                 </span>
               </div>
               <div>
                 <span className="text-xs font-bold text-slate-400 block mb-1">Saptanan Anomali & Kriz</span>
-                <span className="text-2xl font-black tracking-tight">{anomalyCount}</span>
+                <span className="text-2xl font-black tracking-tight font-mono">{anomalyCount}</span>
                 <span className="text-[10px] text-slate-400 block mt-1 font-medium">↑ 22.4% vs baz çizgi</span>
               </div>
             </div>
@@ -781,13 +821,13 @@ export default function Home() {
                 <div className="h-10 w-10 rounded-xl bg-[#0f2b2f] text-emerald-400 flex items-center justify-center">
                   <Activity className="h-5 w-5 stroke-[2.2]" />
                 </div>
-                <span className="text-[11px] font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-full flex items-center gap-0.5">
+                <span className="text-[11px] font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-full flex items-center gap-0.5 font-mono">
                   ↑ 6.3%
                 </span>
               </div>
               <div>
                 <span className="text-xs font-bold text-slate-400 block mb-1">Ortalama Semantik Duygu</span>
-                <span className={`text-2xl font-black tracking-tight ${sentimentIndex < 0 ? "text-rose-500" : "text-emerald-600"}`}>
+                <span className={`text-2xl font-black tracking-tight font-mono ${sentimentIndex < 0 ? "text-rose-500" : "text-emerald-600"}`}>
                   {sentimentIndex >= 0 ? "+" : ""}{sentimentIndex.toFixed(2)}
                 </span>
                 <span className="text-[10px] text-slate-400 block mt-1 font-medium">↑ 6.3% vs son 1 saat</span>
@@ -802,13 +842,13 @@ export default function Home() {
                 <div className="h-10 w-10 rounded-xl bg-orange-600 text-white flex items-center justify-center shadow-md shadow-orange-600/20">
                   <Award className="h-5 w-5 stroke-[2.2]" />
                 </div>
-                <span className="text-[11px] font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-full flex items-center gap-0.5">
+                <span className="text-[11px] font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-full flex items-center gap-0.5 font-mono">
                   +34%
                 </span>
               </div>
               <div>
                 <span className="text-xs font-bold text-slate-400 block mb-1">Optimize Edilmiş ROAS</span>
-                <span className="text-2xl font-black tracking-tight text-orange-600">{optimizedRoas}</span>
+                <span className="text-2xl font-black tracking-tight text-orange-600 font-mono">{optimizedRoas}</span>
                 <span className="text-[10px] text-slate-400 block mt-1 font-medium">↓ 4.8% Reklam İsraf Azalımı</span>
               </div>
             </div>
@@ -841,8 +881,8 @@ export default function Home() {
                     <div className="mb-4">
                       <span className="text-xs text-slate-400 font-bold block">İncelenen Sinyal</span>
                       <div className="flex items-baseline gap-2">
-                        <span className="text-2xl font-extrabold tracking-tight">12.45M</span>
-                        <span className="text-xs font-bold text-emerald-600">↑ 19.3%</span>
+                        <span className="text-2xl font-extrabold tracking-tight font-mono">12.45M</span>
+                        <span className="text-xs font-bold text-emerald-600 font-mono">↑ 19.3%</span>
                       </div>
                     </div>
 
@@ -863,17 +903,17 @@ export default function Home() {
                     <div className="grid grid-cols-3 gap-2 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs">
                       <div>
                         <span className="text-slate-400 block text-[10px]">Hacim</span>
-                        <strong className="font-bold">162.45K</strong>
-                        <span className="text-[9px] text-emerald-600 block">↑ 21.1%</span>
+                        <strong className="font-bold font-mono">162.45K</strong>
+                        <span className="text-[9px] text-emerald-600 block font-mono">↑ 21.1%</span>
                       </div>
                       <div>
                         <span className="text-slate-400 block text-[10px]">Z-Score</span>
-                        <strong className="font-bold text-rose-500">+3.92 (Kriz)</strong>
+                        <strong className="font-bold text-rose-500 font-mono">+3.92 (Kriz)</strong>
                         <span className="text-[9px] text-rose-500 block">3σ Norm Dışı</span>
                       </div>
                       <div>
                         <span className="text-slate-400 block text-[10px]">Müdahale</span>
-                        <strong className="font-bold text-teal-600">32 Saniye</strong>
+                        <strong className="font-bold text-teal-600 font-mono">32 Saniye</strong>
                         <span className="text-[9px] text-emerald-600 block">Otomatik</span>
                       </div>
                     </div>
@@ -905,8 +945,8 @@ export default function Home() {
                     <div className="mb-4">
                       <span className="text-xs text-slate-400 font-bold block">İncelenen Sinyal</span>
                       <div className="flex items-baseline gap-2">
-                        <span className="text-2xl font-extrabold tracking-tight">7.83M</span>
-                        <span className="text-xs font-bold text-emerald-600">↑ 16.8%</span>
+                        <span className="text-2xl font-extrabold tracking-tight font-mono">7.83M</span>
+                        <span className="text-xs font-bold text-emerald-600 font-mono">↑ 16.8%</span>
                       </div>
                     </div>
 
@@ -927,12 +967,12 @@ export default function Home() {
                     <div className="grid grid-cols-3 gap-2 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs">
                       <div>
                         <span className="text-slate-400 block text-[10px]">Trend Hacmi</span>
-                        <strong className="font-bold">98.21K</strong>
-                        <span className="text-[9px] text-emerald-600 block">↑ 20.7%</span>
+                        <strong className="font-bold font-mono">98.21K</strong>
+                        <span className="text-[9px] text-emerald-600 block font-mono">↑ 20.7%</span>
                       </div>
                       <div>
                         <span className="text-slate-400 block text-[10px]">ROAS Artışı</span>
-                        <strong className="font-bold text-orange-600">+%34</strong>
+                        <strong className="font-bold text-orange-600 font-mono">+%34</strong>
                         <span className="text-[9px] text-emerald-600 block">AI Eşleme</span>
                       </div>
                       <div>
@@ -969,8 +1009,8 @@ export default function Home() {
                     <div className="mb-4">
                       <span className="text-xs text-slate-400 font-bold block">İncelenen Sinyal</span>
                       <div className="flex items-baseline gap-2">
-                        <span className="text-2xl font-extrabold tracking-tight">4.40M</span>
-                        <span className="text-xs font-bold text-emerald-600">↑ 17.2%</span>
+                        <span className="text-2xl font-extrabold tracking-tight font-mono">4.40M</span>
+                        <span className="text-xs font-bold text-emerald-600 font-mono">↑ 17.2%</span>
                       </div>
                     </div>
 
@@ -991,17 +1031,17 @@ export default function Home() {
                     <div className="grid grid-cols-3 gap-2 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs">
                       <div>
                         <span className="text-slate-400 block text-[10px]">Elenen Bot</span>
-                        <strong className="font-bold">51.81K</strong>
+                        <strong className="font-bold font-mono">51.81K</strong>
                         <span className="text-[9px] text-emerald-600 block">DBSCAN</span>
                       </div>
                       <div>
                         <span className="text-slate-400 block text-[10px]">İtibar w_k</span>
-                        <strong className="font-bold">&lt; 0.10</strong>
+                        <strong className="font-bold font-mono">&lt; 0.10</strong>
                         <span className="text-[9px] text-rose-500 block">Sıfıra İndi</span>
                       </div>
                       <div>
                         <span className="text-slate-400 block text-[10px]">Filtreleme</span>
-                        <strong className="font-bold text-emerald-600">%100 Temiz</strong>
+                        <strong className="font-bold text-emerald-600 font-mono">%100 Temiz</strong>
                         <span className="text-[9px] text-emerald-600 block">Organik Korundu</span>
                       </div>
                     </div>
@@ -1053,7 +1093,7 @@ export default function Home() {
 
                     <button
                       onClick={resetAll}
-                      className={`text-xs px-3 py-1.5 rounded-xl border flex items-center gap-1.5 font-bold transition-all cursor-pointer ${
+                      className={`text-xs px-3 py-1.5 rounded-xl border flex items-center gap-1.5 font-bold transition-all cursor-pointer active:scale-98 ${
                         theme === "light" ? "bg-slate-100 border-slate-200 text-slate-700 hover:bg-slate-200" : "bg-[#102d33] border-slate-700 text-slate-300 hover:bg-[#153840]"
                       }`}
                     >
@@ -1090,7 +1130,7 @@ export default function Home() {
 
                           if (cell.isAnomaly) {
                             cellStyle = "bg-rose-500/10 border-rose-500 text-rose-600 shadow-md shadow-rose-500/10 animate-pulse";
-                            badge = <span className="absolute top-1 right-1 text-[8px] font-black bg-rose-600 text-white px-1.5 py-0.2 rounded-full">⚠ Z: {cell.zScore}</span>;
+                            badge = <span className="absolute top-1 right-1 text-[8px] font-black bg-rose-600 text-white px-1.5 py-0.2 rounded-full font-mono">⚠ Z: {cell.zScore}</span>;
                           } else if (cell.isOpportunity) {
                             cellStyle = "bg-orange-500/10 border-orange-500 text-orange-600 shadow-md shadow-orange-500/10";
                             badge = <span className="absolute top-1 right-1 text-[8px] font-black bg-orange-500 text-white px-1.5 py-0.2 rounded-full">🎯 FIRSAT</span>;
@@ -1107,8 +1147,8 @@ export default function Home() {
                               }`}
                             >
                               {badge}
-                              <span className="text-sm font-black">{cell.volume}</span>
-                              <span className="text-[10px] text-slate-400">Norm: {cell.mean}</span>
+                              <span className="text-sm font-black font-mono">{cell.volume}</span>
+                              <span className="text-[10px] text-slate-400 font-mono">Norm: {cell.mean}</span>
                             </button>
                           );
                         })}
@@ -1117,7 +1157,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* LIVE MATHEMATICAL FORMULA INSPECTION DRAWER (Chapter 3.2 of Report) */}
+                {/* LIVE MATHEMATICAL FORMULA INSPECTION DRAWER */}
                 {selectedCell && activeCellData && (
                   <div className={`mt-6 p-5 rounded-2xl border flex flex-col gap-4 ${
                     theme === "light" ? "bg-slate-50 border-slate-200" : "bg-[#0b1d22] border-slate-800"
@@ -1146,9 +1186,9 @@ export default function Home() {
                         <div className="font-mono text-xs text-teal-600 font-bold mb-1">
                           Z = (X - μ) / (σ + ε)
                         </div>
-                        <div className="text-slate-500 text-[11px]">
+                        <div className="text-slate-500 text-[11px] font-mono">
                           = ({activeCellData.volume} - {activeCellData.mean}) / ({activeCellData.std} + 10⁻⁵)
-                          <strong className="block text-sm font-black text-slate-800 dark:text-slate-100 mt-1">
+                          <strong className="block text-sm font-black text-slate-800 dark:text-slate-100 mt-1 font-mono">
                             = {activeCellData.zScore >= 0 ? "+" : ""}{activeCellData.zScore.toFixed(2)}
                           </strong>
                         </div>
@@ -1213,8 +1253,17 @@ export default function Home() {
                     </div>
                   </div>
 
-                  {/* Multi-series Spline SVG Chart */}
+                  {/* Multi-series Spline SVG Chart with Hover Points */}
                   <div className="h-60 w-full relative">
+                    {/* Floating Tooltip */}
+                    {hoveredPoint && (
+                      <div className="absolute top-2 right-4 bg-[#0a1e22] text-white text-[10px] p-2.5 rounded-xl border border-teal-500 shadow-xl z-20 font-mono">
+                        <strong className="block text-teal-400 mb-1">{hoveredPoint.time}</strong>
+                        <div>#Ulaşım: {hoveredPoint.vol1}</div>
+                        <div>#Kültür: {hoveredPoint.vol2}</div>
+                      </div>
+                    )}
+
                     <svg className="w-full h-full" viewBox="0 0 400 160" preserveAspectRatio="none">
                       <line x1="0" y1="40" x2="400" y2="40" stroke="rgba(148, 163, 184, 0.15)" strokeDasharray="3 3" />
                       <line x1="0" y1="80" x2="400" y2="80" stroke="rgba(148, 163, 184, 0.15)" strokeDasharray="3 3" />
@@ -1226,7 +1275,15 @@ export default function Home() {
                         stroke="#0d9488"
                         strokeWidth="3"
                       />
-                      <circle cx="380" cy="45" r="4" fill="#0d9488" />
+                      <circle
+                        cx="380"
+                        cy="45"
+                        r="5"
+                        fill="#0d9488"
+                        className="cursor-pointer hover:scale-150 transition-transform"
+                        onMouseEnter={() => setHoveredPoint({ time: "12:15 (Şimdi)", vol1: "245k (Peak)", vol2: "88k" })}
+                        onMouseLeave={() => setHoveredPoint(null)}
+                      />
 
                       <path
                         d="M 20 130 Q 80 145, 140 120 T 260 110 T 320 125 T 380 100"
@@ -1234,7 +1291,15 @@ export default function Home() {
                         stroke="#f97316"
                         strokeWidth="3"
                       />
-                      <circle cx="380" cy="100" r="4" fill="#f97316" />
+                      <circle
+                        cx="380"
+                        cy="100"
+                        r="4"
+                        fill="#f97316"
+                        className="cursor-pointer hover:scale-150 transition-transform"
+                        onMouseEnter={() => setHoveredPoint({ time: "12:15 (Şimdi)", vol1: "185k", vol2: "110k (Trend)" })}
+                        onMouseLeave={() => setHoveredPoint(null)}
+                      />
 
                       <path
                         d="M 20 145 Q 80 150, 140 140 T 260 135 T 320 138 T 380 125"
@@ -1312,7 +1377,7 @@ export default function Home() {
                         </svg>
 
                         <div className="absolute flex flex-col items-center justify-center text-center">
-                          <span className="text-base font-black leading-tight">24.68M</span>
+                          <span className="text-base font-black leading-tight font-mono">24.68M</span>
                           <span className="text-[10px] text-slate-400 font-bold uppercase">Toplam Sinyal</span>
                         </div>
                       </div>
@@ -1322,21 +1387,21 @@ export default function Home() {
                           <span className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
                             <span className="h-2.5 w-2.5 rounded-full bg-[#0d9488]"></span> #Ulaşım
                           </span>
-                          <span className="font-bold text-slate-800 dark:text-slate-200">12.45M (50.5%)</span>
+                          <span className="font-bold text-slate-800 dark:text-slate-200 font-mono">12.45M (50.5%)</span>
                         </div>
 
                         <div className="flex items-center justify-between gap-4">
                           <span className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
                             <span className="h-2.5 w-2.5 rounded-full bg-[#f97316]"></span> #Kültür
                           </span>
-                          <span className="font-bold text-slate-800 dark:text-slate-200">7.83M (31.7%)</span>
+                          <span className="font-bold text-slate-800 dark:text-slate-200 font-mono">7.83M (31.7%)</span>
                         </div>
 
                         <div className="flex items-center justify-between gap-4">
                           <span className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
                             <span className="h-2.5 w-2.5 rounded-full bg-[#06b6d4]"></span> #Teknoloji
                           </span>
-                          <span className="font-bold text-slate-800 dark:text-slate-200">4.40M (17.8%)</span>
+                          <span className="font-bold text-slate-800 dark:text-slate-200 font-mono">4.40M (17.8%)</span>
                         </div>
                       </div>
                     </div>
@@ -1387,7 +1452,7 @@ export default function Home() {
                       />
                       <button
                         onClick={generateAdCampaign}
-                        className="absolute right-2.5 p-2 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition-all cursor-pointer shadow-md shadow-orange-500/20"
+                        className="absolute right-2.5 p-2 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition-all cursor-pointer shadow-md shadow-orange-500/20 active:scale-98"
                       >
                         <Send className="h-4 w-4 stroke-[2.5]" />
                       </button>
@@ -1416,7 +1481,7 @@ export default function Home() {
                         <span className="text-xs font-bold text-orange-600 flex items-center gap-1.5">
                           <Sparkles className="h-4 w-4" /> AI Parametre ve Zamanlama Optimizasyonu
                         </span>
-                        <span className="text-[10px] bg-orange-500 text-white font-bold px-2.5 py-0.5 rounded-full">
+                        <span className="text-[10px] bg-orange-500 text-white font-bold px-2.5 py-0.5 rounded-full font-mono">
                           +34% ROAS Eşleşti
                         </span>
                       </div>
@@ -1446,7 +1511,7 @@ export default function Home() {
 
                       <button
                         onClick={launchCampaign}
-                        className="w-full py-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs transition-all flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20 cursor-pointer"
+                        className="w-full py-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs transition-all flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20 cursor-pointer active:scale-98"
                       >
                         <CheckCircle className="h-4 w-4" /> Kampanyayı Canlıya Al (10 Saniyede Yayında)
                       </button>
@@ -1474,7 +1539,7 @@ export default function Home() {
                           {camp.status}
                         </span>
                       </div>
-                      <div className="grid grid-cols-3 gap-2 text-[10px] text-slate-500 pt-2 border-t border-slate-200 dark:border-slate-700 mt-2">
+                      <div className="grid grid-cols-3 gap-2 text-[10px] text-slate-500 pt-2 border-t border-slate-200 dark:border-slate-700 mt-2 font-mono">
                         <div>
                           <span>Bütçe:</span> <strong className="text-slate-700 dark:text-slate-200 block">{camp.budget} TL</strong>
                         </div>
@@ -1516,7 +1581,7 @@ export default function Home() {
                       }`}
                     >
                       <div className="flex items-center justify-between">
-                        <span className="flex items-center gap-2 font-bold text-sm">
+                        <span className="flex items-center gap-2 font-bold text-sm font-mono">
                           <AlertTriangle className={`h-5 w-5 ${alert.type === "CRISIS" ? "text-rose-500" : "text-orange-500"}`} />
                           {alert.city} × {alert.topic} (Z-Score: {alert.zScore.toFixed(2)})
                         </span>
@@ -1542,7 +1607,7 @@ export default function Home() {
                             <button
                               key={act}
                               onClick={() => handleAction(alert.id, act)}
-                              className="px-4 py-2 rounded-xl bg-[#0a1e22] text-white hover:bg-[#133e42] text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-md"
+                              className="px-4 py-2 rounded-xl bg-[#0a1e22] text-white hover:bg-[#133e42] text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-md active:scale-98"
                             >
                               <CheckCircle className="h-3.5 w-3.5 text-teal-400" /> {act}
                             </button>
@@ -1560,17 +1625,17 @@ export default function Home() {
                 <h4 className="font-extrabold text-sm flex items-center gap-2">
                   <UserCheck className="h-4.5 w-4.5 text-emerald-600" /> Doğrulama ve NLP Metrikleri
                 </h4>
-                <div className="flex flex-col gap-4 text-xs">
+                <div className="flex flex-col gap-4 text-xs font-mono">
                   <div className="border-b border-slate-100 dark:border-slate-800 pb-3">
-                    <span className="text-slate-400 block text-[10px]">BERTurk Duygu Eşleşme Doğruluğu</span>
+                    <span className="text-slate-400 block text-[10px] font-sans">BERTurk Duygu Eşleşme Doğruluğu</span>
                     <strong className="text-sm font-black">%92.4 Accuracy (5-Fold CV)</strong>
                   </div>
                   <div className="border-b border-slate-100 dark:border-slate-800 pb-3">
-                    <span className="text-slate-400 block text-[10px]">Yerel LLM Çıkarım Gecikmesi</span>
+                    <span className="text-slate-400 block text-[10px] font-sans">Yerel LLM Çıkarım Gecikmesi</span>
                     <strong className="text-sm font-black">1.24 saniye (AWQ 4-bit)</strong>
                   </div>
                   <div>
-                    <span className="text-slate-400 block text-[10px]">DBSCAN Kümeleme F1-Skoru</span>
+                    <span className="text-slate-400 block text-[10px] font-sans">DBSCAN Kümeleme F1-Skoru</span>
                     <strong className="text-sm font-black">0.920 F1-Harmonik Başarım</strong>
                   </div>
                 </div>
@@ -1603,9 +1668,9 @@ export default function Home() {
                 theme === "light" ? "bg-white border-slate-200/80 shadow-sm" : "bg-[#0d2227] border-slate-800"
               }`}>
                 <h4 className="font-extrabold text-sm mb-4">Popüler Kategori Trendleri</h4>
-                <div className="flex flex-col gap-4 text-xs">
+                <div className="flex flex-col gap-4 text-xs font-mono">
                   <div>
-                    <div className="flex justify-between font-bold text-slate-600 dark:text-slate-300 mb-1">
+                    <div className="flex justify-between font-bold text-slate-600 dark:text-slate-300 mb-1 font-sans">
                       <span>#Ulaşım</span> <span>%50.5</span>
                     </div>
                     <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
@@ -1613,7 +1678,7 @@ export default function Home() {
                     </div>
                   </div>
                   <div>
-                    <div className="flex justify-between font-bold text-slate-600 dark:text-slate-300 mb-1">
+                    <div className="flex justify-between font-bold text-slate-600 dark:text-slate-300 mb-1 font-sans">
                       <span>#Kültür</span> <span>%31.7</span>
                     </div>
                     <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
@@ -1621,7 +1686,7 @@ export default function Home() {
                     </div>
                   </div>
                   <div>
-                    <div className="flex justify-between font-bold text-slate-600 dark:text-slate-300 mb-1">
+                    <div className="flex justify-between font-bold text-slate-600 dark:text-slate-300 mb-1 font-sans">
                       <span>#Teknoloji</span> <span>%17.8</span>
                     </div>
                     <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
@@ -1770,7 +1835,7 @@ export default function Home() {
                           <Sliders className="h-4 w-4 text-orange-500" />
                           Aktif KOBİ Reklamveren Sayısı:
                         </span>
-                        <strong className="text-base font-black text-orange-600">
+                        <strong className="text-base font-black text-orange-600 font-mono">
                           {financialSmeCount.toLocaleString("tr-TR")} İşletme
                         </strong>
                       </div>
@@ -1785,19 +1850,19 @@ export default function Home() {
                         className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-orange-500"
                       />
 
-                      <div className="grid grid-cols-3 gap-4 mt-6 pt-4 border-t border-slate-200 dark:border-slate-700 text-center">
+                      <div className="grid grid-cols-3 gap-4 mt-6 pt-4 border-t border-slate-200 dark:border-slate-700 text-center font-mono">
                         <div>
-                          <span className="text-slate-400 block text-[10px]">Aylık Ortalama Harcama</span>
+                          <span className="text-slate-400 block text-[10px] font-sans">Aylık Ortalama Harcama</span>
                           <strong className="text-sm font-bold text-slate-700 dark:text-slate-200">1.200 TL / KOBİ</strong>
                         </div>
                         <div>
-                          <span className="text-slate-400 block text-[10px]">Hesaplanan Yıllık Brüt Gelir</span>
+                          <span className="text-slate-400 block text-[10px] font-sans">Hesaplanan Yıllık Brüt Gelir</span>
                           <strong className="text-sm font-black text-slate-900 dark:text-white">
                             {((financialSmeCount * 360) / 1000).toFixed(0)} Bin TL ({((financialSmeCount * 360) / 1000000).toFixed(1)}M TL)
                           </strong>
                         </div>
                         <div>
-                          <span className="text-slate-400 block text-[10px]">Net Faaliyet Kârı (EBITDA)</span>
+                          <span className="text-slate-400 block text-[10px] font-sans">Net Faaliyet Kârı (EBITDA)</span>
                           <strong className="text-sm font-black text-emerald-600">
                             +{((financialSmeCount * 270) / 1000000).toFixed(2)} Milyon TL
                           </strong>
@@ -1812,20 +1877,20 @@ export default function Home() {
                         <div>Yıl 2 (Yayılım)</div>
                         <div>Yıl 3 (MENA)</div>
                       </div>
-                      <div className="grid grid-cols-4 gap-2 p-3 border-t">
-                        <div>Aktif KOBİ Reklamveren</div>
+                      <div className="grid grid-cols-4 gap-2 p-3 border-t font-mono">
+                        <div className="font-sans font-bold">Aktif KOBİ Reklamveren</div>
                         <div>2.500 İşletme</div>
                         <div>25.000 İşletme</div>
                         <div>85.000 İşletme</div>
                       </div>
-                      <div className="grid grid-cols-4 gap-2 p-3 border-t">
-                        <div>Toplam Brüt Gelir</div>
+                      <div className="grid grid-cols-4 gap-2 p-3 border-t font-mono">
+                        <div className="font-sans font-bold">Toplam Brüt Gelir</div>
                         <div>900.000 TL</div>
                         <div>8.200.000 TL</div>
                         <div>30.000.000 TL</div>
                       </div>
-                      <div className="grid grid-cols-4 gap-2 p-3 border-t font-bold text-emerald-600">
-                        <div>Net Faaliyet Kârı (EBITDA)</div>
+                      <div className="grid grid-cols-4 gap-2 p-3 border-t font-bold text-emerald-600 font-mono">
+                        <div className="font-sans font-bold">Net Faaliyet Kârı (EBITDA)</div>
                         <div>+480.000 TL</div>
                         <div>+6.100.000 TL</div>
                         <div>+23.800.000 TL</div>
@@ -1840,7 +1905,7 @@ export default function Home() {
         </div>
 
         {/* FOOTER */}
-        <footer className={`py-4 text-center text-xs border-t mt-auto ${
+        <footer className={`py-4 text-center text-xs border-t mt-auto shrink-0 ${
           theme === "light" ? "bg-white border-slate-200 text-slate-500" : "bg-[#0b1d22] border-slate-800 text-slate-500"
         }`}>
           <p>© 2026 NABIZ AI Platformu • Sadir Pehlivan Takımı #990060 • TEKNOFEST N-Sosyal İnovasyon</p>
