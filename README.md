@@ -51,14 +51,7 @@ Jürinin platformdan çıkmadan okuyabileceği, tüm formül ve finansal projeks
 ![Entegre Proje Raporu](./screenshots/report.png)
 
 ---
-
-## 🎬 İnteraktif Canlı Demo Akışı (Video)
-
-Aşağıdaki hareketli `.webp` kaydında aydınlık/karanlık mod geçişleri, akan dalga grafiklerinin ve ticker'ların canlı hareketi ile simülatör etkileşimleri görülmektedir:
-
-![NABIZ Platform İnteraktif Canlı Akış](./screenshots/demo.webp)
-
----
+ 
 
 ## 🧬 Matematiksel Modelleme & Algoritmalar
 
