@@ -85,6 +85,55 @@ $$N_{\epsilon}(p) = \{ q \in \mathcal{D} \mid \text{dist}(p, q) \le \epsilon \}$
 
 ---
 
+## 📂 Proje Dizin Yapısı (Project Architecture & Structure)
+
+Platform; modüler bileşen mimarisine dayalı **Ön Yüz (`/web`)** ve matematiksel anomali motoru ile AI servislerini barındıran **Arka Yüz Referansı (`/backend`)** katmanlarından oluşmaktadır:
+
+```
+nabiz-ai-platform/
+├── backend/                       # Python & FastAPI Arka Yüz Mimarisi
+│   ├── ai_service.py             # BERTurk duygu & Ollama LLM Türkçe çıkarım servisi
+│   ├── anomaly_engine.py         # Z-Score, tensör izdüşümü ve DBSCAN kümeleme motoru
+│   ├── config.py                 # Ortam değişkenleri ve veritabanı ayarları
+│   ├── main.py                   # FastAPI API uç noktaları ve veri akış yönlendiricileri
+│   └── models.py                 # PostgreSQL / SQLAlchemy 10 adet ORM veri tablosu şeması
+├── web/                          # Next.js 16 (React 19) & Tailwind CSS v4 Ön Yüz
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── globals.css       # Global stil tanımlamaları
+│   │   │   ├── layout.tsx        # Kök sayfa düzeni ve SEO meta etiketleri
+│   │   │   └── page.tsx          # Ana uygulama giriş noktası (Provider & App montajı)
+│   │   ├── components/
+│   │   │   ├── common/           # Genel Yeniden Kullanılabilir Bileşenler
+│   │   │   │   ├── KpiCards.tsx       # 4'lü üst özet KPI metrik kartları
+│   │   │   │   ├── ScenarioTester.tsx # 4'lü interaktif senaryo test butonları
+│   │   │   │   └── Toast.tsx          # Dinamik bildirim ve geri bildirim kutusu
+│   │   │   ├── layout/           # Sayfa Düzen Bileşenleri
+│   │   │   │   ├── BenchmarkBanner.tsx # Doğrulanmış rapor başarım metrikleri bandı
+│   │   │   │   ├── Header.tsx         # Üst gezinme çubuğu, çift kanat ve tema seçici
+│   │   │   │   └── Sidebar.tsx        # Sabit sol kontrol paneli ve jüri turu butonu
+│   │   │   ├── panels/           # 6 Adet Özel İşlevsel Kontrol Panosu
+│   │   │   │   ├── AdsPanel.tsx       # NABIZ-Ads AI Reklam ve Kampanya Sihirbazı
+│   │   │   │   ├── AnalyticsPanel.tsx # Detaylı platform hacmi ve trend grafikleri
+│   │   │   │   ├── DashboardPanel.tsx # Isı matrisi, 5 şehir radarı ve dinamik SVG dalgası
+│   │   │   │   ├── PrivacyPanel.tsx   # KVKK uyum ve SHA-256 kimliksizleştirme paneli
+│   │   │   │   ├── ReportPanel.tsx    # Entegre proje teknik raporu ve EBITDA simülatörü
+│   │   │   │   └── SensePanel.tsx     # NABIZ-Sense kriz alarmları ve müdahale paneli
+│   │   │   └── NabizApp.tsx      # Tüm modülleri birleştiren ana uygulama düzenleyicisi
+│   │   ├── context/
+│   │   │   └── NabizContext.tsx  # Merkezi durum yönetimi, simülatörler ve 12s jüri turu
+│   │   ├── data/
+│   │   │   └── mockData.ts       # Başlangıç tensör matrisleri ve referans verileri
+│   │   └── types/
+│   │       └── index.ts          # TypeScript arayüz ve veri tipi tanımlamaları
+│   ├── package.json              # Ön yüz bağımlılıkları (Next 16, Lucide, Tailwind 4)
+│   └── tsconfig.json             # TypeScript yapılandırması
+├── screenshots/                  # Rapor ve jüri sunumu ekran görüntüleri
+└── README.md                     # Proje tanıtım ve teknik dokümantasyon dosyası
+```
+
+---
+
 ## 🛠️ Teknoloji Yığını (Tech Stack)
 
 ### Ön Yüz (Frontend - `/web`)
